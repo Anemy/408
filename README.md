@@ -1,5 +1,3 @@
-git remote add origin git@github.com:Anemy/CS408-Bumper-Blasters.git
-
 408 Software Testing Project
 =========
 
@@ -25,3 +23,14 @@ $ browser http://localhost:8080
 
 ```bash
 $ npm run deploy
+
+Team
+------------
+
+```
+* Ben Alderfer
+* Bryan Duffy
+* Jay Hankins
+* Rhys Howell
+* Roy Fu
+```
