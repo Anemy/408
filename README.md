@@ -23,6 +23,7 @@ $ browser http://localhost:8080
 
 ```bash
 $ npm run deploy
+```
 
 Team
 ------------
