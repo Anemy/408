@@ -28,10 +28,8 @@ $ npm run deploy
 Team
 ------------
 
-```
 * Ben Alderfer
 * Bryan Duffy
 * Jay Hankins
 * Rhys Howell
 * Roy Fu
-```
