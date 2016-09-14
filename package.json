@@ -4,7 +4,10 @@
   "description": "408 Software Testing Project",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "clean": "rm -rf build",
+    "build": "npm run clean && gulp",
+    "start:dev": "npm run clean && gulp",
+    "start": "echo \"Error: Please run 'npm start' with a parameter like 'npm start:dev'\"",
     "test": "jasmine"
   },
   "repository": {
@@ -22,9 +25,11 @@
   },
   "devDependencies": {
     "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
     "gulp-jshint": "^2.0.1",
     "gulp-livereload": "^3.8.1",
     "gulp-nodemon": "^2.1.0",
+    "gulp-wrapper": "^1.0.0",
     "jasmine": "^2.5.1",
     "jshint": "^2.9.3"
   }

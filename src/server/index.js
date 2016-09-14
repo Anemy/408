@@ -3,12 +3,12 @@ var router = express.Router();
 
 // GET method route
 router.get('/', function (req, res) { 
-  res.send('GET request :D');
+  res.send('GET Request :D');
 }); 
 
 // POST method route
 router.post('/', function (req, res) {
-  res.send('POST request');
+  res.send('POST Request');
 });
 
 module.exports = router;

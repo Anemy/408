@@ -5,7 +5,7 @@ Installation
 ------------
 
 ```bash
-$ cp env.sample .env          # and modify if necessary
+$ npm install --global gulp-cli
 $ npm install
 ```
 
