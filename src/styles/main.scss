@@ -1,0 +1,10 @@
+// Remove the vanilla css rules.
+@import 'normalize';
+
+// Sass partials
+@import 'variables';
+@import 'fonts';
+
+.homepage-text {
+  color: blue;
+}

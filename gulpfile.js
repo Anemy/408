@@ -4,25 +4,35 @@ const jshint = require('gulp-jshint');
 const livereload = require('gulp-livereload');
 const concat = require('gulp-concat');
 const wrapper = require('gulp-wrapper');
+const sass = require('gulp-sass');
 
 const config = {
-  sassPath: './src/styles',
-  cssDestDir: './build/assets/css',
+  sassPath: './src/styles/**/*.scss',
+  cssDestDir: './public/css',
   jsPath: './src/client/**/*.js',
-  jsDevDir: './public/js',
-  jsDestDir: './build/assets/js',
-}
+  jsDestDir: './public/js',
+  serverJsPath: './src/server/**/*'
+};
 
 gulp.task('dev', function() {
   // Watch for clientside changes and run building tasks.
-  gulp.watch(['src/client/js/**/*.js'], ['js', 'lint']);
+  gulp.watch([config.jsPath], ['js', 'lint']);
   gulp.watch(['src/client/**/*.html'], ['js']);
+
+  gulp.watch([config.sassPath],['style']);
 });
 
 // JSLint
 gulp.task('lint', function () {
   gulp.src('./**/*.js')
     .pipe(jshint());
+});
+
+// SASS -> CSS
+gulp.task('style', function() {
+  gulp.src([config.sassPath])
+    .pipe(sass().on('error', sass.logError))
+    .pipe(gulp.dest(config.cssDestDir));
 });
 
 // Build the js and pipe it into a build.js file in the public folder.
@@ -34,7 +44,7 @@ gulp.task('js', function() {
       header: '(function(){',
       footer: '})();'
     }))
-    .pipe(gulp.dest(config.jsDevDir));
+    .pipe(gulp.dest(config.jsDestDir));
 });
 
 gulp.task('server', function() {
@@ -42,7 +52,7 @@ gulp.task('server', function() {
   nodemon({
     script: 'index.js',
     ext: 'js html',
-    watch: ['src/server/**/*']
+    watch: [config.serverJsPath, 'index.js']
   })
     .on('restart', function() {
       setTimeout(function() {

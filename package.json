@@ -31,6 +31,7 @@
     "gulp-jshint": "^2.0.1",
     "gulp-livereload": "^3.8.1",
     "gulp-nodemon": "^2.1.0",
+    "gulp-sass": "^2.3.2",
     "gulp-wrapper": "^1.0.0",
     "jasmine": "^2.5.1",
     "jshint": "^2.9.3"

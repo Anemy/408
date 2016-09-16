@@ -17,6 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/', routing);
 
+// Set the view engine to handlebars.
 app.set('views', 'src/views/')
 app.engine('.hbs', exphbs({
   layoutsDir: 'src/views/',
@@ -25,7 +26,7 @@ app.engine('.hbs', exphbs({
 }));
 app.set('view engine', '.hbs');
 
-app.use('/public',  express.static('./public'));
+app.use('/',  express.static('./public'));
 
 app.listen(portNumber, function () {
   console.log('Listening on port:',portNumber);
