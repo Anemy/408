@@ -6,6 +6,7 @@ Installation
 
 ```bash
 $ npm install --global gulp-cli
+$ npm install -g webpack
 $ npm install
 ```
 

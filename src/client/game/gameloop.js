@@ -2,14 +2,23 @@
  * This folder contains the gameloop which runs the game.
  */
 
-// Frames per second. (1000/60 is 60 fps)
-const updateRate = 1000 / 60;
+// Frames per second.
+const fps = 60;
+const updateRate = 1000 / fps;
 
 const game = {
-
+  intervalId: null,
+  running: false,
 
   start: function() {
+    console.log('Starting gameloop...');
 
+    // Start the game loop
+    this.intervalId = setInterval(this.loop, updateRate);
+
+    this.running = true;
+
+    console.log('Gameloop started.');
   },
 
   loop: function() {

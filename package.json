@@ -23,7 +23,8 @@
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
-    "express-handlebars": "^3.0.0"
+    "express-handlebars": "^3.0.0",
+    "webpack-stream": "^3.2.0"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
