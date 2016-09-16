@@ -1,1 +1,1 @@
-console.log('Index! :D');
+console.log('Clientside js :D');

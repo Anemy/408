@@ -1,1 +1,1 @@
-(function(){console.log('Index! :D');})();
+(function(){console.log('Clientside js :D');})();
