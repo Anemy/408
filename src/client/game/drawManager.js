@@ -1,17 +1,25 @@
 /**
- * This file manages the drawing in the game.
+ * This object manages the drawing in the game.
  */
 
-const drawManager = {
-  // The drawable canvas reference.
-  ctx: null,
+class drawManager {
+  initialize() {
+    // Get the user's browser dimensions.
+    this.browserWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    this.browserHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
 
-  initialize: function() {
     const canvas = document.getElementById('gameCanvas');
+
+    // The drawable canvas reference.
     this.ctx = canvas.getContext('2d');
-  },
 
-  draw: function() {
+    ctx.canvas.width = this.browserWidth;
+    ctx.canvas.height = this.browserHeight;
+  }
 
+  draw() {
+    console.log('Draw called.');
   }
 }
+
+module.exports = drawManager;

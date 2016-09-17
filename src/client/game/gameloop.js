@@ -6,12 +6,19 @@
 const fps = 60;
 const updateRate = 1000 / fps;
 
-const game = {
-  intervalId: null,
-  running: false,
+const drawManager = require('./drawManager');
 
-  start: function() {
-    console.log('Starting gameloop...');
+class game {
+  constructor() {
+    this.drawManager = new drawManager();
+
+    // Holds the Javascript setInterval() id of the gameloop.
+    this.intervalId = null;
+    this.running = false;
+  }
+
+  start() {
+    console.log('Starting the gameloop...');
 
     // Start the game loop
     this.intervalId = setInterval(this.loop, updateRate);
@@ -19,17 +26,19 @@ const game = {
     this.running = true;
 
     console.log('Gameloop started.');
-  },
+  }
 
-  loop: function() {
+  loop() {
+    if (this.running) {
 
-  },
+    }
+  }
 
-  pause: function() {
+  pause() {
 
-  },
+  }
 
-  stop: function() {
+  stop() {
 
   }
 };

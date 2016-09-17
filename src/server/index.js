@@ -4,7 +4,6 @@ const router = express.Router();
 // GET method route
 router.get('/', function (req, res) { 
   res.render('homepage');
-  // res.send('GET Request :D');
 }); 
 
 // POST method route

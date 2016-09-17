@@ -6,6 +6,7 @@ const concat = require('gulp-concat');
 const wrapper = require('gulp-wrapper');
 const sass = require('gulp-sass');
 const webpack = require('webpack-stream');
+const path = require('path');
 
 const config = {
   sassPath: './src/styles/**/*.scss',
@@ -20,6 +21,18 @@ const webpackConfig = {
   output: {
       path: __dirname + config.jsDestDir,
       filename: 'build.js'
+  },
+  module: {
+    loaders: [
+      { 
+        test: /\.js$/,// path.join(__dirname, 'es6'),
+        loader: 'babel-loader',
+        query: {
+          presets: ['es2015']
+        }
+        // test: /\.js$/, include: __dirname + '/app', loader: "babel-loader"
+      }
+    ]
   }
 };
 
@@ -44,20 +57,14 @@ gulp.task('style', function() {
     .pipe(gulp.dest(config.cssDestDir));
 });
 
-// Build the js and pipe it into a build.js file in the public folder.
+// Build the js using webpack and pipe it into a build.js file in the public folder.
 gulp.task('js', function() {
   gulp.src(config.jsClientEntry)
     .pipe(webpack(webpackConfig))
+    .on('error', function handleError() {
+      this.emit('end'); // Recover from errors.
+    })
     .pipe(gulp.dest(config.jsDestDir));
-
-  // gulp.src([config.jsPath])
-  //   .pipe(concat('build.js'))
-  //   // Wrap the code in a self excecuting function.
-  //   .pipe(wrapper({
-  //     header: '(function(){',
-  //     footer: '})();'
-  //   }))
-  //   .pipe(gulp.dest(config.jsDestDir));
 });
 
 gulp.task('server', function() {

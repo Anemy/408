@@ -1,6 +1,5 @@
-var game = require('./game/gameloop');
-
-console.log('Clientside js :D');
+const Gameloop = require('./game/gameloop');
+const game = new Gameloop();
 
 game.start();
 
