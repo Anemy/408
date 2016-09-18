@@ -1,5 +1,6 @@
 const Gameloop = require('./game/gameloop');
 const game = new Gameloop();
 
-game.start();
-
+$(document).ready(() => {
+  game.start();
+});

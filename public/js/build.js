@@ -49,7 +49,9 @@
 	var Gameloop = __webpack_require__(1);
 	var game = new Gameloop();
 
-	game.start();
+	$(document).ready(function () {
+	  game.start();
+	});
 
 /***/ },
 /* 1 */
@@ -69,17 +71,11 @@
 	var fps = 60;
 	var updateRate = 1000 / fps;
 
-	var drawManager = __webpack_require__(2);
+	var DrawManager = __webpack_require__(2);
 
 	var game = function () {
 	  function game() {
 	    _classCallCheck(this, game);
-
-	    this.drawManager = new drawManager();
-
-	    // Holds the Javascript setInterval() id of the gameloop.
-	    this.intervalId = null;
-	    this.running = false;
 	  }
 
 	  _createClass(game, [{
@@ -87,17 +83,27 @@
 	    value: function start() {
 	      console.log('Starting the gameloop...');
 
-	      // Start the game loop
-	      this.intervalId = setInterval(this.loop, updateRate);
-
 	      this.running = true;
+
+	      this.drawManager = new DrawManager();
+	      this.drawManager.initialize();
+
+	      // Start the game loop.
+	      // Holds the Javascript setInterval() id of the gameloop.
+	      this.intervalId = setInterval(this.loop.bind(this), updateRate);
 
 	      console.log('Gameloop started.');
 	    }
 	  }, {
 	    key: 'loop',
 	    value: function loop() {
-	      if (this.running) {}
+	      // console.log('Loop!',new Date());
+
+	      // debugger;
+
+	      if (this.running) {
+	        this.drawManager.draw();
+	      }
 	    }
 	  }, {
 	    key: 'pause',
@@ -137,21 +143,39 @@
 	    key: 'initialize',
 	    value: function initialize() {
 	      // Get the user's browser dimensions.
-	      this.browserWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-	      this.browserHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+	      this.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+	      this.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
 
 	      var canvas = document.getElementById('gameCanvas');
 
 	      // The drawable canvas reference.
 	      this.ctx = canvas.getContext('2d');
 
-	      ctx.canvas.width = this.browserWidth;
-	      ctx.canvas.height = this.browserHeight;
+	      this.ctx.canvas.width = this.width;
+	      this.ctx.canvas.height = this.height;
 	    }
 	  }, {
 	    key: 'draw',
 	    value: function draw() {
-	      console.log('Draw called.');
+	      // console.log('Draw called.');
+	      this.ctx.clearRect(0, 0, this.width, this.height);
+
+	      this.ctx.fillStyle = '#FDFDFD';
+	      this.ctx.fillRect(0, 0, this.width, this.height);
+
+	      var gridAmount = 30;
+	      this.ctx.strokeStyle = '#2B2B4A';
+	      for (var i = 0; i < gridAmount + 1; i++) {
+	        this.ctx.beginPath();
+	        this.ctx.moveTo(this.width * (i / gridAmount), 0);
+	        this.ctx.lineTo(this.width * (i / gridAmount), this.height);
+	        this.ctx.stroke();
+
+	        this.ctx.beginPath();
+	        this.ctx.moveTo(0, this.height * (i / gridAmount));
+	        this.ctx.lineTo(this.width, this.height * (i / gridAmount));
+	        this.ctx.stroke();
+	      }
 	    }
 	  }]);
 
