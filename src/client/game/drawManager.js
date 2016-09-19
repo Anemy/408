@@ -2,6 +2,9 @@
  * This object manages the drawing in the game.
  */
 
+// Load in the constants (colors, sizes, etc.) for drawing.
+const DrawConstants = require('./drawConstants');
+
 class drawManager {
   initialize() {
     // Get the user's browser dimensions.
@@ -17,25 +20,44 @@ class drawManager {
     this.ctx.canvas.height = this.height;
   }
 
-  draw() {
-    // console.log('Draw called.');
+  draw(drawableObjects) {
+    // Clear the last frame.
     this.ctx.clearRect(0, 0, this.width, this.height); 
 
-    this.ctx.fillStyle = '#FDFDFD';
+    this.drawMap();
+
+    // Call the drawing method of each drawable object.
+    _.each(drawableObjects, (drawableObject) => {
+      drawableObject.draw(this.ctx);
+    });
+  }
+
+  drawMap() {
+    this.ctx.fillStyle = DrawConstants.mapBackgroundColor;
     this.ctx.fillRect(0,0, this.width, this.height);
 
     const gridAmount = 30;
-    this.ctx.strokeStyle = '#2B2B4A';
+    const gridSize = this.width / gridAmount;
+    this.ctx.strokeStyle = DrawConstants.mapGridColor;
     for(var i = 0; i < gridAmount + 1; i++) {
       this.ctx.beginPath();
-      this.ctx.moveTo(this.width * (i / gridAmount), 0);
-      this.ctx.lineTo(this.width * (i / gridAmount), this.height);
+      this.ctx.moveTo(gridSize * i, 0);
+      this.ctx.lineTo(gridSize * i, this.height);
       this.ctx.stroke();
 
-      this.ctx.beginPath();
-      this.ctx.moveTo(0, this.height * (i / gridAmount));
-      this.ctx.lineTo(this.width, this.height * (i / gridAmount));
-      this.ctx.stroke();
+      // Because of the 16:9 aspect ratio, only draw squares, this means that there are more in the square
+      if (gridSize * i < this.height) {
+        this.ctx.beginPath();
+        this.ctx.moveTo(0, gridSize * i);
+        this.ctx.lineTo(this.width, gridSize * i);
+        this.ctx.stroke();
+      } else if(gridSize * (i - 1) <= this.height) {
+        // This draws the end border line.
+        this.ctx.beginPath();
+        this.ctx.moveTo(0, this.height);
+        this.ctx.lineTo(this.width, this.height);
+        this.ctx.stroke();
+      }
     }
   }
 }

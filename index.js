@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/', routing);
 
 // Set the view engine to handlebars.
-app.set('views', 'src/views/')
+app.set('views', 'src/views/');
 app.engine('.hbs', exphbs({
   layoutsDir: 'src/views/',
   defaultLayout: 'layout',

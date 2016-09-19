@@ -1,12 +1,10 @@
 const gulp = require('gulp');
 const nodemon = require('gulp-nodemon');
-const jshint = require('gulp-jshint');
+const eslint = require('gulp-eslint');
 const livereload = require('gulp-livereload');
 const concat = require('gulp-concat');
-const wrapper = require('gulp-wrapper');
 const sass = require('gulp-sass');
 const webpack = require('webpack-stream');
-const path = require('path');
 
 const config = {
   sassPath: './src/styles/**/*.scss',
@@ -21,8 +19,8 @@ const config = {
 
 const webpackConfig = {
   output: {
-      path: __dirname + config.jsDestDir,
-      filename: 'build.js'
+    path: __dirname + config.jsDestDir,
+    filename: 'build.js'
   },
   module: {
     loaders: [
@@ -56,8 +54,20 @@ gulp.task('dev', function() {
 
 // JSLint
 gulp.task('lint', function () {
-  gulp.src('./**/*.js')
-    .pipe(jshint());
+  gulp.src(['**/*.js',
+      '!node_modules/**' /* Ignore modules. */,
+      '!**/lib/**' /* Ignore external libraries. */,
+      '!public/**' /* Ignore built files */])
+    //.pipe(jshint());
+    // eslint() attaches the lint output to the "eslint" property
+    // of the file object so it can be used by other modules.
+    .pipe(eslint())
+    // eslint.format() outputs the lint results to the console.
+    // Alternatively use eslint.formatEach() (see Docs).
+    .pipe(eslint.format());
+    // To have the process exit with an error code (1) on
+    // lint error, return the stream and pipe to failAfterError last.
+    // .pipe(eslint.failAfterError());
 });
 
 // SASS -> CSS

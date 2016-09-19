@@ -186,4 +186,6 @@ table {
   border-spacing: 0; }
 
 .homepage-text {
+  position: absolute;
+  top: 20px;
   color: blue; }

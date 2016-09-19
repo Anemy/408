@@ -12,7 +12,7 @@ class game {
   start() {
     console.log('Starting the gameloop...');
 
-    this.running = true;
+    this.running = true; 
 
     this.drawManager = new DrawManager();
     this.drawManager.initialize();
@@ -21,11 +21,11 @@ class game {
     // Holds the Javascript setInterval() id of the gameloop.
     this.intervalId = setInterval(this.loop.bind(this), updateRate);
 
-    console.log('Gameloop started.');
+    console.log('Gameloop started.'); 
   }
 
   loop() {
-    // console.log('Loop!',new Date());
+    // console.log('Loop!',new Date()); 
 
     // debugger;
 
@@ -41,6 +41,6 @@ class game {
   stop() {
 
   }
-};
+}
 
 module.exports = game;

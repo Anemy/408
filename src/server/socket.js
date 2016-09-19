@@ -9,11 +9,11 @@ const SocketManager = function(server) {
 
   this.clientConnected = function(socket) {
 
-  }
+  };
 
   this.clientDisconnected = function(socket) {
     
-  }
+  };
 }
 
 module.exports = SocketManager;
