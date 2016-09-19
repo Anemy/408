@@ -36,15 +36,28 @@ class drawManager {
     this.ctx.fillStyle = DrawConstants.mapBackgroundColor;
     this.ctx.fillRect(0,0, this.width, this.height);
 
-    const gridAmount = 30;
-    const gridSize = this.width / gridAmount;
+    const gridSize = this.width / DrawConstants.gridAmount;
     this.ctx.strokeStyle = DrawConstants.mapGridColor;
-    for(var i = 0; i < gridAmount + 1; i++) {
+    for(var i = 0; i < DrawConstants.gridAmount + 1; i++) {
+      // Randomly paint in certain squares to flicker.
+      // for(var k = 0; k < DrawConstants.gridAmount + 1; k++) {
+      //   if (Math.random() * 10 < 2) {
+      //     const red = (245 - Math.floor(Math.random() * DrawConstants.mapGridFlickerRange));
+      //     const green = (245 - Math.floor(Math.random() * DrawConstants.mapGridFlickerRange));
+      //     const blue = (225 - Math.floor(Math.random() * DrawConstants.mapGridFlickerRange));
+
+      //     this.ctx.fillStyle = `rgb(${red},${green},${blue})`;
+      //     this.ctx.fillRect(gridSize * i, gridSize * k, gridSize, gridSize);
+      //   }
+      // }
+
+      // Vertical lines.
       this.ctx.beginPath();
       this.ctx.moveTo(gridSize * i, 0);
       this.ctx.lineTo(gridSize * i, this.height);
       this.ctx.stroke();
 
+      // Horizontal lines.
       // Because of the 16:9 aspect ratio, only draw squares, this means that there are more in the square
       if (gridSize * i < this.height) {
         this.ctx.beginPath();

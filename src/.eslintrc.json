@@ -1,7 +1,12 @@
 {
+  // "rules":{
+  //   // Flag on console logs in code. Useful for prod.
+  //   "no-console" : 0
+  // },
   "globals": {
     "_": false,
     "$": false,
-    "jQuery": false
+    "jQuery": false,
+    "io": false
   }
 }

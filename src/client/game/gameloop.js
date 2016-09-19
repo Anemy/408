@@ -7,6 +7,7 @@ const fps = 60;
 const updateRate = 1000 / fps;
 
 const DrawManager = require('./drawManager');
+const SocketConnection = require('./socket');
 
 class game {
   start() {
@@ -16,6 +17,9 @@ class game {
 
     this.drawManager = new DrawManager();
     this.drawManager.initialize();
+
+    this.socket = new SocketConnection();
+    this.socket.connect();
 
     // Start the game loop.
     // Holds the Javascript setInterval() id of the gameloop.

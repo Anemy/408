@@ -6,6 +6,10 @@ class gameMenu {
   constructor() {
     
   }
+
+  start() {
+    
+  }
 }
 
 module.exports = gameMenu;
