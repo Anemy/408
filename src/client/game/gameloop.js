@@ -6,7 +6,7 @@
 const fps = 60;
 const updateRate = 1000 / fps;
 
-const DrawManager = require('./drawManager');
+const DrawManager = require('./draw/drawManager');
 const SocketConnection = require('./socket');
 
 class game {

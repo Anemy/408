@@ -9,6 +9,8 @@ const socketio = require('socket.io');
 const SocketManager = function() {
   this.io = null;
 
+  this.usersOnline = 0;
+
   this.startListening = function(server) {
     this.io = socketio(server);
 
@@ -17,10 +19,14 @@ const SocketManager = function() {
   };
 
   this.clientConnected = function(socket) {
+    this.usersOnline++;
+
     console.log('A client connected.');
 
     // When a user disconnects from socket .
-    socket.on('disconnect', function (){
+    socket.on('disconnect', function() {
+      this.usersOnline--;
+
       this.clientDisconnected();
     }.bind(this));
   };
