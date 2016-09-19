@@ -17,6 +17,7 @@ const app = express();
 const server = http.Server(app);
 
 const socketManager = new SocketManager(server);
+socketManager.startListening();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
