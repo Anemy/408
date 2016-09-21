@@ -5,8 +5,11 @@
 const Player = require('./objects/player/player');
 
 class gameManager {
-  constructor() {
+  // Initialize the game logic
+  start() {
     this.players = [];
+
+    this.addPlayer();
   }
 
   addPlayer() {
@@ -14,8 +17,20 @@ class gameManager {
     const randomXSpawn = Math.floor(Math.random() * 500);
     const randomYSpawn = Math.floor(Math.random() * 500);
     const skin = 'red';
+    
+    const newPlayer = new Player(randomXSpawn, randomYSpawn, skin);
+    this.players.push(newPlayer);
+  }
 
-    this.players.push(new Player(randomXSpawn, randomYSpawn, skin));
+  update() {
+    // Update all of the players.
+    _.each(this.players, (player) => {
+      player.update();
+    });
+  }
+
+  draw(drawManager) {
+    drawManager.draw(this.players);
   }
 }
 

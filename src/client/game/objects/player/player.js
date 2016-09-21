@@ -13,7 +13,9 @@ class Player {
    * @param {Integer} ySpawn - Location to spawn on y axis.
    * @param {Integer} skin - The reference to what the player looks like in playerConstants.skins.
    */
-  create(xSpawn, ySpawn, skin) {
+  constructor(xSpawn, ySpawn, skin) {
+    console.log('constructing player');
+
     this.x = xSpawn;
     this.y = ySpawn;
 
@@ -24,12 +26,21 @@ class Player {
   }
 
   draw(ctx) {
+    // console.log('Draw player with skin:', this.skin);
+
     switch(PlayerConstants.skins[this.skin].type) {
     case PlayerConstants.skinTypes.COLOR:
       ctx.fillStyle = PlayerConstants.skins[this.skin].rgb;
       ctx.fillRect(this.x, this.y, this.width, this.height);
       break;
     }
+  }
+
+  /**
+   * Updates the player for one frame.
+   */
+  update() {
+
   }
 }
 

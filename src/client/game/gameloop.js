@@ -7,6 +7,7 @@ const fps = 60;
 const updateRate = 1000 / fps;
 
 const DrawManager = require('./draw/drawManager');
+const GameManager = require('./gameManager');
 const SocketConnection = require('./socket');
 
 class game {
@@ -21,6 +22,9 @@ class game {
     this.socket = new SocketConnection();
     this.socket.connect();
 
+    this.gameManager = new GameManager();
+    this.gameManager.start(this.drawManager);
+
     // Start the game loop.
     // Holds the Javascript setInterval() id of the gameloop.
     this.intervalId = setInterval(this.loop.bind(this), updateRate);
@@ -34,7 +38,8 @@ class game {
     // debugger;
 
     if (this.running) {
-      this.drawManager.draw();
+      this.gameManager.update();
+      this.gameManager.draw(this.drawManager);
     }
   }
 

@@ -47,7 +47,7 @@
 	'use strict';
 
 	var Gameloop = __webpack_require__(1);
-	var Gamemenu = __webpack_require__(5);
+	var Gamemenu = __webpack_require__(8);
 	var game = new Gameloop();
 	var menu = new Gamemenu();
 
@@ -75,7 +75,8 @@
 	var updateRate = 1000 / fps;
 
 	var DrawManager = __webpack_require__(2);
-	var SocketConnection = __webpack_require__(4);
+	var GameManager = __webpack_require__(4);
+	var SocketConnection = __webpack_require__(7);
 
 	var game = function () {
 	  function game() {
@@ -95,6 +96,9 @@
 	      this.socket = new SocketConnection();
 	      this.socket.connect();
 
+	      this.gameManager = new GameManager();
+	      this.gameManager.start(this.drawManager);
+
 	      // Start the game loop.
 	      // Holds the Javascript setInterval() id of the gameloop.
 	      this.intervalId = setInterval(this.loop.bind(this), updateRate);
@@ -109,7 +113,8 @@
 	      // debugger;
 
 	      if (this.running) {
-	        this.drawManager.draw();
+	        this.gameManager.update();
+	        this.gameManager.draw(this.drawManager);
 	      }
 	    }
 	  }, {
@@ -246,6 +251,169 @@
 
 /***/ },
 /* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	/**
+	 * This file manages all of the game objects and their changes in one game tick.
+	 */
+
+	var Player = __webpack_require__(5);
+
+	var gameManager = function () {
+	  function gameManager() {
+	    _classCallCheck(this, gameManager);
+	  }
+
+	  _createClass(gameManager, [{
+	    key: 'start',
+
+	    // Initialize the game logic
+	    value: function start() {
+	      this.players = [];
+
+	      this.addPlayer();
+	    }
+	  }, {
+	    key: 'addPlayer',
+	    value: function addPlayer() {
+	      // TODO: Remove these, they're for quick testing.
+	      var randomXSpawn = Math.floor(Math.random() * 500);
+	      var randomYSpawn = Math.floor(Math.random() * 500);
+	      var skin = 'red';
+
+	      var newPlayer = new Player(randomXSpawn, randomYSpawn, skin);
+	      this.players.push(newPlayer);
+	    }
+	  }, {
+	    key: 'update',
+	    value: function update() {
+	      // Update all of the players.
+	      _.each(this.players, function (player) {
+	        player.update();
+	      });
+	    }
+	  }, {
+	    key: 'draw',
+	    value: function draw(drawManager) {
+	      drawManager.draw(this.players);
+	    }
+	  }]);
+
+	  return gameManager;
+	}();
+
+	module.exports = gameManager;
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	/**
+	 * This file contains the player class and the functions related to the player.
+	 * Contants for the player are kept in playerConstants.js
+	 */
+
+	var PlayerConstants = __webpack_require__(6);
+
+	var Player = function () {
+	  /*
+	   * Creates the player, placing it at the location provided, with the given skin preset.
+	   *
+	   * @param {Integer} xSpawn - Location to spawn on x axis.
+	   * @param {Integer} ySpawn - Location to spawn on y axis.
+	   * @param {Integer} skin - The reference to what the player looks like in playerConstants.skins.
+	   */
+	  function Player(xSpawn, ySpawn, skin) {
+	    _classCallCheck(this, Player);
+
+	    console.log('constructing player');
+
+	    this.x = xSpawn;
+	    this.y = ySpawn;
+
+	    this.width = PlayerConstants.playerSize;
+	    this.height = PlayerConstants.playerSize;
+
+	    this.skin = skin;
+	  }
+
+	  _createClass(Player, [{
+	    key: 'draw',
+	    value: function draw(ctx) {
+	      // console.log('Draw player with skin:', this.skin);
+
+	      switch (PlayerConstants.skins[this.skin].type) {
+	        case PlayerConstants.skinTypes.COLOR:
+	          ctx.fillStyle = PlayerConstants.skins[this.skin].rgb;
+	          ctx.fillRect(this.x, this.y, this.width, this.height);
+	          break;
+	      }
+	    }
+
+	    /**
+	     * Updates the player for one frame.
+	     */
+
+	  }, {
+	    key: 'update',
+	    value: function update() {}
+	  }]);
+
+	  return Player;
+	}();
+
+	module.exports = Player;
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	/**
+	 * Constants related to a player.
+	 */
+
+	var skinTypes = {
+	  COLOR: 1,
+	  IMAGE: 2,
+	  PATTERN: 3,
+	  ANIMATION: 4
+	};
+
+	module.exports = {
+	  playerSize: 20,
+	  playerMovementSpeed: 100,
+
+	  // These define the kinds of player skins there are.
+	  // For instance a plain blue player would have the presetType COLOR.
+	  skinTypes: skinTypes,
+	  skins: {
+	    'red': {
+	      type: skinTypes.COLOR,
+	      rgb: 'rgb(255,0,0)'
+	    },
+	    'blue': {
+	      type: skinTypes.COLOR,
+	      rgb: 'rgb(0,0,255)'
+	    }
+	  }
+	};
+
+/***/ },
+/* 7 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -286,7 +454,7 @@
 	module.exports = SocketConnection;
 
 /***/ },
-/* 5 */
+/* 8 */
 /***/ function(module, exports) {
 
 	"use strict";
