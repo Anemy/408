@@ -1,10 +1,14 @@
-const Gameloop = require('./game/gameloop');
 const App = require('./app.jsx');
 const React = require('react');
-const ReactDOM = require('react-dom');
-const { Provider } = require('react-redux');
 const { createStore } = require('redux');
+const { Provider } = require('react-redux');
+const bumperBlasters = require('./reducers');
+const ReactDOM = require('react-dom');
+
+let store = createStore(bumperBlasters);
 
 ReactDOM.render((
-  <App />
+  <Provider store={store}>
+    <App />
+  </Provider>
 ), document.getElementById('content'));
