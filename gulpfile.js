@@ -1,28 +1,27 @@
 const gulp = require('gulp');
 const nodemon = require('gulp-nodemon');
-const jshint = require('gulp-jshint');
+const eslint = require('gulp-eslint');
 const livereload = require('gulp-livereload');
 const concat = require('gulp-concat');
-const wrapper = require('gulp-wrapper');
 const sass = require('gulp-sass');
 const webpack = require('webpack-stream');
-const path = require('path');
 
 const config = {
-  sassPath: './src/styles/**/*.scss',
-  cssDestDir: './public/css',
-  jsClientEntry: './src/client/index.js',
+  sassPath: 'src/styles/**/*.scss',
+  cssDestDir: 'public/css',
+  jsClientEntry: 'src/client/index.js',
   jsClientDependencies: 'src/client/lib/**/*.js',
-  jsPath: './src/client/**/*.js',
-  jsDependPath: './src/client/lib/**/*.js',
-  jsDestDir: './public/js',
+  jsPath: 'src/**/*.js',
+  jsDependPath: 'src/client/lib/**/*.js',
+  jsDestDir: 'public/js',
+  clientJsPath: 'src/client/**/*.js',
   serverJsPath: 'src/server/**/*.js'
 };
 
 const webpackConfig = {
   output: {
-      path: __dirname + config.jsDestDir,
-      filename: 'build.js'
+    path: __dirname + config.jsDestDir,
+    filename: 'build.js'
   },
   module: {
     loaders: [
@@ -38,12 +37,16 @@ const webpackConfig = {
 };
 
 gulp.task('dev', function() {
-  livereload.listen({
-    port: 18080
-  });
+  // livereload.listen({
+  //   port: 18080
+  // });
+
+  gulp.watch([config.jsPath, 'index.js', 'gulpfile.js' /* That's me! */], ['lint']);
 
   // Watch for clientside changes and run building tasks.
-  gulp.watch([config.jsPath], ['js', 'lint']);
+  gulp.watch([config.clientJsPath], ['js']);
+
+  // Watch for changes in the dependencies for clientside and build accordingly.
   gulp.watch([config.jsDependPath], ['jsClientDependencies']);
 
   gulp.watch([config.sassPath],['style']);
@@ -56,8 +59,16 @@ gulp.task('dev', function() {
 
 // JSLint
 gulp.task('lint', function () {
-  gulp.src('./**/*.js')
-    .pipe(jshint());
+  gulp.src(['**/*.js',
+      '!node_modules/**' /* Ignore modules. */,
+      '!**/lib/**' /* Ignore external libraries. */,
+      '!public/**' /* Ignore built files. */])
+    // eslint() attaches the lint output to the "eslint" property
+    // of the file object so it can be used by other modules.
+    .pipe(eslint())
+    // eslint.format() outputs the lint results to the console.
+    // Alternatively use eslint.formatEach() (see Docs).
+    .pipe(eslint.format());
 });
 
 // SASS -> CSS
@@ -100,4 +111,4 @@ gulp.task('server', function() {
     });
 });
 
-gulp.task('default', ['dev', 'server', 'js', 'style', 'jsClientDependencies']);
+gulp.task('default', ['js', 'dev', 'server', 'style', 'jsClientDependencies']);
