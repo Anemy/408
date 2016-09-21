@@ -3,6 +3,7 @@
  */
 
 const Player = require('./objects/player/player');
+const KeyManager = require('./keyManager');
 
 class gameManager {
   // Initialize the game logic
@@ -10,6 +11,8 @@ class gameManager {
     this.players = [];
 
     this.addPlayer();
+    this.keyManager = new KeyManager();
+    this.keyManager.startListening(this.players[0]);
   }
 
   addPlayer() {
@@ -22,10 +25,15 @@ class gameManager {
     this.players.push(newPlayer);
   }
 
-  update() {
+  /*
+  * Updates the game logic for one frame
+  *
+  * @param {Integer} delta - amount of time elapsed since last frame 
+  */
+  update(delta) {
     // Update all of the players.
     _.each(this.players, (player) => {
-      player.update();
+      player.update(delta);
     });
   }
 

@@ -19,6 +19,16 @@ class Player {
     this.x = xSpawn;
     this.y = ySpawn;
 
+    // Velocity of x/y movement. 
+    this.xVelocity = 0;
+    this.yVelocity = 0;
+
+    // Boolean for corresponding movement key being pressed.
+    this.left  = false;
+    this.right  = false;
+    this.up = false;
+    this.down = false;
+
     this.width = PlayerConstants.playerSize;
     this.height = PlayerConstants.playerSize;
 
@@ -38,9 +48,27 @@ class Player {
 
   /**
    * Updates the player for one frame.
+   *
+   * @param {Integer} delta - amount of time elapsed since last update
    */
-  update() {
+  update(delta) {
+    
+    // Update player velocity based on recorded key presses & delta.
+    if(this.left) {
+      this.xVelocity -= PlayerConstants.playerMovementSpeed * delta;
+    }
+    if(this.up) {
+      this.yVelocity -= PlayerConstants.playerMovementSpeed * delta;
+    }
+    if(this.right) {
+      this.xVelocity += PlayerConstants.playerMovementSpeed * delta;
+    }
+    if(this.down) {
+      this.yVelocity += PlayerConstants.playerMovementSpeed * delta;
+    }
 
+    this.x += this.xVelocity * delta;
+    this.y += this.yVelocity * delta;
   }
 }
 

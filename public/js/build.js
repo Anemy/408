@@ -47,7 +47,7 @@
 	'use strict';
 
 	var Gameloop = __webpack_require__(1);
-	var Gamemenu = __webpack_require__(8);
+	var Gamemenu = __webpack_require__(9);
 	var game = new Gameloop();
 	var menu = new Gamemenu();
 
@@ -76,7 +76,7 @@
 
 	var DrawManager = __webpack_require__(2);
 	var GameManager = __webpack_require__(4);
-	var SocketConnection = __webpack_require__(7);
+	var SocketConnection = __webpack_require__(8);
 
 	var game = function () {
 	  function game() {
@@ -89,6 +89,8 @@
 	      console.log('Starting the gameloop...');
 
 	      this.running = true;
+
+	      this.lastFrame = Date.now();
 
 	      this.drawManager = new DrawManager();
 	      this.drawManager.initialize();
@@ -108,14 +110,15 @@
 	  }, {
 	    key: 'loop',
 	    value: function loop() {
-	      // console.log('Loop!',new Date()); 
-
-	      // debugger;
+	      var now = Date.now();
+	      var delta = (now - this.lastFrame) / 1000;
 
 	      if (this.running) {
-	        this.gameManager.update();
+	        this.gameManager.update(delta);
 	        this.gameManager.draw(this.drawManager);
 	      }
+
+	      this.lastFrame = Date.now();
 	    }
 	  }, {
 	    key: 'pause',
@@ -264,6 +267,7 @@
 	 */
 
 	var Player = __webpack_require__(5);
+	var KeyManager = __webpack_require__(7);
 
 	var gameManager = function () {
 	  function gameManager() {
@@ -278,6 +282,8 @@
 	      this.players = [];
 
 	      this.addPlayer();
+	      this.keyManager = new KeyManager();
+	      this.keyManager.startListening(this.players[0]);
 	    }
 	  }, {
 	    key: 'addPlayer',
@@ -290,12 +296,19 @@
 	      var newPlayer = new Player(randomXSpawn, randomYSpawn, skin);
 	      this.players.push(newPlayer);
 	    }
+
+	    /*
+	    * Updates the game logic for one frame
+	    *
+	    * @param {Integer} delta - amount of time elapsed since last frame 
+	    */
+
 	  }, {
 	    key: 'update',
-	    value: function update() {
+	    value: function update(delta) {
 	      // Update all of the players.
 	      _.each(this.players, function (player) {
-	        player.update();
+	        player.update(delta);
 	      });
 	    }
 	  }, {
@@ -343,6 +356,16 @@
 	    this.x = xSpawn;
 	    this.y = ySpawn;
 
+	    // Velocity of x/y movement. 
+	    this.xVelocity = 0;
+	    this.yVelocity = 0;
+
+	    // Boolean for corresponding movement key being pressed.
+	    this.left = false;
+	    this.right = false;
+	    this.up = false;
+	    this.down = false;
+
 	    this.width = PlayerConstants.playerSize;
 	    this.height = PlayerConstants.playerSize;
 
@@ -364,11 +387,31 @@
 
 	    /**
 	     * Updates the player for one frame.
+	     *
+	     * @param {Integer} delta - amount of time elapsed since last update
 	     */
 
 	  }, {
 	    key: 'update',
-	    value: function update() {}
+	    value: function update(delta) {
+
+	      // Update player velocity based on recorded key presses & delta.
+	      if (this.left) {
+	        this.xVelocity -= PlayerConstants.playerMovementSpeed * delta;
+	      }
+	      if (this.up) {
+	        this.yVelocity -= PlayerConstants.playerMovementSpeed * delta;
+	      }
+	      if (this.right) {
+	        this.xVelocity += PlayerConstants.playerMovementSpeed * delta;
+	      }
+	      if (this.down) {
+	        this.yVelocity += PlayerConstants.playerMovementSpeed * delta;
+	      }
+
+	      this.x += this.xVelocity * delta;
+	      this.y += this.yVelocity * delta;
+	    }
 	  }]);
 
 	  return Player;
@@ -423,6 +466,77 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	/**
+	* Listens to and records key presses
+	*/
+	var KeyManager = function () {
+	  function KeyManager() {
+	    _classCallCheck(this, KeyManager);
+	  }
+
+	  _createClass(KeyManager, [{
+	    key: 'startListening',
+
+
+	    /* Listen to key presses/releases
+	    *
+	    * @param {Object} player: the player that key presses are recorded to
+	    */
+	    value: function startListening(player) {
+
+	      // Listen for key presses.
+	      window.addEventListener('keydown', function (event) {
+	        switch (event.keyCode) {
+	          case 65:
+	            player.left = true;
+	            break;
+	          case 87:
+	            player.up = true;
+	            break;
+	          case 68:
+	            player.right = true;
+	            break;
+	          case 83:
+	            player.down = true;
+	            break;
+	        }
+	      });
+
+	      // Listen for key releases
+	      window.addEventListener('keyup', function (event) {
+	        switch (event.keyCode) {
+	          case 65:
+	            player.left = false;
+	            break;
+	          case 87:
+	            player.up = false;
+	            break;
+	          case 68:
+	            player.right = false;
+	            break;
+	          case 83:
+	            player.down = false;
+	            break;
+	        }
+	      });
+	    }
+	  }]);
+
+	  return KeyManager;
+	}();
+
+	module.exports = KeyManager;
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	/**
 	 * This file manages the client's socket connection with the server.
 	 * TODO: protobufs
 	 */
@@ -454,7 +568,7 @@
 	module.exports = SocketConnection;
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports) {
 
 	"use strict";
