@@ -23,12 +23,6 @@ $ npm run start:dev
 $ browser http://localhost:8080
 ```
 
-#### Production
-
-```bash
-$ npm run deploy
-```
-
 Team
 ------------
 
