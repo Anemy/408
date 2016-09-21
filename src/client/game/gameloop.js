@@ -35,15 +35,11 @@ class game {
   }
 
   loop() {
-    // console.log('Loop!',new Date()); 
-
-    // debugger;
-
     const now = Date.now();
     const delta = (now - this.lastFrame) / 1000;
 
     if (this.running) {
-      this.gameManager.update();
+      this.gameManager.update(delta);
       this.gameManager.draw(this.drawManager);
     }
     

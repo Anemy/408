@@ -49,7 +49,7 @@ class Player {
   /**
    * Updates the player for one frame.
    *
-   * @param (Integer) delta - amount of time elapsed since last update
+   * @param {Integer} delta - amount of time elapsed since last update
    */
   update(delta) {
     
