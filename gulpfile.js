@@ -5,12 +5,18 @@ const livereload = require('gulp-livereload');
 const concat = require('gulp-concat');
 const sass = require('gulp-sass');
 const webpack = require('webpack-stream');
+const bower = require('gulp-bower');
+const notify = require('gulp-notify');
 
 const config = {
   sassPath: 'src/styles/**/*.scss',
   cssDestDir: 'public/css',
-  jsClientEntry: 'src/client/index.js',
-  jsClientDependencies: 'src/client/lib/**/*.js',
+  jsClient: [
+    'bower_components/jquery/dist/jquery.min.js',
+    'bower_components/socket.io-client/socket.io.js',
+    'bower_components/underscore/underscore-min.js',
+    'src/client/index.js'
+  ],
   jsPath: 'src/**/*.js',
   jsDependPath: 'src/client/lib/**/*.js',
   jsDestDir: 'public/js',
@@ -34,6 +40,12 @@ const webpackConfig = {
       }
     ]
   }
+};
+
+var errorAlert = function(error) {
+  notify.onError({message: error.message})(error); //Error Notification
+  console.log(error.toString());//Prints Error to Console
+  this.emit("end"); //End function
 };
 
 gulp.task('dev', function() {
@@ -78,17 +90,17 @@ gulp.task('style', function() {
     .pipe(gulp.dest(config.cssDestDir));
 });
 
-gulp.task('jsClientDependencies', function() {
-  // First build in the dependencies.
-  gulp.src(config.jsClientDependencies)
-    .pipe(concat('dependencies.js'))
-    .pipe(gulp.dest(config.jsDestDir));
+// Download bower dependencies
+gulp.task('bower', function() {
+  bower()
+    .on('error', errorAlert)
+    .pipe(gulp.dest('./bower_components'));
 });
 
 // Build the js using webpack and pipe it into a build.js file in the public folder.
 gulp.task('js', function() {
   // Build in the client code starting from the entry point.
-  gulp.src(config.jsClientEntry)
+  gulp.src(config.jsClient)
     .pipe(webpack(webpackConfig))
     .on('error', function handleError() {
       this.emit('end'); // Recover from errors.
@@ -111,4 +123,4 @@ gulp.task('server', function() {
     });
 });
 
-gulp.task('default', ['js', 'dev', 'server', 'style', 'jsClientDependencies']);
+gulp.task('default', ['bower', 'js', 'dev', 'server', 'style']);

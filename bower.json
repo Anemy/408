@@ -1,0 +1,20 @@
+{
+  "name": "bumper-blasters",
+  "description": "408 Software Testing Project",
+  "main": "index.js",
+  "license": "ISC",
+  "homepage": "https://github.com/Anemy/CS408-Bumper-Blasters",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.1.0",
+    "underscore": "^1.8.3",
+    "socket.io-client": "^1.4.8"
+  }
+}
