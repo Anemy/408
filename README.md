@@ -30,7 +30,6 @@ $ git push docker master
 $ browser http://bbserver.jayhankins.me/
 ```
 
->>>>>>> Removed old README deploy text
 Team
 ------------
 
