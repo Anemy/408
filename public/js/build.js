@@ -90,6 +90,8 @@
 
 	      this.running = true;
 
+	      this.lastFrame = Date.now();
+
 	      this.drawManager = new DrawManager();
 	      this.drawManager.initialize();
 
@@ -112,10 +114,15 @@
 
 	      // debugger;
 
+	      var now = Date.now();
+	      var delta = (now - this.lastFrame) / 1000;
+
 	      if (this.running) {
 	        this.gameManager.update();
 	        this.gameManager.draw(this.drawManager);
 	      }
+
+	      this.lastFrame = Date.now();
 	    }
 	  }, {
 	    key: 'pause',
@@ -290,9 +297,16 @@
 	      var newPlayer = new Player(randomXSpawn, randomYSpawn, skin);
 	      this.players.push(newPlayer);
 	    }
+
+	    /*
+	    * Updates the game logic for one frame
+	    *
+	    * @param (Integer) delta - amount of time elapsed since last frame 
+	    */
+
 	  }, {
 	    key: 'update',
-	    value: function update() {
+	    value: function update(delta) {
 	      // Update all of the players.
 	      _.each(this.players, function (player) {
 	        player.update();
@@ -343,6 +357,16 @@
 	    this.x = xSpawn;
 	    this.y = ySpawn;
 
+	    // Velocity of x/y movement. 
+	    this.xVelocity = 0;
+	    this.yVelocity = 0;
+
+	    // Boolean for corresponding movement key being pressed.
+	    this.left = false;
+	    this.right = false;
+	    this.up = false;
+	    this.down = false;
+
 	    this.width = PlayerConstants.playerSize;
 	    this.height = PlayerConstants.playerSize;
 
@@ -364,11 +388,31 @@
 
 	    /**
 	     * Updates the player for one frame.
+	     *
+	     * @param (Integer) delta - amount of time elapsed since last update
 	     */
 
 	  }, {
 	    key: 'update',
-	    value: function update() {}
+	    value: function update(delta) {
+
+	      // Update player velocity based on recorded key presses & delta.
+	      if (this.left) {
+	        this.xVelocity -= PlayerConstants.playerMovementSpeed * delta;
+	      }
+	      if (this.up) {
+	        this.yVelocity -= PlayerConstants.playerMovementSpeed * delta;
+	      }
+	      if (this.right) {
+	        this.xVelocity += PlayerConstants.playerMovementSpeed * delta;
+	      }
+	      if (this.down) {
+	        this.yVelocity += PlayerConstants.playerMovementSpeed * delta;
+	      }
+
+	      this.x += this.xVelocity * delta;
+	      this.y += this.yVelocity * delta;
+	    }
 	  }]);
 
 	  return Player;

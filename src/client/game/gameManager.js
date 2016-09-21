@@ -22,7 +22,12 @@ class gameManager {
     this.players.push(newPlayer);
   }
 
-  update() {
+  /*
+  * Updates the game logic for one frame
+  *
+  * @param (Integer) delta - amount of time elapsed since last frame 
+  */
+  update(delta) {
     // Update all of the players.
     _.each(this.players, (player) => {
       player.update();
