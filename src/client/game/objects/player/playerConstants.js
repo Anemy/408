@@ -10,8 +10,11 @@ const skinTypes = {
 };
 
 module.exports = {
-  playerSize: 20,
-  playerMovementSpeed: 100,
+  size: 20,
+  frictionAmount: 300,
+  acceleration: 600,
+  minAcceleration: 10,
+  maxAcceleration: 600,
 
   // These define the kinds of player skins there are.
   // For instance a plain blue player would have the presetType COLOR.

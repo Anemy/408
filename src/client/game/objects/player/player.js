@@ -14,8 +14,6 @@ class Player {
    * @param {Integer} skin - The reference to what the player looks like in playerConstants.skins.
    */
   constructor(xSpawn, ySpawn, skin) {
-    console.log('constructing player');
-
     this.x = xSpawn;
     this.y = ySpawn;
 
@@ -29,8 +27,8 @@ class Player {
     this.up = false;
     this.down = false;
 
-    this.width = PlayerConstants.playerSize;
-    this.height = PlayerConstants.playerSize;
+    this.width = PlayerConstants.size;
+    this.height = PlayerConstants.size;
 
     this.skin = skin;
   }
@@ -52,19 +50,35 @@ class Player {
    * @param {Integer} delta - amount of time elapsed since last update
    */
   update(delta) {
-    
+    // Apply friction to slow the player.
+    if (this.xVelocity > PlayerConstants.minAcceleration) {
+      this.xVelocity -= PlayerConstants.frictionAmount * delta;
+    } else if (this.xVelocity < -PlayerConstants.minAcceleration) {
+      this.xVelocity += PlayerConstants.frictionAmount * delta;
+    } else {
+      this.xVelocity = 0;
+    }
+
+    if (this.yVelocity > PlayerConstants.minAcceleration) {
+      this.yVelocity -= PlayerConstants.frictionAmount * delta;
+    } else if (this.yVelocity < -PlayerConstants.minAcceleration) {
+      this.yVelocity += PlayerConstants.frictionAmount * delta;
+    } else {
+      this.yVelocity = 0;
+    }
+
     // Update player velocity based on recorded key presses & delta.
-    if(this.left) {
-      this.xVelocity -= PlayerConstants.playerMovementSpeed * delta;
+    if (this.left && this.xVelocity > -PlayerConstants.maxAcceleration) {
+      this.xVelocity -= PlayerConstants.acceleration * delta;
     }
-    if(this.up) {
-      this.yVelocity -= PlayerConstants.playerMovementSpeed * delta;
+    if (this.up && this.yVelocity > -PlayerConstants.maxAcceleration) {
+      this.yVelocity -= PlayerConstants.acceleration * delta;
     }
-    if(this.right) {
-      this.xVelocity += PlayerConstants.playerMovementSpeed * delta;
+    if (this.right && this.xVelocity < PlayerConstants.maxAcceleration) {
+      this.xVelocity += PlayerConstants.acceleration * delta;
     }
-    if(this.down) {
-      this.yVelocity += PlayerConstants.playerMovementSpeed * delta;
+    if (this.down && this.yVelocity < PlayerConstants.maxAcceleration) {
+      this.yVelocity += PlayerConstants.acceleration * delta;
     }
 
     this.x += this.xVelocity * delta;
