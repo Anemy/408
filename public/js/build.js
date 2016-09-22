@@ -113,10 +113,10 @@
 	      var now = Date.now();
 	      var delta = (now - this.lastFrame) / 1000;
 
-	      if (this.running) {
-	        this.gameManager.update(delta);
-	        this.gameManager.draw(this.drawManager);
-	      }
+	      if (this.running && delta < updateRate * 3 /* Don't allow frames where the cpu has been blocked, it can lead to undefined activity. */) {
+	          this.gameManager.update(delta);
+	          this.gameManager.draw(this.drawManager);
+	        }
 
 	      this.lastFrame = Date.now();
 	    }
@@ -249,7 +249,7 @@
 	  mapBackgroundColor: '#FDFDFD',
 	  mapGridColor: '#ABABCA',
 	  mapGridFlickerRange: 30 /* Out of 255. */
-	  , gridAmount: 20
+	  , gridAmount: 60
 	};
 
 /***/ },
@@ -351,8 +351,6 @@
 	  function Player(xSpawn, ySpawn, skin) {
 	    _classCallCheck(this, Player);
 
-	    console.log('constructing player');
-
 	    this.x = xSpawn;
 	    this.y = ySpawn;
 
@@ -366,8 +364,8 @@
 	    this.up = false;
 	    this.down = false;
 
-	    this.width = PlayerConstants.playerSize;
-	    this.height = PlayerConstants.playerSize;
+	    this.width = PlayerConstants.size;
+	    this.height = PlayerConstants.size;
 
 	    this.skin = skin;
 	  }
@@ -394,19 +392,35 @@
 	  }, {
 	    key: 'update',
 	    value: function update(delta) {
+	      // Apply friction to slow the player.
+	      if (this.xVelocity > PlayerConstants.minAcceleration) {
+	        this.xVelocity -= PlayerConstants.frictionAmount * delta;
+	      } else if (this.xVelocity < -PlayerConstants.minAcceleration) {
+	        this.xVelocity += PlayerConstants.frictionAmount * delta;
+	      } else {
+	        this.xVelocity = 0;
+	      }
+
+	      if (this.yVelocity > PlayerConstants.minAcceleration) {
+	        this.yVelocity -= PlayerConstants.frictionAmount * delta;
+	      } else if (this.yVelocity < -PlayerConstants.minAcceleration) {
+	        this.yVelocity += PlayerConstants.frictionAmount * delta;
+	      } else {
+	        this.yVelocity = 0;
+	      }
 
 	      // Update player velocity based on recorded key presses & delta.
-	      if (this.left) {
-	        this.xVelocity -= PlayerConstants.playerMovementSpeed * delta;
+	      if (this.left && this.xVelocity > -PlayerConstants.maxAcceleration) {
+	        this.xVelocity -= PlayerConstants.acceleration * delta;
 	      }
-	      if (this.up) {
-	        this.yVelocity -= PlayerConstants.playerMovementSpeed * delta;
+	      if (this.up && this.yVelocity > -PlayerConstants.maxAcceleration) {
+	        this.yVelocity -= PlayerConstants.acceleration * delta;
 	      }
-	      if (this.right) {
-	        this.xVelocity += PlayerConstants.playerMovementSpeed * delta;
+	      if (this.right && this.xVelocity < PlayerConstants.maxAcceleration) {
+	        this.xVelocity += PlayerConstants.acceleration * delta;
 	      }
-	      if (this.down) {
-	        this.yVelocity += PlayerConstants.playerMovementSpeed * delta;
+	      if (this.down && this.yVelocity < PlayerConstants.maxAcceleration) {
+	        this.yVelocity += PlayerConstants.acceleration * delta;
 	      }
 
 	      this.x += this.xVelocity * delta;
@@ -437,8 +451,11 @@
 	};
 
 	module.exports = {
-	  playerSize: 20,
-	  playerMovementSpeed: 100,
+	  size: 20,
+	  frictionAmount: 300,
+	  acceleration: 600,
+	  minAcceleration: 10,
+	  maxAcceleration: 600,
 
 	  // These define the kinds of player skins there are.
 	  // For instance a plain blue player would have the presetType COLOR.

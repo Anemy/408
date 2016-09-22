@@ -38,7 +38,7 @@ class game {
     const now = Date.now();
     const delta = (now - this.lastFrame) / 1000;
 
-    if (this.running) {
+    if (this.running && delta < updateRate * 3 /* Don't allow frames where the cpu has been blocked, it can lead to undefined activity. */) {
       this.gameManager.update(delta);
       this.gameManager.draw(this.drawManager);
     }
