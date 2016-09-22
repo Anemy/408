@@ -454,7 +454,7 @@
 	  size: 20,
 	  frictionAmount: 300,
 	  acceleration: 600,
-	  minAcceleration: 10,
+	  minAcceleration: 1,
 	  maxAcceleration: 600,
 
 	  // These define the kinds of player skins there are.
@@ -568,7 +568,15 @@
 	  _createClass(SocketConnection, [{
 	    key: 'connect',
 	    value: function connect() {
+	      var _this = this;
+
 	      this.socket = io();
+
+	      // Called when the client first connects to the server.
+	      this.socket.on('connected', function (data) {
+	        // Store the unique identifier given to us from the server.
+	        _this.uuid = data.uuid;
+	      });
 	    }
 	  }, {
 	    key: 'sendMessage',

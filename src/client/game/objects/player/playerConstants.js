@@ -13,7 +13,7 @@ module.exports = {
   size: 20,
   frictionAmount: 300,
   acceleration: 600,
-  minAcceleration: 10,
+  minAcceleration: 1,
   maxAcceleration: 600,
 
   // These define the kinds of player skins there are.
