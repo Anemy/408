@@ -5,5 +5,5 @@ bower_components
 dist
 .env
 Sublime.sublime-workspace
-public/js/**/*
-public/css/**/*
+public/js/*
+public/css/*
