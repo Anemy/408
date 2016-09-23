@@ -4,6 +4,7 @@
  */
 
 const PlayerConstants = require('./playerConstants');
+const Constants = require('../../constants');
 
 class Player {
   /*
@@ -84,17 +85,43 @@ class Player {
     this.x += this.xVelocity * delta;
     this.y += this.yVelocity * delta;
 
-    if(this.x > window.innerWidth - PlayerConstants.size) {
-      this.x = window.innerWidth - PlayerConstants.size;
+    this.collideWithBorders();
+  }
+
+  // Called to check and act on player collisions with the map borders.
+  collideWithBorders() {
+    if (this.x > Constants.width - PlayerConstants.size) {
+      // This is a calculation of how far the player just travelled through the wall so we can bounce them the other way accordingly.
+      const extraDistanceTravelled = this.x - (Constants.width - PlayerConstants.size);
+      this.x = Constants.width - PlayerConstants.size - extraDistanceTravelled;
+
+      if (this.xVelocity > 0) {
+        // Send their velocity negative to bounce them back.
+        this.xVelocity = -this.xVelocity;
+      }
+    } else if (this.x < 0) {
+      const extraDistanceTravelled = -this.x;
+      this.x = extraDistanceTravelled;
+
+      if (this.xVelocity < 0) {
+        this.xVelocity = -this.xVelocity;
+      }
     }
-    if(this.x < 0) {
-      this.x = 0;
-    }
-    if(this.y > window.innerHeight - PlayerConstants.size) {
-      this.y = window.innerHeight - PlayerConstants.size;
-    }
-    if(this.y < 0) {
-      this.y = 0;
+
+    if (this.y > Constants.height - PlayerConstants.size) {
+      const extraDistanceTravelled = this.y - (Constants.height - PlayerConstants.size);
+      this.y = Constants.height - PlayerConstants.size - extraDistanceTravelled;
+
+      if (this.yVelocity > 0) {
+        this.yVelocity = -this.yVelocity;
+      }
+    } else if (this.y < 0) {
+      const extraDistanceTravelled = -this.y;
+      this.y = extraDistanceTravelled;
+
+      if (this.yVelocity < 0) {
+        this.yVelocity = -this.yVelocity;
+      }
     }
   }
 }

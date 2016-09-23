@@ -47,7 +47,7 @@
 	'use strict';
 
 	var Gameloop = __webpack_require__(1);
-	var Gamemenu = __webpack_require__(9);
+	var Gamemenu = __webpack_require__(10);
 	var game = new Gameloop();
 	var menu = new Gamemenu();
 
@@ -75,8 +75,8 @@
 	var updateRate = 1000 / fps;
 
 	var DrawManager = __webpack_require__(2);
-	var GameManager = __webpack_require__(4);
-	var SocketConnection = __webpack_require__(8);
+	var GameManager = __webpack_require__(5);
+	var SocketConnection = __webpack_require__(9);
 
 	var game = function () {
 	  function game() {
@@ -149,6 +149,7 @@
 
 	// Load in the constants (colors, sizes, etc.) for drawing.
 	var DrawConstants = __webpack_require__(3);
+	var Constants = __webpack_require__(4);
 
 	var drawManager = function () {
 	  function drawManager() {
@@ -158,17 +159,13 @@
 	  _createClass(drawManager, [{
 	    key: 'initialize',
 	    value: function initialize() {
-	      // Get the user's browser dimensions.
-	      this.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-	      this.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-
 	      var canvas = document.getElementById('gameCanvas');
 
 	      // The drawable canvas reference.
 	      this.ctx = canvas.getContext('2d');
 
-	      this.ctx.canvas.width = this.width;
-	      this.ctx.canvas.height = this.height;
+	      this.ctx.canvas.width = Constants.width;
+	      this.ctx.canvas.height = Constants.height;
 	    }
 	  }, {
 	    key: 'draw',
@@ -176,7 +173,7 @@
 	      var _this = this;
 
 	      // Clear the last frame.
-	      this.ctx.clearRect(0, 0, this.width, this.height);
+	      this.ctx.clearRect(0, 0, Constants.width, Constants.height);
 
 	      this.drawMap();
 
@@ -189,9 +186,9 @@
 	    key: 'drawMap',
 	    value: function drawMap() {
 	      this.ctx.fillStyle = DrawConstants.mapBackgroundColor;
-	      this.ctx.fillRect(0, 0, this.width, this.height);
+	      this.ctx.fillRect(0, 0, Constants.width, Constants.height);
 
-	      var gridSize = this.width / DrawConstants.gridAmount;
+	      var gridSize = Constants.width / DrawConstants.gridAmount;
 	      this.ctx.strokeStyle = DrawConstants.mapGridColor;
 	      for (var i = 0; i < DrawConstants.gridAmount + 1; i++) {
 	        // Randomly paint in certain squares to flicker.
@@ -209,21 +206,21 @@
 	        // Vertical lines.
 	        this.ctx.beginPath();
 	        this.ctx.moveTo(gridSize * i, 0);
-	        this.ctx.lineTo(gridSize * i, this.height);
+	        this.ctx.lineTo(gridSize * i, Constants.height);
 	        this.ctx.stroke();
 
 	        // Horizontal lines.
 	        // Because of the 16:9 aspect ratio, only draw squares, this means that there are more in the square
-	        if (gridSize * i < this.height) {
+	        if (gridSize * i < Constants.height) {
 	          this.ctx.beginPath();
 	          this.ctx.moveTo(0, gridSize * i);
-	          this.ctx.lineTo(this.width, gridSize * i);
+	          this.ctx.lineTo(Constants.width, gridSize * i);
 	          this.ctx.stroke();
-	        } else if (gridSize * (i - 1) <= this.height) {
+	        } else if (gridSize * (i - 1) <= Constants.height) {
 	          // This draws the end border line.
 	          this.ctx.beginPath();
-	          this.ctx.moveTo(0, this.height);
-	          this.ctx.lineTo(this.width, this.height);
+	          this.ctx.moveTo(0, Constants.height);
+	          this.ctx.lineTo(Constants.width, Constants.height);
 	          this.ctx.stroke();
 	        }
 	      }
@@ -254,6 +251,22 @@
 
 /***/ },
 /* 4 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	/**
+	 * This file holds general purpose constants like the dimensions of the game.
+	 */
+
+	module.exports = {
+	  // The user's browser dimensions.
+	  width: window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+	  height: window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+	};
+
+/***/ },
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -266,8 +279,8 @@
 	 * This file manages all of the game objects and their changes in one game tick.
 	 */
 
-	var Player = __webpack_require__(5);
-	var KeyManager = __webpack_require__(7);
+	var Player = __webpack_require__(6);
+	var KeyManager = __webpack_require__(8);
 
 	var gameManager = function () {
 	  function gameManager() {
@@ -324,7 +337,7 @@
 	module.exports = gameManager;
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -338,7 +351,8 @@
 	 * Contants for the player are kept in playerConstants.js
 	 */
 
-	var PlayerConstants = __webpack_require__(6);
+	var PlayerConstants = __webpack_require__(7);
+	var Constants = __webpack_require__(4);
 
 	var Player = function () {
 	  /*
@@ -426,17 +440,46 @@
 	      this.x += this.xVelocity * delta;
 	      this.y += this.yVelocity * delta;
 
-	      if (this.x > window.innerWidth - PlayerConstants.size) {
-	        this.x = window.innerWidth - PlayerConstants.size;
+	      this.collideWithBorders();
+	    }
+
+	    // Called to check and act on player collisions with the map borders.
+
+	  }, {
+	    key: 'collideWithBorders',
+	    value: function collideWithBorders() {
+	      if (this.x > Constants.width - PlayerConstants.size) {
+	        // This is a calculation of how far the player just travelled through the wall so we can bounce them the other way accordingly.
+	        var extraDistanceTravelled = this.x - (Constants.width - PlayerConstants.size);
+	        this.x = Constants.width - PlayerConstants.size - extraDistanceTravelled;
+
+	        if (this.xVelocity > 0) {
+	          // Send their velocity negative to bounce them back.
+	          this.xVelocity = -this.xVelocity;
+	        }
+	      } else if (this.x < 0) {
+	        var _extraDistanceTravelled = -this.x;
+	        this.x = _extraDistanceTravelled;
+
+	        if (this.xVelocity < 0) {
+	          this.xVelocity = -this.xVelocity;
+	        }
 	      }
-	      if (this.x < 0) {
-	        this.x = 0;
-	      }
-	      if (this.y > window.innerHeight - PlayerConstants.size) {
-	        this.y = window.innerHeight - PlayerConstants.size;
-	      }
-	      if (this.y < 0) {
-	        this.y = 0;
+
+	      if (this.y > Constants.height - PlayerConstants.size) {
+	        var _extraDistanceTravelled2 = this.y - (Constants.height - PlayerConstants.size);
+	        this.y = Constants.height - PlayerConstants.size - _extraDistanceTravelled2;
+
+	        if (this.yVelocity > 0) {
+	          this.yVelocity = -this.yVelocity;
+	        }
+	      } else if (this.y < 0) {
+	        var _extraDistanceTravelled3 = -this.y;
+	        this.y = _extraDistanceTravelled3;
+
+	        if (this.yVelocity < 0) {
+	          this.yVelocity = -this.yVelocity;
+	        }
 	      }
 	    }
 	  }]);
@@ -447,7 +490,7 @@
 	module.exports = Player;
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -486,7 +529,7 @@
 	};
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -557,7 +600,7 @@
 	module.exports = KeyManager;
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -606,7 +649,7 @@
 	module.exports = SocketConnection;
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports) {
 
 	"use strict";
