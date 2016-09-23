@@ -425,6 +425,19 @@
 
 	      this.x += this.xVelocity * delta;
 	      this.y += this.yVelocity * delta;
+
+	      if (this.x > window.innerWidth - PlayerConstants.size) {
+	        this.x = window.innerWidth - PlayerConstants.size;
+	      }
+	      if (this.x < 0) {
+	        this.x = 0;
+	      }
+	      if (this.y > window.innerHeight - PlayerConstants.size) {
+	        this.y = window.innerHeight - PlayerConstants.size;
+	      }
+	      if (this.y < 0) {
+	        this.y = 0;
+	      }
 	    }
 	  }]);
 
