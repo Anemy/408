@@ -10,6 +10,12 @@ class SocketConnection {
 
   connect() {
     this.socket = io();
+
+    // Called when the client first connects to the server.
+    this.socket.on('connected', (data) => {
+      // Store the unique identifier given to us from the server.
+      this.uuid = data.uuid;
+    });
   }
 
   sendMessage(msg) {
