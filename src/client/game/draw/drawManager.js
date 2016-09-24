@@ -17,16 +17,16 @@ class drawManager {
     this.ctx.canvas.height = Constants.height;
   }
 
-  draw(drawableObjects) {
+  draw() {
     // Clear the last frame.
     this.ctx.clearRect(0, 0, Constants.width, Constants.height); 
 
     this.drawMap();
+  }
 
-    // Call the drawing method of each drawable object.
-    _.each(drawableObjects, (drawableObject) => {
-      drawableObject.draw(this.ctx);
-    });
+  // Returns the drawing context.
+  getDraw() {
+    return this.ctx;
   }
 
   drawMap() {
