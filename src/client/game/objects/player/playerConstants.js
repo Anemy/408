@@ -16,6 +16,9 @@ module.exports = {
   minAcceleration: 1,
   maxAcceleration: 600,
 
+  // How often the player can shoot (s).
+  shootRate: 0.2,
+
   // These define the kinds of player skins there are.
   // For instance a plain blue player would have the presetType COLOR.
   skinTypes: skinTypes,
