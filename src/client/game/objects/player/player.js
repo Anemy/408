@@ -69,11 +69,20 @@ class Player {
     }
 
     // Update player velocity based on recorded key presses & delta.
-    if (this.left && this.xVelocity > -PlayerConstants.maxAcceleration) {
+    if (this.left) {
       this.xVelocity -= PlayerConstants.acceleration * delta;
+
+      if (this.xVelocity < -PlayerConstants.maxAcceleration) {
+        // Cap the player's velocity at the max.
+        this.xVelocity = -PlayerConstants.maxAcceleration;
+      }
     }
-    if (this.up && this.yVelocity > -PlayerConstants.maxAcceleration) {
+    if (this.up) {
       this.yVelocity -= PlayerConstants.acceleration * delta;
+
+      if (this.yVelocity < -PlayerConstants.maxAcceleration) {
+        this.yVelocity = -PlayerConstants.maxAcceleration;
+      }
     }
     if (this.right && this.xVelocity < PlayerConstants.maxAcceleration) {
       this.xVelocity += PlayerConstants.acceleration * delta;
