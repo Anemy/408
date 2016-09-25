@@ -11,46 +11,91 @@ class KeyManager {
   */
   startListening(player) {
     // Listen for key presses.
-    window.addEventListener('keydown', function(event) {
-      switch(event.keyCode) {
-      case Keys.A:
-        player.left = true;
-        break;
-      case Keys.W:
-        player.up = true;
-        break;
-      case Keys.D:
-        player.right = true;
-        break;
-      case Keys.S:
-        player.down = true;
-        break;
-      case Keys.SPACE:
-        player.shooting = true;
-        break;
-      }
+    window.addEventListener('keydown', (event) => {
+      this.keyDown(player, event.keyCode);
     });
 
     // Listen for key releases
-    window.addEventListener('keyup', function(event) {
-      switch(event.keyCode) {
-      case Keys.A:
-        player.left = false;
-        break;
-      case Keys.W:
-        player.up = false;
-        break;
-      case Keys.D:
-        player.right = false;
-        break;
-      case Keys.S:
-        player.down = false;
-        break;
-      case Keys.SPACE:
-        player.shooting = false;
-        break;
-      }
+    window.addEventListener('keyup', (event) => {
+      this.keyUp(player, event.keyCode);
     });
+  }
+
+  keyDown(player, keyCode) {
+    switch(event.keyCode) {
+    case Keys.A:
+      player.left = true;
+      break;
+    case Keys.W:
+      player.up = true;
+      break;
+    case Keys.D:
+      player.right = true;
+      break;
+    case Keys.S:
+      player.down = true;
+      break;
+
+    case Keys.SPACE:
+      player.shooting = true;
+      break;
+
+    case Keys.UP:
+      player.shootingUp = true;
+      player.shootingDown = false;
+      break;
+    case Keys.DOWN:
+      player.shootingDown = true;
+      player.shootingUp = false;
+      break;
+    case Keys.LEFT:
+      player.shootingLeft = true;
+      player.shootingRight = false;
+      break;
+    case Keys.RIGHT:
+      player.shootingRight = true;
+      player.shootingLeft = false;
+      break;
+    }
+  }
+
+  keyUp(player, keyCode) {
+    switch(event.keyCode) {
+    case Keys.A:
+      player.left = false;
+      break;
+    case Keys.W:
+      player.up = false;
+      break;
+    case Keys.D:
+      player.right = false;
+      break;
+    case Keys.S:
+      player.down = false;
+      break;
+
+    case Keys.SPACE:
+      player.shooting = false;
+      break;
+
+    case Keys.UP:
+      // Ensure at least one direction is faced for shooting.
+      if (player.shootingDown || player.shootingLeft || player.shootingRight) 
+        player.shootingUp = false;
+      break;
+    case Keys.DOWN:
+      if (player.shootingUp || player.shootingLeft || player.shootingRight) 
+        player.shootingDown = false;
+      break;
+    case Keys.LEFT:
+      if (player.shootingUp || player.shootingDown || player.shootingRight)
+        player.shootingLeft = false;
+      break;
+    case Keys.RIGHT:
+      if (player.shootingUp || player.shootingLeft || player.shootingUp)
+        player.shootingRight = false;
+      break;
+    }
   }
 }
 

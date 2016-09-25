@@ -22,11 +22,17 @@ class Player {
     this.xVelocity = 0;
     this.yVelocity = 0;
 
-    // Boolean for corresponding movement key being pressed.
-    this.left  = false;
-    this.right  = false;
+    // Booleans for corresponding movement key being pressed.
+    this.left = false;
+    this.right = false;
     this.up = false;
     this.down = false;
+
+    // Booleans for which direction the player is facing to shoot.
+    this.shootingLeft = false;
+    this.shootingRight = true;
+    this.shootingUp = false;
+    this.shootingDown = false;
 
     this.width = PlayerConstants.size;
     this.height = PlayerConstants.size;
@@ -42,8 +48,6 @@ class Player {
   }
 
   draw(ctx) {
-    // console.log('Draw player with skin:', this.skin);
-
     switch(PlayerConstants.skins[this.skin].type) {
     case PlayerConstants.skinTypes.COLOR:
       ctx.fillStyle = PlayerConstants.skins[this.skin].rgb;
