@@ -5,6 +5,7 @@ const livereload = require('gulp-livereload');
 const concat = require('gulp-concat');
 const sass = require('gulp-sass');
 const webpack = require('webpack-stream');
+const babel = require('gulp-babel');
 
 const config = {
   sassPath: 'src/styles/**/*.scss',
@@ -15,7 +16,9 @@ const config = {
   jsDependPath: 'src/client/lib/**/*.js',
   jsDestDir: 'public/js',
   clientJsPath: 'src/client/**/*.js',
-  serverJsPath: 'src/server/**/*.js'
+  serverJsPath: 'src/server/**/*.js',
+  serverJsEntry: 'src/server/index.js',
+  serverJsDestDir: './'
 };
 
 const webpackConfig = {
@@ -97,12 +100,22 @@ gulp.task('js', function() {
     .pipe(gulp.dest(config.jsDestDir));
 });
 
+gulp.task('serverBundle', function() {
+  gulp.src(config.serverJsEntry)
+    .pipe(babel({
+      presets: ['es2015']
+    }))
+    .pipe(concat('index.js'))
+    .pipe(gulp.dest(config.serverJsDestDir));
+});
+
 gulp.task('server', function() {
   // Watch for changes in server code and restart the server.
   nodemon({
     script: 'index.js',
     ext: 'js html',
-    watch: [config.serverJsPath, 'index.js']
+    watch: [config.serverJsPath],
+    tasks: ['serverBundle']
   })
     .on('restart', function() {
       setTimeout(function() {
@@ -111,4 +124,4 @@ gulp.task('server', function() {
     });
 });
 
-gulp.task('default', ['js', 'dev', 'server', 'style', 'jsClientDependencies']);
+gulp.task('default', ['js', 'dev', 'serverBundle', 'server', 'style', 'jsClientDependencies']);
