@@ -100,22 +100,12 @@ gulp.task('js', function() {
     .pipe(gulp.dest(config.jsDestDir));
 });
 
-gulp.task('serverBundle', function() {
-  gulp.src(config.serverJsEntry)
-    .pipe(babel({
-      presets: ['es2015']
-    }))
-    .pipe(concat('index.js'))
-    .pipe(gulp.dest(config.serverJsDestDir));
-});
-
 gulp.task('server', function() {
   // Watch for changes in server code and restart the server.
   nodemon({
     script: 'index.js',
     ext: 'js html',
-    watch: [config.serverJsPath],
-    tasks: ['serverBundle']
+    watch: [config.serverJsPath]
   })
     .on('restart', function() {
       setTimeout(function() {
@@ -124,4 +114,4 @@ gulp.task('server', function() {
     });
 });
 
-gulp.task('default', ['js', 'dev', 'serverBundle', 'server', 'style', 'jsClientDependencies']);
+gulp.task('default', ['js', 'dev', 'server', 'style', 'jsClientDependencies']);

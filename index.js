@@ -38,4 +38,3 @@ var server = app.listen(portNumber, function() {
 // Set up the server to listen for socket connections with socket io.
 const socketManager = new SocketManager();
 socketManager.startListening(server);
-

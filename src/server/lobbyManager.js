@@ -2,21 +2,11 @@
  * This file manages the server game lobbies, and all of the clients interactions with a game.
  */
 
-import uuid from 'uuid';
+const _ = require('underscore');
+const Lobby = require('./Models/Lobby');
 
-class Lobby {
-  constructor() {
-    // TODO: make this more fun (i.e. adjective + noun)
-    this.id = uuid.v4();
-    this.clients = [];
-  }
 
-  addClient(client) {
-    this.clients.push(client);
-  }
-}
-
-export default class LobbyManager {
+class LobbyManager {
   
   constructor() {
     // This manages all of the currently in progress game lobbies.
@@ -27,11 +17,22 @@ export default class LobbyManager {
   // Called when a player wants to find a game.
   findGame(client) {
     var gameFound = false;
+    var lobby = null;
 
-    if (!gameFound) {
-      const lobby = this.createLobby();
-      lobby.addClient(client);
+    _.every(this.lobbies, (l) => {
+      if (l.clients.length < l.capacity) {
+        lobby = l;
+        return false;
+      }
+      return true;
+    });
+
+    if (lobby === null) {
+      lobby = this.createLobby();
     }
+    lobby.addClient(client);
+
+    return lobby;
   }
 
   createLobby() {
