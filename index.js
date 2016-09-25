@@ -7,7 +7,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
 
-const routing = require('./src/server');
+const routing = require('./src/server/router');
 const SocketManager = require('./src/server/socket');
 
 const portNumber = process.env.PORT || 8080;
