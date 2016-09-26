@@ -51,7 +51,7 @@ class gameManager {
   shootBullets() {
     // Check to see if any of the players are trying to shoot and eligable to shoot a bullet.
     _.each(this.players, (player) => {
-      if(player.shooting && player.shootTimer <= 0) {
+      if(player.shooting && player.canShoot()) {
         player.shoot();
 
         const newBullet = new Bullet(player);

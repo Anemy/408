@@ -1,7 +1,7 @@
 'use strict';
 
 const uuid = require('uuid');
-const MessageTypes = require('../socketMessageConstants');
+const SocketConstants = require('../../client/game/socket/socketConstants');
 
 class Client {
 
@@ -21,13 +21,24 @@ class Client {
     this.socketManager.clientDisconnected(this);
   }
 
-  onMessage(data) {
-    const messageType = data.type || -1;
+  onMessage(msg) {
+    const messageType = msg.type || -1;
     switch(messageType) {
-      case messageTypes.CHAT:
-        this.chat(data.msg);
+      case SocketConstants.CHAT:
+        // Only allow messages of a limited length (This is also checked on client).
+        if (msg.msg && msg.msg.length < SocketConstants.maxChatMessageLength) {
+          // Attach a sender id to the message and send it to chat.
+          // TODO: Attach the user's username.
+          const msgToSend = {
+            type: SocketConstants.CHAT,
+            sender: this.id,
+            msg: msg.msg
+          }
+
+          this.chat(msgToSend);
+        }
         break;
-      case MessageTypes.FIND_GAME:
+      case SocketConstants.FIND_GAME:
         this.findGame();
         break;
     }
@@ -39,7 +50,11 @@ class Client {
   */
   chat(msg) {
     if (this.lobby) {
+      // When in a lobby, send the message to only the lobby.
       this.lobby.sendChat(msg)
+    } else {
+      // When not in a lobby, send the chat to the general chat.
+      this.socket.broadcast.emit('message', msg);
     }
   }
 
@@ -49,6 +64,13 @@ class Client {
   findGame() {
     const lobby = this.socketManager.lobbyManager.findGame(this);
     this.lobby = lobby;
+
+    const msg = {
+      type: SocketConstants.GAME_FOUND,
+      lobbyId: this.id
+    };
+    // Let the client know the id of the lobby they've been added to.
+    this.socket.emit('message', msg);
   }
 
 }

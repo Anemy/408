@@ -12,8 +12,6 @@ const SocketConnection = require('./socket');
 
 class game {
   start() {
-    console.log('Starting the gameloop...');
-
     this.running = true; 
 
     this.lastFrame = Date.now();
@@ -30,8 +28,6 @@ class game {
     // Start the game loop.
     // Holds the Javascript setInterval() id of the gameloop.
     this.intervalId = setInterval(this.loop.bind(this), updateRate);
-
-    console.log('Gameloop started.'); 
   }
 
   loop() {
@@ -46,12 +42,15 @@ class game {
     this.lastFrame = Date.now();
   }
 
-  pause() {
-
-  }
-
-  stop() {
-
+  /**
+    * Used to send messages to the server.
+    */
+  sendMessage(msg) {
+    if (this.socket) {
+      this.socket.sendMessage(msg);
+    } else {
+      new Error('Trying to send message without an established connection to server.');
+    }
   }
 }
 

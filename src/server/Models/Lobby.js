@@ -1,6 +1,8 @@
 'use strict';
 
+const _ = require('underscore');
 const uuid = require('uuid');
+const SocketConstants = require('../../client/game/socket/socketConstants');
 
 class Lobby {
   constructor() {
@@ -12,11 +14,16 @@ class Lobby {
 
   addClient(client) {
     this.clients.push(client);
+
+    // Let them know it was a success.
     return true;
   }
 
   sendChat(msg) {
-    // TODO send msg to everyone in lobby
+    // Send the chat message to all of the players in the game.
+    _.each(this.clients, (client) => {
+      client.emit('message', msg);
+    })    
   }
 
 }

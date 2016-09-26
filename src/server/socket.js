@@ -29,20 +29,16 @@ class SocketManager {
   */
   clientConnected(socket) {
     const client = new Client(socket, this);
-    this.clients.push(client);
-    console.log('Client [' + client.id + '] created. # of Clients: ' + this.clients.length);
+    this.clients[client.id] = client;
+    console.log('Client [' + client.id + '] created. # of Clients: ' + Object.keys(this.clients).length);
   }
 
   /*
     Removes specified client from clients list. Searches list for matching id.
   */
   clientDisconnected(client) {
-    _.every(this.clients, (c, i) => {
-      if (c.id === client.id) {
-        this.clients = this.clients.splice(i, 0);
-        console.log('Client [' + client.id + '] disconnected. # of Clients: ' + this.clients.length);
-      }
-    })
+    delete this.clients[client.id];
+    console.log('Client [' + client.id + '] disconnected. # of Clients: ' + Object.keys(this.clients).length);
   }
 };
 
