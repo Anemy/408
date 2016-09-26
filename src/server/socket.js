@@ -1,3 +1,4 @@
+'use strict';
 /**
  * This file manages the server's socket connections with the clients.
  */

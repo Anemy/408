@@ -1,3 +1,5 @@
+'use strict';
+
 const uuid = require('uuid');
 const MessageTypes = require('../socketMessageConstants');
 
