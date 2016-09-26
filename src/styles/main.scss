@@ -13,7 +13,7 @@
   color: blue;
 }
 
-.join-game-button {
+.testing-button {
   position: absolute;
 
   top: 20px;
@@ -23,4 +23,8 @@
   height: auto;
 
   padding: 4px;
+}
+
+.send-hi-message-button {
+  top: 60px !important;
 }

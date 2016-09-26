@@ -79,21 +79,16 @@ class KeyManager {
       break;
 
     case Keys.UP:
-      // Ensure at least one direction is faced for shooting.
-      if (player.shootingDown || player.shootingLeft || player.shootingRight) 
-        player.shootingUp = false;
+      player.shootingUp = false;
       break;
     case Keys.DOWN:
-      if (player.shootingUp || player.shootingLeft || player.shootingRight) 
-        player.shootingDown = false;
+      player.shootingDown = false;
       break;
     case Keys.LEFT:
-      if (player.shootingUp || player.shootingDown || player.shootingRight)
-        player.shootingLeft = false;
+      player.shootingLeft = false;
       break;
     case Keys.RIGHT:
-      if (player.shootingUp || player.shootingLeft || player.shootingUp)
-        player.shootingRight = false;
+      player.shootingRight = false;
       break;
     }
   }

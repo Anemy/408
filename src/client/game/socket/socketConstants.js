@@ -4,5 +4,8 @@
 
 module.exports = {
   CHAT: 1,
-  FIND_GAME: 2
+  FIND_GAME: 2,
+  GAME_FOUND: 3,
+
+  maxChatMessageLength: 140 // Characters
 }

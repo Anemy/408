@@ -18,8 +18,9 @@ class LobbyManager {
   // Called when a player wants to find a game.
   findGame(client) {
     var gameFound = false;
-    var lobby = null;
+    var lobby;
 
+    // Look for a non-full lobby.
     _.every(this.lobbies, (l) => {
       if (l.clients.length < l.capacity) {
         lobby = l;
@@ -28,7 +29,8 @@ class LobbyManager {
       return true;
     });
 
-    if (lobby === null) {
+    // When no available lobby was found, create a new one.
+    if (_.isUndefined(lobby)) {
       lobby = this.createLobby();
     }
     lobby.addClient(client);

@@ -30,7 +30,7 @@ class Player {
 
     // Booleans for which direction the player is facing to shoot.
     this.shootingLeft = false;
-    this.shootingRight = true;
+    this.shootingRight = false;
     this.shootingUp = false;
     this.shootingDown = false;
 
@@ -165,6 +165,15 @@ class Player {
   // Called when a bullet is shot from the player.
   shoot() {
     this.shootTimer = PlayerConstants.shootRate;
+  }
+
+  /**
+   *
+   * @returns {Boolean} - Whether the player is eligable shoot a bullet or not.
+   */
+  canShoot() {
+    const playerIsAiming = this.shootingLeft || this.shootingRight || this.shootingUp || this.shootingDown;
+    return this.shootTimer <= 0 && playerIsAiming;
   }
 }
 
