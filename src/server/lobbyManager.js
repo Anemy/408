@@ -1,7 +1,8 @@
+'use strict';
+
 /**
  * This file manages the server game lobbies, and all of the clients interactions with a game.
  */
-
 const _ = require('underscore');
 const Lobby = require('./Models/Lobby');
 

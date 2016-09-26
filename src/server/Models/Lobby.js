@@ -1,3 +1,5 @@
+'use strict';
+
 const uuid = require('uuid');
 
 class Lobby {
