@@ -19,20 +19,27 @@ class LobbyManager {
     var gameFound = false;
     var lobby;
 
+    console.log('Lobbies:', this.lobbies);
+
     // Look for a non-full lobby.
-    _.every(this.lobbies, (l) => {
+    for(var i in this.lobbies) {
+      const l = this.lobbies[i];
+      console.log('Lobby found:', l);
       if (l.population < l.capacity) {
         lobby = l;
-        return false;
+        // Lobby found, stop searching.
+        break;
       }
-      return true;
-    });
+    };
 
     // When no available lobby was found, create a new one.
     if (_.isUndefined(lobby)) {
       lobby = this.createLobby();
     }
+
     lobby.addClient(client);
+    console.log('Adding client to lobby:', lobby.id,'lobby pop:', lobby.population);
+
 
     return lobby;
   }
@@ -49,19 +56,19 @@ class LobbyManager {
   getLobbiesInfo() {
     const lobbies = [];
 
-    _.each(this.lobbies, (lobby) => {
-      lobbies.push({
+    for(var l in this.lobbies) {
+      const lobby = this.lobbies[l];
+      
+      const lobbyInfo = {
         id: lobby.id,
         population: Object.keys(lobby.clients).length
-
         // TODO (Rhys): Make the lobby return a list of the client usernames playing so
         // that we have the information needed for people to find games w/ friends quick.
-      });
-    })
-
-    return {
-      lobbies: lobbies
+      }
+      lobbies.push(lobbyInfo);
     };
+
+    return lobbies;
   }
 };
 
