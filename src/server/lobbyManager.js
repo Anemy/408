@@ -6,7 +6,6 @@
 const _ = require('underscore');
 const Lobby = require('./Models/Lobby');
 
-
 class LobbyManager {
   
   constructor() {
@@ -42,6 +41,26 @@ class LobbyManager {
     const lobby = new Lobby();
     this.lobbies.push(lobby);
     return lobby;
+  }
+
+  getLobbiesInfo() {
+    const lobbies = [];
+
+    _.each(this.lobbies, (lobby) => {
+      lobbies.push({
+        id: lobby.id,
+        population: Object.keys(lobby.clients).length
+
+        // TODO (Rhys): Make the lobby return a list of the client usernames playing so
+        // that we have the information needed for people to find games w/ friends quick.
+      });
+    })
+
+    const msg = {
+      lobbies: lobbies
+    }
+
+    return msg;
   }
 };
 

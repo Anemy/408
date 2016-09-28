@@ -13,7 +13,7 @@ class Lobby {
   }
 
   addClient(client) {
-    this.clients.push(client);
+    this.clients[client.id] = client;
 
     // Let them know it was a success.
     return true;
@@ -22,8 +22,8 @@ class Lobby {
   sendChat(msg) {
     // Send the chat message to all of the players in the game.
     _.each(this.clients, (client) => {
-      client.emit('message', msg);
-    })    
+      client.socket.emit('message', msg);
+    });
   }
 
 }
