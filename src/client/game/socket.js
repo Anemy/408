@@ -3,6 +3,8 @@
  * TODO: protobufs
  */
 
+const SocketConstants = require('./socket/socketConstants');
+
 class SocketConnection {
   constructor() {
     this.socket = null;
@@ -10,11 +12,31 @@ class SocketConnection {
 
   connect() {
     this.socket = io();
+
+    // Called when the client first connects to the server.
+    this.socket.on('connected', (data) => {
+      // Store the unique identifier given to us from the server.
+      this.uuid = data.uuid;
+    });
+
+    this.socket.on('message', this.recieveMessage.bind(this));
   }
 
   sendMessage(msg) {
     if (this.socket) {
-      this.socket.emit('chat message', msg);
+      this.socket.emit('message', msg);
+    } else {
+      new Error('Error: Trying to send message without an established connection to server.');
+    }
+  }
+
+  recieveMessage(msg) {
+    switch(msg.type) {
+      case SocketConstants.CHAT:
+        console.log('Chat message recieved:',msg.msg);
+        break;
+      case SocketConstants.GAME_FOUND:
+        console.log('Game found! Lobby id:',msg.lobbyId);
     }
   }
 }

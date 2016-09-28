@@ -23,10 +23,10 @@ $ npm run start:dev
 $ browser http://localhost:8080
 ```
 
-#### Production
-
+#### Deploy on Docker
 ```bash
-$ npm run deploy
+$ git push docker master
+$ browser http://bbserver.jayhankins.me/
 ```
 
 Team

@@ -6,4 +6,5 @@ dist
 .env
 Sublime.sublime-project
 Sublime.sublime-workspace
-public/js/build.js
+public/js/*
+public/css/*

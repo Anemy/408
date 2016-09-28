@@ -5,6 +5,7 @@ const livereload = require('gulp-livereload');
 const concat = require('gulp-concat');
 const sass = require('gulp-sass');
 const webpack = require('webpack-stream');
+const babel = require('gulp-babel');
 
 const config = {
   sassPath: 'src/styles/**/*.scss',
@@ -15,7 +16,9 @@ const config = {
   jsDependPath: 'src/client/lib/**/*.js',
   jsDestDir: 'public/js',
   clientJsPath: 'src/client/**/*.js',
-  serverJsPath: 'src/server/**/*.js'
+  serverJsPath: 'src/server/**/*.js',
+  serverJsEntry: 'src/server/index.js',
+  serverJsDestDir: './'
 };
 
 const webpackConfig = {
@@ -102,7 +105,7 @@ gulp.task('server', function() {
   nodemon({
     script: 'index.js',
     ext: 'js html',
-    watch: [config.serverJsPath, 'index.js']
+    watch: [config.serverJsPath]
   })
     .on('restart', function() {
       setTimeout(function() {

@@ -1,39 +1,45 @@
+'use strict';
 /**
  * This file manages the server's socket connections with the clients.
- *
- * TODO: Make this es6.
  */
 
 const socketio = require('socket.io');
+const uuid = require('uuid');
+const _ = require('underscore');
+const LobbyManager = require('./lobbyManager');
+const Client = require('./Models/Client');
 
-const SocketManager = function() {
-  this.io = null;
+class SocketManager {
 
-  this.usersOnline = 0;
+  constructor() {
+    this.io = null;
+    this.clients = [];
+    this.lobbyManager = new LobbyManager();
+  }
 
-  this.startListening = function(server) {
+  startListening(server) {
     this.io = socketio(server);
 
     // When a user connects to the socket.
     this.io.sockets.on('connection', this.clientConnected.bind(this));
-  };
+  }
 
-  this.clientConnected = function(socket) {
-    this.usersOnline++;
+  /*
+    Creates and adds client to clients list.
+  */
+  clientConnected(socket) {
+    const client = new Client(socket, this);
+    this.clients[client.id] = client;
+    console.log('Client [' + client.id + '] created. # of Clients: ' + Object.keys(this.clients).length);
+  }
 
-    console.log('A client connected.');
-
-    // When a user disconnects from socket .
-    socket.on('disconnect', function() {
-      this.usersOnline--;
-
-      this.clientDisconnected();
-    }.bind(this));
-  };
-
-  this.clientDisconnected = function() {
-    console.log('A client disconnected.');
-  };
+  /*
+    Removes specified client from clients list. Searches list for matching id.
+  */
+  clientDisconnected(client) {
+    delete this.clients[client.id];
+    console.log('Client [' + client.id + '] disconnected. # of Clients: ' + Object.keys(this.clients).length);
+  }
 };
 
 module.exports = SocketManager;
