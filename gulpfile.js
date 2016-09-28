@@ -7,6 +7,8 @@ const sass = require('gulp-sass');
 const webpack = require('webpack-stream');
 const babel = require('gulp-babel');
 
+const Jasmine = require('jasmine');
+
 const config = {
   sassPath: 'src/styles/**/*.scss',
   cssDestDir: 'public/css',
@@ -20,6 +22,8 @@ const config = {
   serverJsEntry: 'src/server/index.js',
   serverJsDestDir: './'
 };
+
+
 
 const webpackConfig = {
   output: {
@@ -38,6 +42,23 @@ const webpackConfig = {
     ]
   }
 };
+
+gulp.task('test', function() {
+  const jasmine = new Jasmine();
+  
+  jasmine.loadConfig({
+      spec_dir: '/',
+      spec_files: [
+          'src/**/*[sS]pec.js',
+      ],
+      helpers: [
+          'helpers/**/*.js'
+      ]
+  });
+
+  // Run the jasmine tests (Tests all files that end in [sS]pec.js).
+  jasmine.execute();
+});
 
 gulp.task('dev', function() {
   // livereload.listen({

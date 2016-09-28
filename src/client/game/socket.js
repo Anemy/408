@@ -41,6 +41,9 @@ class SocketConnection {
       case SocketConstants.LOBBIES_INFO:
         console.log('Lobby info update from server:', msg.lobbiesInfo);
         break;
+        case SocketConstants.ERROR:
+          console.log('Error from server:'msg.msg);
+        break;
       default:
         // When we don't have a case for the server message type we just throw an error.
         throw new Error('Unidentifiable message from server.');

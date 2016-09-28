@@ -25,7 +25,7 @@ $(document).ready(() => {
       type: SocketConstants.FIND_GAME
     };
     game.sendMessage(msg);
-  })
+  });
 
   $('.send-hi-message-button').on('click', () => {
     console.log('Sending hi message to server.');

@@ -39,7 +39,15 @@ class Client {
         }
         break;
       case SocketConstants.FIND_GAME:
-        this.findGame();
+        // Don't look for a game if the user is already in one.
+        if (!this.lobby) {
+          this.findGame();
+        } else {
+          this.socket.emit('message', {
+            type: SocketConstants.ERROR,
+            msg: 'Invalid find game. Are you already in a game?'
+          })
+        }
         break;
       case SocketConstants.LOBBIES_INFO:
         this.getLobbiesInfo();

@@ -7,6 +7,7 @@ module.exports = {
   FIND_GAME: 2,
   GAME_FOUND: 3,
   LOBBIES_INFO: 4,
+  ERROR: 5,
 
   maxChatMessageLength: 140 // Characters
 }

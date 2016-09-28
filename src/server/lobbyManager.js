@@ -21,7 +21,7 @@ class LobbyManager {
 
     // Look for a non-full lobby.
     _.every(this.lobbies, (l) => {
-      if (l.clients.length < l.capacity) {
+      if (l.population < l.capacity) {
         lobby = l;
         return false;
       }
@@ -39,10 +39,13 @@ class LobbyManager {
 
   createLobby() {
     const lobby = new Lobby();
-    this.lobbies.push(lobby);
+    this.lobbies[lobby.id] = lobby;
     return lobby;
   }
 
+  /**
+   * Return an object with an array of lobbies and their information.
+   */
   getLobbiesInfo() {
     const lobbies = [];
 
@@ -56,11 +59,9 @@ class LobbyManager {
       });
     })
 
-    const msg = {
+    return {
       lobbies: lobbies
-    }
-
-    return msg;
+    };
   }
 };
 

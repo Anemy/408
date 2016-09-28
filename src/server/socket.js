@@ -38,7 +38,12 @@ class Socket {
   clientDisconnected(client) {
     if (client.lobby){
       // If the client is in a lobby, remove them.
-      delete client.lobby.clients[client.id];
+      client.lobby.removeClient(client.id);
+
+      // When the lobby has no pop... 💀 Kill it unless it's the only lobby active. 💀
+      if (client.lobby.population === 0 && Object.keys(this.lobbyManager.lobbies).length > 1){
+        delete this.lobbyManager.lobbies[client.lobby.id];
+      }
     }
 
     delete this.clients[client.id];
