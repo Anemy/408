@@ -10,6 +10,12 @@ const exphbs = require('express-handlebars');
 const routing = require('./src/server/router');
 const SocketManager = require('./src/server/socket');
 
+/**
+ * For timestamped console messages.
+ * It makes for easier debugging.
+ */
+require('log-timestamp');
+
 const portNumber = process.env.PORT || 8080;
 
 const app = express();
@@ -36,5 +42,5 @@ var server = app.listen(portNumber, function() {
 });
 
 // Set up the server to listen for socket connections with socket io.
-const socketManager = new SocketManager();
-socketManager.startListening(server);
+const socket = new SocketManager();
+socket.startListening(server);

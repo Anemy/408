@@ -9,8 +9,7 @@ const _ = require('underscore');
 const LobbyManager = require('./lobbyManager');
 const Client = require('./Models/Client');
 
-class SocketManager {
-
+class Socket {
   constructor() {
     this.io = null;
     this.clients = [];
@@ -37,9 +36,19 @@ class SocketManager {
     Removes specified client from clients list. Searches list for matching id.
   */
   clientDisconnected(client) {
+    if (client.lobby){
+      // If the client is in a lobby, remove them.
+      client.lobby.removeClient(client.id);
+
+      // When the lobby has no pop... 💀 Kill it unless it's the only lobby active. 💀
+      if (client.lobby.population === 0 && Object.keys(this.lobbyManager.lobbies).length > 1){
+        delete this.lobbyManager.lobbies[client.lobby.id];
+      }
+    }
+
     delete this.clients[client.id];
     console.log('Client [' + client.id + '] disconnected. # of Clients: ' + Object.keys(this.clients).length);
   }
 };
 
-module.exports = SocketManager;
+module.exports = Socket;

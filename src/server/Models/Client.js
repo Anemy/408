@@ -39,7 +39,18 @@ class Client {
         }
         break;
       case SocketConstants.FIND_GAME:
-        this.findGame();
+        // Don't look for a game if the user is already in one.
+        if (!this.lobby) {
+          this.findGame();
+        } else {
+          this.socket.emit('message', {
+            type: SocketConstants.ERROR,
+            msg: 'Invalid find game. Are you already in a game?'
+          })
+        }
+        break;
+      case SocketConstants.LOBBIES_INFO:
+        this.getLobbiesInfo();
         break;
     }
   }
@@ -73,6 +84,19 @@ class Client {
     this.socket.emit('message', msg);
   }
 
+  /**
+   * Get the active lobbies' populations, names, and other info.
+   * Returns a message to the client via socket of type LOBBIES_INFO.
+   */
+  getLobbiesInfo() {
+    const lobbiesInfo = this.socketManager.lobbyManager.getLobbiesInfo();
+    const infoMessage = {
+      type: SocketConstants.LOBBIES_INFO,
+      lobbiesInfo: lobbiesInfo,
+      timestamp: Date.now()
+    }
+    this.socket.emit('message', infoMessage);
+  }
 }
 
 module.exports = Client;

@@ -8,7 +8,7 @@
     "build": "npm run clean && gulp",
     "start:dev": "npm run clean && gulp",
     "start": "echo \"Error: Please run 'npm start' with a parameter like 'npm start:dev'\"",
-    "test": "jasmine"
+    "test": "gulp test"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,7 @@
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "express-handlebars": "^3.0.0",
+    "log-timestamp": "^0.1.2",
     "socket.io": "^1.4.8",
     "underscore": "^1.8.3",
     "uuid": "^2.0.3"
@@ -39,7 +40,7 @@
     "gulp-livereload": "^3.8.1",
     "gulp-nodemon": "^2.1.0",
     "gulp-sass": "^2.3.2",
-    "jasmine": "^2.5.1",
+    "jasmine": "^2.5.2",
     "jshint": "^2.9.3",
     "webpack": "^1.13.2",
     "webpack-stream": "^3.2.0"

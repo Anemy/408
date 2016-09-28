@@ -33,10 +33,21 @@ class SocketConnection {
   recieveMessage(msg) {
     switch(msg.type) {
       case SocketConstants.CHAT:
-        console.log('Chat message recieved:',msg.msg);
+        console.log('Chat message recieved:', msg.msg);
         break;
       case SocketConstants.GAME_FOUND:
-        console.log('Game found! Lobby id:',msg.lobbyId);
+        console.log('Game found! Lobby id:', msg.lobbyId);
+        break;
+      case SocketConstants.LOBBIES_INFO:
+        console.log('Lobby info update from server:', msg.lobbiesInfo);
+        break;
+        case SocketConstants.ERROR:
+          console.log('Error from server:', msg.msg);
+        break;
+      default:
+        // When we don't have a case for the server message type we just throw an error.
+        throw new Error('Unidentifiable message from server.');
+        break;
     }
   }
 }

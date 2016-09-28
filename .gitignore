@@ -4,7 +4,6 @@ bower_components
 *.log
 dist
 .env
-Sublime.sublime-project
 Sublime.sublime-workspace
-public/js/*
-public/css/*
+public/js/**/*
+public/css/**/*
