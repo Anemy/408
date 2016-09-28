@@ -22,12 +22,14 @@ describe('A lobby:', function() {
       expect(typeof(lobbyToTest)).toEqual('object');
     });
 
-    it('adding clients to teh lobby', function() {
-      lobbyToTest.addClient(dummyClient);
+    it('adding clients to the lobby', function() {
+      // Add the client to the lobby.
+      expect(lobbyToTest.addClient(dummyClient)).toEqual(true);
 
       expect(lobbyToTest.population).toEqual(1);
 
-      lobbyToTest.addClient(dummyClientTwo);
+      // Add another client
+      expect(lobbyToTest.addClient(dummyClientTwo)).toEqual(true);
 
       expect(lobbyToTest.population).toEqual(2);
 
