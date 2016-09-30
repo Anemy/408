@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * This file contains the player class and the functions related to the player.
  * Contants for the player are kept in playerConstants.js
@@ -14,9 +16,11 @@ class Player {
    * @param {Integer} ySpawn - Location to spawn on y axis.
    * @param {Integer} skin - The reference to what the player looks like in playerConstants.skins.
    */
-  constructor(xSpawn, ySpawn, skin) {
+  constructor(xSpawn, ySpawn, skin, playerId) {
     this.x = xSpawn;
     this.y = ySpawn;
+
+    this.id = playerId
 
     // Velocity of x/y movement. 
     this.xVelocity = 0;
@@ -45,6 +49,8 @@ class Player {
 
     // Boolean to denote if the player is trying to shoot or not.
     this.shooting = false;
+
+    this.health = PlayerConstants.maxHealth;
   }
 
   draw(ctx) {

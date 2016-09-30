@@ -19,8 +19,6 @@ class LobbyManager {
     var gameFound = false;
     var lobby;
 
-    console.log('Lobbies:', this.lobbies);
-
     // Look for a non-full lobby.
     for(var i in this.lobbies) {
       const l = this.lobbies[i];
@@ -39,7 +37,6 @@ class LobbyManager {
 
     lobby.addClient(client);
     console.log('Adding client to lobby:', lobby.id,'lobby pop:', lobby.population);
-
 
     return lobby;
   }

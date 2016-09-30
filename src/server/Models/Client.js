@@ -24,34 +24,34 @@ class Client {
   onMessage(msg) {
     const messageType = msg.type || -1;
     switch(messageType) {
-      case SocketConstants.CHAT:
-        // Only allow messages of a limited length (This is also checked on client).
-        if (msg.msg && msg.msg.length < SocketConstants.maxChatMessageLength) {
-          // Attach a sender id to the message and send it to chat.
-          // TODO: Attach the user's username.
-          const msgToSend = {
-            type: SocketConstants.CHAT,
-            sender: this.id,
-            msg: msg.msg
-          }
+    case SocketConstants.CHAT:
+      // Only allow messages of a limited length (This is also checked on client).
+      if (msg.msg && msg.msg.length < SocketConstants.maxChatMessageLength) {
+        // Attach a sender id to the message and send it to chat.
+        // TODO: Attach the user's username.
+        const msgToSend = {
+          type: SocketConstants.CHAT,
+          sender: this.id,
+          msg: msg.msg
+        }
 
-          this.chat(msgToSend);
-        }
-        break;
-      case SocketConstants.FIND_GAME:
-        // Don't look for a game if the user is already in one.
-        if (!this.lobby) {
-          this.findGame();
-        } else {
-          this.socket.emit('message', {
-            type: SocketConstants.ERROR,
-            msg: 'Invalid find game. Are you already in a game?'
-          })
-        }
-        break;
-      case SocketConstants.LOBBIES_INFO:
-        this.getLobbiesInfo();
-        break;
+        this.chat(msgToSend);
+      }
+      break;
+    case SocketConstants.FIND_GAME:
+      // Don't look for a game if the user is already in one.
+      if (!this.lobby) {
+        this.findGame();
+      } else {
+        this.socket.emit('message', {
+          type: SocketConstants.ERROR,
+          msg: 'Invalid find game. Are you already in a game?'
+        })
+      }
+      break;
+    case SocketConstants.LOBBIES_INFO:
+      this.getLobbiesInfo();
+      break;
     }
   }
 

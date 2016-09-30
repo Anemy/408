@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * This file manages the client's socket connection with the server.
  * TODO: protobufs
@@ -6,8 +8,10 @@
 const SocketConstants = require('./socket/socketConstants');
 
 class SocketConnection {
-  constructor() {
+  constructor(gameManager) {
     this.socket = null;
+
+    this.gameManager = gameManager;
   }
 
   connect() {
@@ -41,8 +45,12 @@ class SocketConnection {
       case SocketConstants.LOBBIES_INFO:
         console.log('Lobby info update from server:', msg.lobbiesInfo);
         break;
-        case SocketConstants.ERROR:
-          console.log('Error from server:', msg.msg);
+      case SocketConstants.ERROR:
+        console.log('Error from server:', msg.msg);
+        break;
+      case SocketConstants.GAME_UPDATE:
+        // console.log('Game update from server! :D', msg.msg);
+        this.gameManager.parseGameUpdateFromServer(msg);
         break;
       default:
         // When we don't have a case for the server message type we just throw an error.

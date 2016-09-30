@@ -1,5 +1,7 @@
 const Gameloop = require('./game/gameloop');
 const Gamemenu = require('./menu');
+// const Constants = require('/game/constants');
+
 const game = new Gameloop();
 const menu = new Gamemenu();
 
@@ -8,8 +10,10 @@ const SocketConstants = require('./game/socket/socketConstants');
 $(document).ready(() => {
 
   menu.start();
-  game.start();
+  game.start(true /* Running on client. */);
 
+  // Constants.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+  // Constants.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
 
   /**
    * TEMPORARY until we have menus to handle these listeners.
