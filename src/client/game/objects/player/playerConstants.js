@@ -16,6 +16,8 @@ module.exports = {
   minAcceleration: 1,
   maxAcceleration: 600,
 
+  maxHealth: 100,
+
   // How often the player can shoot (s).
   shootRate: 0.2,
 

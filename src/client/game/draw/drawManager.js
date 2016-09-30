@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * This object manages the drawing in the game.
  */

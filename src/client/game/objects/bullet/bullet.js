@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * This file contains the bullet class and the functions related to a bullet.
  * Contants for bullets are kept in ./bulletConstants.js
