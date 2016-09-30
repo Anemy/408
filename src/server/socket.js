@@ -36,7 +36,7 @@ class Socket {
     Removes specified client from clients list. Searches list for matching id.
   */
   clientDisconnected(client) {
-    if (client.lobby){
+    if(client.lobby) {
       // If the client is in a lobby, remove them.
       client.lobby.removeClient(client.id);
 

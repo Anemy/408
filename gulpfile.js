@@ -18,11 +18,10 @@ const config = {
   jsDependPath: 'src/client/lib/**/*.js',
   jsDestDir: 'public/js',
   clientJsPath: 'src/client/**/*.js',
-  serverJsPath: 'src/server/**/*.js',
+  serverJsPath: ['src/server/**/*.js', 'src/client/game/**/*.js'],
   serverJsEntry: 'src/server/index.js',
   serverJsDestDir: './'
 };
-
 
 
 const webpackConfig = {
