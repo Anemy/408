@@ -74,14 +74,14 @@ class gameManager {
 
     const ctx = drawManager.getDraw();
 
+     _.each(this.bullets, (bullet) => {
+      bullet.draw(ctx);
+    });
+
     // Draw all of the players.
     for(var p in this.players) {
       this.players[p].draw(ctx);
     };
-
-    _.each(this.bullets, (bullet) => {
-      bullet.draw(ctx);
-    });
   }
 
   /**

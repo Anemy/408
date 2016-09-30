@@ -15,8 +15,20 @@ class Bullet {
    * @param {Object} player - The player who shot the bullet. Used for their position, velocity, and direction.
    */
   constructor(player) {
+    this.width = BulletConstants.size;
+    this.height = BulletConstants.size;
+
+    // Start bullet coordinates from the middle of the player to make start location calculation easier
     this.x = player.x + player.width/2;
     this.y = player.y + player.height/2;
+
+    // From middle, render it in front of the player in the direction it's being fired
+    this.x += player.width/2 * player.shootingRight - player.width/2 * player.shootingLeft;
+    this.y += player.width/2 * player.shootingDown - player.width/2 * player.shootingUp;
+
+    // Account for bullet size
+    this.x -= this.width/2;
+    this.y -= this.height/2;
 
     // Records how long the bullet has been alive for. One it reaches lifeSpan in constants or hits a wall, it dies.
     this.lifeTime = 0;
