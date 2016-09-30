@@ -1,37 +1,43 @@
 import React, { PropTypes } from 'react';
 const { test } = require('./actions');
 const { connect } = require('react-redux');
-// const Gameloop = require('./game/gameManager');
+const Gameloop = require('./game/gameloop');
+// const SocketConstants = require('./game/socket/socketConstants');
 
 class App extends React.Component {
   componentDidMount() {
-    // const game = new Gameloop();
-    // game.start();
+    const game = new Gameloop();
+    game.start();
   }
 
   render() {
-    console.log(this.props);
+    if (this.props.isPlaying) {
+      return <canvas id="gameCanvas"></canvas>;
+    }
     return (
-      <div onClick={this.props.click}>
-        <h1>HAI</h1>
-        <canvas id="gameCanvas"></canvas>
+      <div>
+        <h1>Bumper Blasters</h1>
+        <button>Join Game</button>
+        <button>Server List</button>
+        <h2>Controls</h2>
       </div>
     );
   }
 }
 
 App.propTypes = {
-  click: PropTypes.func.isRequired
+  joinGame: PropTypes.func.isRequired,
+  isPlaying: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => {
-  return { poop: state.poop };
+  return { isPlaying: state.isPlaying };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    click: () => {
-      dispatch(test('poop'));
+    joinGame: () => {
+      dispatch(test('test'));
     }
   };
 };

@@ -1,14 +1,15 @@
 // TODO: As the number of reducers increases, we should move them into separate
 // files and then combine the reducres here.
-const Reducers = (state = {}, action) => {
+const initialState = {
+  isPlaying: false,
+  test: 'example',
+};
+
+const Reducers = (state = initialState, action) => {
   switch (action.type) {
-  case 'TEST':
-    console.log('sanity');
-    return {
-      poop: action.poop,
-    };
+  default:
+    return state;
   }
-  return state;
 };
 
 module.exports = Reducers;
