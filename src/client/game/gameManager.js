@@ -65,12 +65,12 @@ class gameManager {
 
     const ctx = drawManager.getDraw();
 
-    _.each(this.players, (player) => {
-      player.draw(ctx);
-    });
-
     _.each(this.bullets, (bullet) => {
       bullet.draw(ctx);
+    });
+
+    _.each(this.players, (player) => {
+      player.draw(ctx);
     });
   }
 }
