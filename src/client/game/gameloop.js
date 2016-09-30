@@ -27,7 +27,7 @@ class game {
     this.lastFrame = Date.now();
 
     this.gameManager = new GameManager(isClient);
-    this.gameManager.start(this.drawManager);
+    this.gameManager.start(isClient);
 
     if (isClient) {
       this.drawManager = new DrawManager();
