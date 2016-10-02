@@ -9,7 +9,7 @@ class Lobby {
   constructor() {
     // TODO: Make this more fun (i.e. adjective + noun).
     this.id = uuid.v4();
-    this.clients = [];
+    this.clients = {};
 
     // Keep an up to date population so we don't have to rely off of Object.keys because this is a map;
     this.population = 0;
@@ -44,7 +44,7 @@ class Lobby {
   sendChat(msg) {
     // Send the chat message to all of the clients in the lobby.
     for(var c in this.clients) {
-      this.clients[c].socket.emit('message', gameData);
+      this.clients[c].socket.emit('message', msg);
     }
   }
 
@@ -54,14 +54,18 @@ class Lobby {
    * @param {Object} gameData - The current state of the game to send to the players in the lobby.
    */
   updateClients(gameData) {
-    // Define the kind of message to be sent to the client.
-    gameData.type = SocketConstants.GAME_UPDATE;
+    var msg = {
+      // Define the kind of message to be sent to the client.
+      type: SocketConstants.GAME_UPDATE,
+      msg: gameData
+    }
 
-    // console.log('Send update to clients.');
+    // if (Math.random() * 1000 > 990)
+    //   console.log('Send up date to all of the clients:', msg);
 
     // Send the game update to all of the clients in the lobby.
     for(var c in this.clients) {
-      this.clients[c].socket.emit('message', gameData);
+      this.clients[c].socket.emit('message', msg);
     }
   }
 }

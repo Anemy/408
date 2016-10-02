@@ -11,7 +11,7 @@ class LobbyManager {
   constructor() {
     // This manages all of the currently in progress game lobbies.
     // It's a hashmap where each game lobby's unique identifier is its location in the array.
-    this.lobbies = [];
+    this.lobbies = {};
   }
   
   // Called when a player wants to find a game.
@@ -22,7 +22,8 @@ class LobbyManager {
     // Look for a non-full lobby.
     for(var i in this.lobbies) {
       const l = this.lobbies[i];
-      console.log('Lobby found:', l);
+
+      // console.log('Lobby found:', l);
       if (l.population < l.capacity) {
         lobby = l;
         // Lobby found, stop searching.

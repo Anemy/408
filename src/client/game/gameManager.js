@@ -8,12 +8,13 @@ const Player = require('./objects/player/player');
 const Bullet = require('./objects/bullet/bullet');
 const KeyManager = require('./keyListener/keyManager');
 const _ = require('underscore');
+const Constants = require('./constants');
 
 class gameManager {
   // Initialize the game logic
   start(isClient) {
-    // Players is a hashmap where each 
-    this.players = [];
+    // Each key in players is a player's id.
+    this.players = {};
 
     this.bullets = [];
 
@@ -27,12 +28,14 @@ class gameManager {
 
   addPlayer(playerId) {
     // TODO: Remove these, they're for quick testing.
-    const randomXSpawn = Math.floor(Math.random() * 500);
-    const randomYSpawn = Math.floor(Math.random() * 500);
-    const skin = 'red';
+    const randomXSpawn = Math.floor(Math.random() * Constants.width);
+    const randomYSpawn = Math.floor(Math.random() * Constants.height);
+    const skin = Math.random() * 20 > 10 ? 'red' : 'blue';
     
     const newPlayer = new Player(randomXSpawn, randomYSpawn, skin, playerId);
     this.players[playerId] = newPlayer;
+
+    console.log('New player added.');
   }
 
   /*
@@ -90,14 +93,41 @@ class gameManager {
    * @return {Object} - The current state of the game
    */
   getGameData() {
-    return {
+    const gameData = {
       players: this.players,
       bullets: this.bullets
-    }
+    };
+
+    // if (Math.random() * 1000 > 990)
+    //   console.log('gameData:',gameData);
+
+    return gameData;
   }
 
   parseGameUpdateFromServer(gameData) {
     // console.log('Parse the server game data:', gameData);
+    // if (Math.random() * 1000 > 990)
+    //   console.log('Players from server:', gameData.players);
+
+    // This is a the naive approach, player positions are just taken as is from the server.
+    // TODO: Lerp player positions
+    for (var p in gameData.players) {
+      if (!this.players[p]) {
+        // Create a new player if that player does not exist.
+        this.players[p] = new Player(gameData.players[p].x, gameData.players[p].y, gameData.players[p].skin, p);
+      } else {
+        // Update the local player based on the server's player.
+        for (var property in gameData.players[p]) {
+          // HACK (Rhys): We iterate through all of the keys in the server's player and set the local players accordingly.
+          // We don't just set the player to equal the other player as to maintain the local functions.
+          this.players[p][property] = gameData.players[p][property];
+        } 
+      }
+    }
+
+    // TODO: Remove players that are local that are not on the server's game.
+
+    // TODO: Bring in bullets.
   }
 }
 
