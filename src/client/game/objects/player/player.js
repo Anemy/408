@@ -183,4 +183,8 @@ class Player {
   }
 }
 
+// Player.prototype.toJSON = function() {
+//   return 'TEST';
+// }
+
 module.exports = Player;
