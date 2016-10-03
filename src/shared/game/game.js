@@ -9,8 +9,8 @@ const fps = 60;
 const updateRate = 1000 / fps;
 
 const _ = require('underscore');
-const Player = require('../objects/player/player');
-const Bullet = require('../objects/bullet/bullet');
+const Player = require('../player/player');
+const Bullet = require('../bullet/bullet');
 const Constants = require('../../client/game/constants');
 
 class Game {

@@ -18,7 +18,7 @@ const config = {
   jsDependPath: 'src/client/lib/**/*.js',
   jsDestDir: 'public/js',
   jsSpecPath: 'src/**/*[sS]pec.js',
-  clientJsPath: 'src/client/**/*.js',
+  clientJsPath: ['src/client/**/*.js', 'src/shared/**/*.js'],
   serverJsPath: ['src/server/**/*.js', 'src/client/game/**/*.js'],
   serverJsEntry: 'src/server/index.js',
   serverJsDestDir: './'
