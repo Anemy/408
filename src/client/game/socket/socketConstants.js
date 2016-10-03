@@ -9,6 +9,8 @@ module.exports = {
   LOBBIES_INFO: 4,
   ERROR: 5,
   GAME_UPDATE: 6,
+  CLIENT_INPUT_UPDATE: 7,
 
-  maxChatMessageLength: 140 // Characters
+  maxChatMessageLength: 140, // Characters
+  maxKeyBufferLength: 100
 }

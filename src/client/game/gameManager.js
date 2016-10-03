@@ -10,6 +10,7 @@ const KeyManager = require('./keyListener/keyManager');
 const _ = require('underscore');
 const Constants = require('./constants');
 
+
 class gameManager {
   // Initialize the game logic
   start(isClient) {
@@ -18,10 +19,11 @@ class gameManager {
 
     this.bullets = [];
 
+    this.keyManager = new KeyManager();
+
     if (isClient) {
       const localPlayerId = Math.floor(Math.random() * 10000);
       this.addPlayer(localPlayerId);
-      this.keyManager = new KeyManager();
       this.keyManager.startListening(this.players[localPlayerId]);
     }
   }
@@ -35,7 +37,7 @@ class gameManager {
     const newPlayer = new Player(randomXSpawn, randomYSpawn, skin, playerId);
     this.players[playerId] = newPlayer;
 
-    console.log('New player added.');
+    // console.log('New player added at:', randomXSpawn, randomYSpawn);
   }
 
   /*
@@ -118,16 +120,27 @@ class gameManager {
       } else {
         // Update the local player based on the server's player.
         for (var property in gameData.players[p]) {
-          // HACK (Rhys): We iterate through all of the keys in the server's player and set the local players accordingly.
+          // We iterate through all of the keys in the server's player and set the local players accordingly.
           // We don't just set the player to equal the other player as to maintain the local functions.
           this.players[p][property] = gameData.players[p][property];
         } 
       }
     }
 
-    // TODO: Remove players that are local that are not on the server's game.
+    // Remove players that are local that are not on the server's game.
+    for (var p in this.players) {
+      if (!gameData.players[p]) {
+        delete this.players[p];
+      }
+    }
 
     // TODO: Bring in bullets.
+  }
+
+  parseUserKeyInput(playerId, keyBuffer) {
+    if (this.players[playerId]) {
+      this.keyManager.interpretKeyBuffer(this.players[playerId], keyBuffer);
+    }
   }
 }
 

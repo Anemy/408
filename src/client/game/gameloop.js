@@ -11,6 +11,7 @@ const updateRate = 1000 / fps;
 const DrawManager = require('./draw/drawManager');
 const GameManager = require('./gameManager');
 const SocketConnection = require('./socket');
+const SocketConstants = require('./socket/socketConstants')
 
 class game {
   /**
@@ -53,6 +54,8 @@ class game {
 
       if (this.isClient) {
         this.gameManager.draw(this.drawManager);
+
+        this.sendClientInputsToServer();
       } else {
         // Send an update to all of the clients in the lobby if this is the server.
         this.sendServerUpdate(this.gameManager.getGameData());
@@ -60,6 +63,22 @@ class game {
     }
     
     this.lastFrame = Date.now();
+  }
+
+  /**
+   * Sends the buffer of user's input keys to the server.
+   */
+  sendClientInputsToServer() {
+    const keyBuffer = this.gameManager.keyManager.getKeyBuffer();
+
+    if (keyBuffer && keyBuffer.length > 0) {
+      const msg = {
+        type: SocketConstants.CLIENT_INPUT_UPDATE,
+        msg: keyBuffer
+      }
+
+      this.sendMessage(msg);
+    }
   }
 
   /**
