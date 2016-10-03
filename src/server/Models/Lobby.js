@@ -3,7 +3,7 @@
 const _ = require('underscore');
 const uuid = require('uuid');
 const SocketConstants = require('../../client/game/socket/socketConstants');
-const Game = require('../../client/game/game');
+const Game = require('../../shared/game/game');
 const KeyManager = require('../../client/game/keyListener/keyManager');
 
 class Lobby {

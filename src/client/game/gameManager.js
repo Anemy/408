@@ -1,6 +1,6 @@
 'use strict';
 
-const Game = require('./game');
+const Game = require('../../shared/game/game');
 const KeyManager = require('./keyListener/keyManager');
 const DrawManager = require('./draw/drawManager');
 const SocketConnection = require('./socket');
