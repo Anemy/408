@@ -1,8 +1,8 @@
-const Gameloop = require('./game/gameloop');
+const GameManager = require('./game/gameManager');
 const Gamemenu = require('./menu');
 // const Constants = require('/game/constants');
 
-const game = new Gameloop();
+const gameManager = new GameManager();
 const menu = new Gamemenu();
 
 const SocketConstants = require('./game/socket/socketConstants');
@@ -10,7 +10,7 @@ const SocketConstants = require('./game/socket/socketConstants');
 $(document).ready(() => {
 
   menu.start();
-  game.start(true /* Running on client. */);
+  gameManager.start();
 
   // Constants.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
   // Constants.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
@@ -28,7 +28,7 @@ $(document).ready(() => {
     const msg = {
       type: SocketConstants.FIND_GAME
     };
-    game.sendMessage(msg);
+    gameManager.sendMessage(msg);
   });
 
   $('.send-hi-message-button').on('click', () => {
@@ -37,7 +37,7 @@ $(document).ready(() => {
       type: SocketConstants.CHAT,
       msg: 'Hi!'
     };
-    game.sendMessage(msg);
+    gameManager.sendMessage(msg);
   });
 
   $('.lobbies-info-message-button').on('click', () => {
@@ -45,6 +45,6 @@ $(document).ready(() => {
     const msg = {
       type: SocketConstants.LOBBIES_INFO
     };
-    game.sendMessage(msg);
+    gameManager.sendMessage(msg);
   });
 });

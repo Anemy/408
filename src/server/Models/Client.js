@@ -54,7 +54,11 @@ class Client {
       break;
     case SocketConstants.CLIENT_INPUT_UPDATE:
       // Only allow key buffers under a certain amount.
-      if (msg.msg && Array.isArray(msg.msg) && msg.msg.length > 0 && msg.msg.length < SocketConstants.maxKeyBufferLength) {
+      if (msg.msg &&
+          Array.isArray(msg.msg) &&
+          msg.msg.length > 0 && 
+          msg.msg.length < SocketConstants.maxKeyBufferLength &&
+          this.lobby) {
         this.lobby.parseUserKeyInput(this.id, msg.msg);
       } else {
         // TODO: Remove this log.
