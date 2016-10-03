@@ -7,6 +7,7 @@
     "clean": "rm -rf build",
     "build": "npm run clean && gulp",
     "start:dev": "npm run clean && gulp",
+    "start:test": "gulp testDev",
     "start": "echo \"Error: Please run 'npm start' with a parameter like 'npm start:dev'\"",
     "test": "gulp test"
   },

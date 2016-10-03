@@ -17,6 +17,7 @@ const config = {
   jsPath: 'src/**/*.js',
   jsDependPath: 'src/client/lib/**/*.js',
   jsDestDir: 'public/js',
+  jsSpecPath: 'src/**/*[sS]pec.js',
   clientJsPath: 'src/client/**/*.js',
   serverJsPath: ['src/server/**/*.js', 'src/client/game/**/*.js'],
   serverJsEntry: 'src/server/index.js',
@@ -42,13 +43,18 @@ const webpackConfig = {
   }
 };
 
+gulp.task('testDev', ['test'], function() {
+  // Watch for changes in the test files and test accordingly.
+  gulp.watch([config.jsSpecPath], ['test']);
+});
+
 gulp.task('test', function() {
   const jasmine = new Jasmine();
   
   jasmine.loadConfig({
       spec_dir: '/',
       spec_files: [
-          'src/**/*[sS]pec.js',
+          config.jsSpecPath,
       ],
       helpers: [
           'helpers/**/*.js'
@@ -60,10 +66,6 @@ gulp.task('test', function() {
 });
 
 gulp.task('dev', function() {
-  // livereload.listen({
-  //   port: 18080
-  // });
-
   gulp.watch([config.jsPath, 'index.js', 'gulpfile.js' /* That's me! */], ['lint']);
 
   // Watch for clientside changes and run building tasks.

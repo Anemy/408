@@ -52,6 +52,15 @@ class Client {
     case SocketConstants.LOBBIES_INFO:
       this.getLobbiesInfo();
       break;
+    case SocketConstants.CLIENT_INPUT_UPDATE:
+      // Only allow key buffers under a certain amount.
+      if (msg.msg && Array.isArray(msg.msg) && msg.msg.length > 0 && msg.msg.length < SocketConstants.maxKeyBufferLength) {
+        this.lobby.parseUserKeyInput(this.id, msg.msg);
+      } else {
+        // TODO: Remove this log.
+        console.log('Error parsing client key input. Undefined or length too long.');
+      }
+      break;
     }
   }
 

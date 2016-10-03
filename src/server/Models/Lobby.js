@@ -48,6 +48,10 @@ class Lobby {
     }
   }
 
+  parseUserKeyInput(clientId, clientInputKeyBuffer) {
+    this.game.gameManager.parseUserKeyInput(clientId, clientInputKeyBuffer);
+  }
+
   /**
    * This function sends game updates to all of the players in the lobby.
    *
