@@ -8,8 +8,8 @@
 const DrawConstants = require('./drawConstants');
 const Constants = require('../constants');
 
-class drawManager {
-  initialize() {
+class DrawManager {
+  constructor() {
     const canvas = document.getElementById('gameCanvas');
 
     // The drawable canvas reference.
@@ -74,4 +74,4 @@ class drawManager {
   }
 }
 
-module.exports = drawManager;
+module.exports = DrawManager;

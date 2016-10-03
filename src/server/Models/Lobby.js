@@ -3,7 +3,8 @@
 const _ = require('underscore');
 const uuid = require('uuid');
 const SocketConstants = require('../../client/game/socket/socketConstants');
-const Game = require('../../client/game/gameloop');
+const Game = require('../../client/game/game');
+const KeyManager = require('../../client/game/keyListener/keyManager');
 
 class Lobby {
   constructor() {
@@ -16,8 +17,9 @@ class Lobby {
     this.capacity = 4;
 
     // Create the game instance for the server.
-    this.game = new Game();
-    this.game.start(false /* Not running on client. */, this.updateClients.bind(this));
+    this.game = new Game(this.updateClients.bind(this));
+    this.game.start();
+    this.keyManager = new KeyManager();
   }
 
   addClient(client) {
@@ -30,7 +32,7 @@ class Lobby {
     this.population++;
 
     // Add the client into the game.
-    this.game.gameManager.addPlayer(client.id);
+    this.game.addRandomPlayer(client.id);
 
     // Let them know it was a success.
     return true;
@@ -49,7 +51,9 @@ class Lobby {
   }
 
   parseUserKeyInput(clientId, clientInputKeyBuffer) {
-    this.game.gameManager.parseUserKeyInput(clientId, clientInputKeyBuffer);
+    if (this.game.players[clientId]) {
+      this.keyManager.interpretKeyBuffer(this.game.players[clientId], clientInputKeyBuffer);
+    }
   }
 
   /**

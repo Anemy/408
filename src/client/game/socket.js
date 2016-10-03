@@ -41,6 +41,7 @@ class SocketConnection {
       break;
     case SocketConstants.GAME_FOUND:
       console.log('Game found! Lobby id:', msg.lobbyId);
+      this.gameManager.updateLobby(msg.lobbyId);
       break;
     case SocketConstants.LOBBIES_INFO:
       console.log('Lobby info update from server:', msg.lobbiesInfo);
