@@ -39,6 +39,10 @@ class Lobby {
   }
 
   removeClient(clientId) {
+    if (this.game) {
+      this.game.removePlayer(clientId);
+    }
+
     delete this.clients[clientId];
     this.population--;
   }
