@@ -14,9 +14,9 @@ class GameManager {
 
   start() {
     this.game.start();
-    const localPlayerId = Math.floor(Math.random() * 10000);
-    this.game.addRandomPlayer(localPlayerId);
-    this.keyManager.startListening(this.game.players[localPlayerId]);
+    // const localPlayerId = Math.floor(Math.random() * 10000);
+    // this.game.addRandomPlayer(localPlayerId);
+    this.keyManager.startListening();
     this.drawManager = new DrawManager();
     this.socket = new SocketConnection(this);
     this.socket.connect();
@@ -77,7 +77,11 @@ class GameManager {
     for (var p in gameData.players) {
       if (!this.game.players[p]) {
         // Create a new player if that player does not exist.
-        this.game.addPlayer(gameData.players[p].x, gameData.players[p].y, gameData.players[p].skin, p);
+        const newPlayer = this.game.addPlayer(gameData.players[p].x, gameData.players[p].y, gameData.players[p].skin, p);
+        if (p == this.socket.uuid) {
+          // This is the local player's player. Set the key listener up for it.
+          this.keyManager.setPlayer(newPlayer);
+        }
       } else {
         // Update the local player based on the server's player.
         this.game.updatePlayer(p, gameData.players[p]);

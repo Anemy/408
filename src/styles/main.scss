@@ -5,12 +5,12 @@
 @import 'variables';
 @import 'fonts';
 
-.homepage-text {
-  position: absolute;
+#gameCanvas {
+  position: fixed;
+  top: 50%;
+  left: 50%;
 
-  top: 20px;
-  
-  color: blue;
+  transform: translate(-50%, -50%);
 }
 
 .testing-button {

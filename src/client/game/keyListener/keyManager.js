@@ -13,19 +13,28 @@ class KeyManager {
   *
   * @param {Object} player: the player that key presses are recorded to
   */
-  startListening(player) {
+  startListening() {
     // This is an array of all of the keys a user presses which will be sent to the server as input.
     this.keyBuffer = [];
 
     // Listen for key presses.
     window.addEventListener('keydown', (event) => {
-      this.keyDown(player, event.keyCode);
+      if (this.player) {
+        this.keyDown(this.player, event.keyCode);
+      }
     });
 
     // Listen for key releases
     window.addEventListener('keyup', (event) => {
-      this.keyUp(player, event.keyCode);
+      if (this.player) {
+        this.keyUp(this.player, event.keyCode);
+      }
     });
+  }
+
+  // Sets the player who is listening to key events.
+  setPlayer(player) {
+    this.player = player;
   }
 
   /**

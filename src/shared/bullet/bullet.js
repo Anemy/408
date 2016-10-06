@@ -60,7 +60,7 @@ class Bullet {
 
   draw(ctx) {
     ctx.fillStyle = BulletConstants.rgb;
-    ctx.fillRect(this.x, this.y, BulletConstants.size, BulletConstants.size);
+    ctx.fillRect(this.x * Constants.scale, this.y * Constants.scale, BulletConstants.size * Constants.scale, BulletConstants.size * Constants.scale);
   }
 }
 
