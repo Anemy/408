@@ -45,6 +45,8 @@ class Game {
   addPlayer(x, y, skin, playerId) {
     const newPlayer = new Player(x, y, skin, playerId);
     this.players[playerId] = newPlayer;
+
+    return this.players[playerId];
   }
 
   addRandomPlayer(playerId) {

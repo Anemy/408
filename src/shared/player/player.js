@@ -57,7 +57,7 @@ class Player {
     switch(PlayerConstants.skins[this.skin].type) {
     case PlayerConstants.skinTypes.COLOR:
       ctx.fillStyle = PlayerConstants.skins[this.skin].rgb;
-      ctx.fillRect(this.x, this.y, this.width, this.height);
+      ctx.fillRect(this.x * Constants.scale, this.y * Constants.scale, this.width * Constants.scale, this.height * Constants.scale);
       break;
     }
   }

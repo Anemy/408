@@ -71,6 +71,19 @@ class DrawManager {
         this.ctx.stroke();
       }
     }
+
+    this.ctx.strokeStyle = DrawConstants.mapBorderColor;
+    // Draw bars around the game.
+    this.ctx.beginPath();
+    this.ctx.moveTo(Constants.width - 1, 0); // right side 
+    this.ctx.lineTo(Constants.width - 1, Constants.height);
+    this.ctx.moveTo(Constants.width, 0); // top
+    this.ctx.lineTo(0, 0);
+    this.ctx.moveTo(1, 0); // left
+    this.ctx.lineTo(1, Constants.height);
+    this.ctx.moveTo(0, Constants.height - 1); // bottom
+    this.ctx.lineTo(Constants.width, Constants.height - 1);
+    this.ctx.stroke();
   }
 }
 
