@@ -13,6 +13,8 @@ const Player = require('../player/player');
 const Bullet = require('../bullet/bullet');
 const Constants = require('../../client/game/constants');
 
+const Collisions = require('./collisions');
+
 class Game {
   constructor(updateFunction) {
     this.updateFunction = updateFunction;

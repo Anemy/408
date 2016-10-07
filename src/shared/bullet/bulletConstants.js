@@ -5,7 +5,7 @@
 module.exports = {
   speed: 800,
   rgb: 'rgb(30, 30, 30)',
-  size: 3,
+  radius: 2,
   // How long the bullet stays alive (seconds).
   lifeSpan: 3
 };

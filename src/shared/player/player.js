@@ -38,8 +38,7 @@ class Player {
     this.shootingUp = false;
     this.shootingDown = false;
 
-    this.width = PlayerConstants.size;
-    this.height = PlayerConstants.size;
+    this.radius = PlayerConstants.radius;
 
     this.skin = skin;
 
@@ -57,8 +56,27 @@ class Player {
     switch(PlayerConstants.skins[this.skin].type) {
     case PlayerConstants.skinTypes.COLOR:
       ctx.fillStyle = PlayerConstants.skins[this.skin].rgb;
-      ctx.fillRect(this.x * Constants.scale, this.y * Constants.scale, this.width * Constants.scale, this.height * Constants.scale);
+      ctx.beginPath();
+      ctx.arc(this.x * Constants.scale, this.y * Constants.scale, this.radius * Constants.scale, 0, 2 * Math.PI, false);
+      ctx.fill();
+      // Border around player.
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = PlayerConstants.borderColor;
+      ctx.stroke();
+
+      // ctx.fillRect(this.x * Constants.scale, this.y * Constants.scale, this.width * Constants.scale, this.height * Constants.scale);
       break;
+    }
+
+    // Draw health bar above the player.
+    ctx.strokeStyle = PlayerConstants.borderColor;
+    ctx.rect((this.x - PlayerConstants.radius) * Constants.scale, (this.y - PlayerConstants.radius) * Constants.scale, PlayerConstants.radius * Constants.scale * 2, 2);
+    ctx.stroke();
+    ctx.fillStyle = PlayerConstants.healthHurtColor;
+    ctx.fillRect((this.x - PlayerConstants.radius) * Constants.scale, (this.y - PlayerConstants.radius) * Constants.scale, PlayerConstants.radius * Constants.scale * 2, 2); 
+    if (this.health > 0) {
+      ctx.fillStyle = PlayerConstants.healthColor;
+      ctx.fillRect((this.x - PlayerConstants.radius) * Constants.scale, (this.y - PlayerConstants.radius) * Constants.scale, (this.health/PlayerConstants.maxHealth)* (PlayerConstants.radius * Constants.scale * 2), 2);
     }
   }
 
@@ -133,34 +151,34 @@ class Player {
 
   // Called to check and act on player collisions with the map borders.
   collideWithBorders() {
-    if (this.x > Constants.width - PlayerConstants.size) {
+    if (this.x > Constants.gameWidth - PlayerConstants.radius) {
       // This is a calculation of how far the player just travelled through the wall so we can bounce them the other way accordingly.
-      const extraDistanceTravelled = this.x - (Constants.width - PlayerConstants.size);
-      this.x = Constants.width - PlayerConstants.size - extraDistanceTravelled;
+      const extraDistanceTravelled = this.x - (Constants.gameWidth - PlayerConstants.radius);
+      this.x = Constants.gameWidth - PlayerConstants.radius - extraDistanceTravelled;
 
       if (this.xVelocity > 0) {
         // Send their velocity negative to bounce them back.
         this.xVelocity = -this.xVelocity;
       }
-    } else if (this.x < 0) {
-      const extraDistanceTravelled = -this.x;
-      this.x = extraDistanceTravelled;
+    } else if (this.x < this.radius) {
+      const extraDistanceTravelled = this.radius - this.x;
+      this.x = this.radius + extraDistanceTravelled;
 
       if (this.xVelocity < 0) {
         this.xVelocity = -this.xVelocity;
       }
     }
 
-    if (this.y > Constants.height - PlayerConstants.size) {
-      const extraDistanceTravelled = this.y - (Constants.height - PlayerConstants.size);
-      this.y = Constants.height - PlayerConstants.size - extraDistanceTravelled;
+    if (this.y > Constants.gameHeight - PlayerConstants.radius) {
+      const extraDistanceTravelled = this.y - (Constants.gameHeight - PlayerConstants.radius);
+      this.y = Constants.gameHeight - PlayerConstants.radius - extraDistanceTravelled;
 
       if (this.yVelocity > 0) {
         this.yVelocity = -this.yVelocity;
       }
-    } else if (this.y < 0) {
-      const extraDistanceTravelled = -this.y;
-      this.y = extraDistanceTravelled;
+    } else if (this.y < this.radius) {
+      const extraDistanceTravelled = this.radius - this.y;
+      this.y = this.radius + extraDistanceTravelled;
 
       if (this.yVelocity < 0) {
         this.yVelocity = -this.yVelocity;
@@ -182,9 +200,5 @@ class Player {
     return this.shootTimer <= 0 && playerIsAiming;
   }
 }
-
-// Player.prototype.toJSON = function() {
-//   return 'TEST';
-// }
 
 module.exports = Player;

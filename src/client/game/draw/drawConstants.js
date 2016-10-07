@@ -7,5 +7,5 @@ module.exports = {
   mapGridColor: '#ABABCA',
   mapGridFlickerRange: 30/* Out of 255. */,
   gridAmount: 60,
-  mapBorderColor: '#222222'
+  mapBorderColor: '#222222' 
 };
