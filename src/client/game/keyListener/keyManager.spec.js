@@ -3,7 +3,7 @@
  */
 
 const KeyManager = require('./keyManager');
-const Player = require('../../../shared/objects/player/player');
+const Player = require('../../../shared/player/player');
 
 describe('The key manager:', function() {
   const dummyPlayer = new Player(0, 0, 'id');
@@ -40,7 +40,15 @@ describe('The key manager:', function() {
 
     const returnedKeyBuffer = keyManager.getKeyBuffer();
 
-    expect(returnedKeyBuffer).toEqual([87, 32]);
+    const expectedBuffer = [{
+      action: 1,
+      keyCode: 87
+    }, {
+      action: 1,
+      keyCode: 32
+    }];
+
+    expect(returnedKeyBuffer).toEqual(expectedBuffer);
   });
 
   it('wipes the buffer of pressed keys.', function() {

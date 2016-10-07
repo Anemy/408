@@ -15,21 +15,16 @@ class Bullet {
    * @param {Object} player - The player who shot the bullet. Used for their position, velocity, and direction.
    */
   constructor(player) {
-    this.width = BulletConstants.size;
-    this.height = BulletConstants.size;
+    this.radius = BulletConstants.radius;
 
-    // Start bullet coordinates from the middle of the player to make start location calculation easier
-    this.x = player.x + player.width/2;
-    this.y = player.y + player.height/2;
+    // Start bullet coordinates from the middle of the player.
+    this.x = player.x;
+    this.y = player.y;
 
-    // From middle, render it in front of the player in the direction it's being fired
-    this.x += player.width/2 * player.shootingRight - player.width/2 * player.shootingLeft;
-    this.y += player.width/2 * player.shootingDown - player.width/2 * player.shootingUp;
-
-    // Account for bullet size
-    this.x -= this.width/2;
-    this.y -= this.height/2;
-
+    // From the middle of the player, render it in the direction the player is firing.
+    this.x += player.radius * player.shootingRight - player.radius * player.shootingLeft;
+    this.y += player.radius * player.shootingDown - player.radius * player.shootingUp;
+    
     // Records how long the bullet has been alive for. One it reaches lifeSpan in constants or hits a wall, it dies.
     this.lifeTime = 0;
 
@@ -47,20 +42,24 @@ class Bullet {
   update(delta) {
     this.lifeTime += delta;
 
-    if (this.lifeTime > BulletConstants.lifeSpan) {
+    this.x += this.xVelocity * delta;
+    this.y += this.yVelocity * delta;
+
+    if (this.lifeTime > BulletConstants.lifeSpan ||
+        this.x < 0 || this.x > Constants.gameWidth ||
+        this.y < 0 || this.y > Constants.gameHeight) {
       // Destroy the bullet.
       return false;
     }
-
-    this.x += this.xVelocity * delta;
-    this.y += this.yVelocity * delta;
 
     return true;
   }
 
   draw(ctx) {
     ctx.fillStyle = BulletConstants.rgb;
-    ctx.fillRect(this.x * Constants.scale, this.y * Constants.scale, BulletConstants.size * Constants.scale, BulletConstants.size * Constants.scale);
+    ctx.beginPath();
+    ctx.arc(this.x * Constants.scale, this.y * Constants.scale, this.radius * Constants.scale, 0, 2 * Math.PI, false);
+    ctx.fill();
   }
 }
 

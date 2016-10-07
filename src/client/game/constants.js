@@ -42,6 +42,10 @@ module.exports = {
   width: isServer ? serverWidth : clientDimensions.x,
   height: isServer ? serverHeight : clientDimensions.y,
 
+  // The server game dimensions. Used for all logic. (Not drawing).
+  gameWidth: serverWidth,
+  gameHeight: serverHeight,
+
   scale: isServer ? 1 /* No scale */ : clientDimensions.x / serverWidth
 };
 

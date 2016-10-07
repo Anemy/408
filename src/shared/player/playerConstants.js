@@ -10,7 +10,7 @@ const skinTypes = {
 };
 
 module.exports = {
-  size: 20,
+  radius: 20,
   frictionAmount: 300,
   acceleration: 600,
   minAcceleration: 1,
@@ -20,6 +20,11 @@ module.exports = {
 
   // How often the player can shoot (s).
   shootRate: 0.2,
+
+  healthColor: '#11EE11',
+  healthHurtColor: '#EE1111',
+
+  borderColor: '#111111',
 
   // These define the kinds of player skins there are.
   // For instance a plain blue player would have the presetType COLOR.
