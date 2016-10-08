@@ -10,6 +10,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      displayName: '',
+      gameMode: 'ffa',
       isPlaying: false,
       navState: 'PLAYER_SETTINGS',
     };
@@ -29,15 +31,15 @@ class App extends React.Component {
   getMenu() {
     if (!this.state.isPlaying) {
       return <Menu
+        displayName={this.state.displayName}
+        gameMode={this.state.gameMode}
         navState={this.state.navState}
         sendMessage={this.sendMessage}
-        setNavState={this.setNavState.bind(this)}
+        setDisplayName={displayName => this.setState({displayName})}
+        setGameMode={gameMode => this.setState({gameMode})}
+        setNavState={navState => this.setState({navState})}
       />;
     }
-  }
-
-  setNavState(navState) {
-    this.setState({navState});
   }
 
   recieveMessage(msg) {
