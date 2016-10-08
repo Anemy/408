@@ -19,6 +19,7 @@ class Lobby {
     // Create the game instance for the server.
     this.game = new Game(this.updateClients.bind(this));
     this.game.start();
+    this.game.createMap();
     this.keyManager = new KeyManager();
   }
 

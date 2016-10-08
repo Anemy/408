@@ -53,31 +53,42 @@ class Player {
   }
 
   draw(ctx) {
+    // Save the default state
+    ctx.save();
+
+    // Translate the drawing to the player's location so we can just draw relative to it.
+    ctx.translate(this.x * Constants.scale, this.y * Constants.scale);
+
     switch(PlayerConstants.skins[this.skin].type) {
     case PlayerConstants.skinTypes.COLOR:
       ctx.fillStyle = PlayerConstants.skins[this.skin].rgb;
       ctx.beginPath();
-      ctx.arc(this.x * Constants.scale, this.y * Constants.scale, this.radius * Constants.scale, 0, 2 * Math.PI, false);
+      ctx.arc(0, 0, this.radius * Constants.scale, 0, 2 * Math.PI, false);
       ctx.fill();
       // Border around player.
       ctx.lineWidth = 1;
       ctx.strokeStyle = PlayerConstants.borderColor;
-      ctx.stroke();
+      ctx.stroke(); 
 
       // ctx.fillRect(this.x * Constants.scale, this.y * Constants.scale, this.width * Constants.scale, this.height * Constants.scale);
       break;
     }
 
+    // Translate the drawing to the top of the player so we can draw the health bars.
+    ctx.translate(-PlayerConstants.radius * Constants.scale, -PlayerConstants.radius * Constants.scale - PlayerConstants.healthBarSizeY);
+
     // Draw health bar above the player.
     ctx.strokeStyle = PlayerConstants.borderColor;
-    ctx.rect((this.x - PlayerConstants.radius) * Constants.scale, (this.y - PlayerConstants.radius) * Constants.scale, PlayerConstants.radius * Constants.scale * 2, 2);
+    ctx.rect(0, 0, PlayerConstants.radius * Constants.scale * 2, PlayerConstants.healthBarSizeY);
     ctx.stroke();
     ctx.fillStyle = PlayerConstants.healthHurtColor;
-    ctx.fillRect((this.x - PlayerConstants.radius) * Constants.scale, (this.y - PlayerConstants.radius) * Constants.scale, PlayerConstants.radius * Constants.scale * 2, 2); 
+    ctx.fillRect(0, 0, PlayerConstants.radius * Constants.scale * 2, PlayerConstants.healthBarSizeY); 
     if (this.health > 0) {
       ctx.fillStyle = PlayerConstants.healthColor;
-      ctx.fillRect((this.x - PlayerConstants.radius) * Constants.scale, (this.y - PlayerConstants.radius) * Constants.scale, (this.health/PlayerConstants.maxHealth)* (PlayerConstants.radius * Constants.scale * 2), 2);
+      ctx.fillRect(0, 0, (this.health/PlayerConstants.maxHealth)* (PlayerConstants.radius * Constants.scale * 2), PlayerConstants.healthBarSizeY);
     }
+
+    ctx.restore();
   }
 
   /**

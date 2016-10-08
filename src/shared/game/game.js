@@ -10,8 +10,10 @@ const updateRate = 1000 / fps;
 
 const _ = require('underscore');
 const Player = require('../player/player');
+const PlayerConstants = require('../player/playerConstants');
 const Bullet = require('../bullet/bullet');
 const Constants = require('../../client/game/constants');
+const Spike = require('../spike/spike');
 
 const Collisions = require('./collisions');
 
@@ -21,13 +23,15 @@ class Game {
   }
 
   /**
-   * Starts the game loop running and creates a socket connection to the server (if it's a client).
+   * Starts the game loop running.
    */
   start() {
     this.running = true; 
     this.players = {};
     this.bullets = [];
     this.lastFrame = Date.now();
+
+    this.spikes = [];
 
     // Start the game loop.
     // Holds the Javascript setInterval() id of the gameloop.
@@ -44,6 +48,28 @@ class Game {
     this.lastFrame = Date.now();
   }
 
+  createMap() {
+    this.createSpikes();
+  }
+
+  // Adds spikes at random positions in the map. 
+  // TODO: make these stationary and not random?
+  createSpikes() {
+    const spikesToCreate = 5;
+    for(var i = 0; i < spikesToCreate; i++) {
+      const randomXSpawn = Math.floor(Math.random() * Constants.width);
+      const randomYSpawn = Math.floor(Math.random() * Constants.height);
+
+      this.addSpike(randomXSpawn, randomYSpawn);
+    }
+  }
+
+  addSpike(x, y) {
+    const newSpike = new Spike(x, y);
+
+    this.spikes.push(newSpike);
+  }
+
   addPlayer(x, y, skin, playerId) {
     const newPlayer = new Player(x, y, skin, playerId);
     this.players[playerId] = newPlayer;
@@ -54,7 +80,8 @@ class Game {
   addRandomPlayer(playerId) {
     const randomXSpawn = Math.floor(Math.random() * Constants.width);
     const randomYSpawn = Math.floor(Math.random() * Constants.height);
-    const skin = Math.random() * 20 > 10 ? 'red' : 'blue';
+    // Randomly choose one of the skins.
+    const skin = Object.keys(PlayerConstants.skins)[Math.floor(Math.random() * Object.keys(PlayerConstants.skins).length)];
     this.addPlayer(randomXSpawn, randomYSpawn, skin, playerId);    
   }
 
@@ -82,6 +109,10 @@ class Game {
     // Update and filter out dead bullets.
     this.bullets = _.filter(this.bullets, (bullet) => {
       return bullet.update(delta);
+    });
+
+    _.each(this.spikes, (spike) => {
+      spike.update(delta);
     });
 
     this.shootBullets();
@@ -112,7 +143,8 @@ class Game {
   getGameData() {
     const gameData = {
       players: this.players,
-      bullets: this.bullets
+      bullets: this.bullets,
+      spikes: this.spikes
     };
     return gameData;
   }

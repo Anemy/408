@@ -21,6 +21,7 @@ module.exports = {
   // How often the player can shoot (s).
   shootRate: 0.2,
 
+  healthBarSizeY: 3,
   healthColor: '#11EE11',
   healthHurtColor: '#EE1111',
 
@@ -37,6 +38,18 @@ module.exports = {
     'blue': {
       type: skinTypes.COLOR,
       rgb: 'rgb(0,0,255)'
+    },
+    'green': {
+      type: skinTypes.COLOR,
+      rgb: 'rgb(0,255,0)'
+    },
+    'yellow': {
+      type: skinTypes.COLOR,
+      rgb: 'rgb(255,255,0)'
+    },
+    'yellow': {
+      type: skinTypes.COLOR,
+      rgb: 'rgb(0,255,255)'
     }
   }
 };

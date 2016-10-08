@@ -36,6 +36,10 @@ class GameManager {
       bullet.draw(ctx);
     });
 
+     _.each(this.game.spikes, (spike) => {
+      spike.draw(ctx);
+     });
+
     // Draw all of the players.
     for(var p in this.game.players) {
       this.game.players[p].draw(ctx);
@@ -93,6 +97,14 @@ class GameManager {
       if (!gameData.players[p]) {
         this.game.removePlayer(p);
       }
+    }
+
+    // Add in spikes if they don't exist locally.
+    if (this.game.spikes.length === 0) {
+      this.game.spikes = [];
+      _.each(gameData.spikes, (spike) => {
+        this.game.addSpike(spike.x, spike.y)
+      });
     }
 
     // TODO: Bring in bullets.
