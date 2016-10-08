@@ -28,6 +28,23 @@
 
 .title {
   color: white;
+  font-family: 'changeling-neo', sans-serif;
+  font-size: 76px;
+  line-height: 72px;
+  max-width: 500px;
+  -webkit-animation: fadeIn 2s;
+  animation: fadeIn 2s;
+}
+
+@-webkit-keyframes fadeIn {
+    0% { opacity: 0 }
+   50% { opacity: 0 }
+  100% { opacity: 1 }
+}
+@keyframes fadeIn {
+    0% { opacity: 0; }
+   50% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 .card {
@@ -36,6 +53,8 @@
   box-shadow: 0 2px 4px rgba(0,0,0,.2);
   display: inline-block;
   width: 500px;
+  -webkit-animation: fadeIn 2s;
+  animation: fadeIn 2s;
 }
 
 .navbar {
@@ -124,6 +143,9 @@
   &:hover {
     background-color: #488bcb;
   }
+  
+  -webkit-animation: fadeIn 2s;
+  animation: fadeIn 2s;
 }
 
 .player-settings {
