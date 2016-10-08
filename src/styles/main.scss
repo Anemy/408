@@ -66,6 +66,7 @@
 
 .navbar-item {
   cursor: pointer;
+  flex-basis: 33%;
   flex-grow: 1;
 
   &:hover {
@@ -143,7 +144,7 @@
   &:hover {
     background-color: #488bcb;
   }
-  
+
   -webkit-animation: fadeIn 2s;
   animation: fadeIn 2s;
 }
