@@ -1,11 +1,18 @@
 import React, { PropTypes } from 'react';
 const SocketConstants = require('../game/socket/socketConstants');
 const Navbar = require('./navbar.jsx');
+const PlayerSettings = require('./playerSettings.jsx');
 
 class Menu extends React.Component {
   getContent() {
     if (this.props.navState === 'PLAYER_SETTINGS') {
-      return <div>BLAH</div>;
+      return (
+        <PlayerSettings
+          displayName={this.props.displayName}
+          gameMode={this.props.gameMode}
+          setDisplayName={this.props.setDisplayName}
+          setGameMode={this.props.setGameMode} />
+      );
     } else if (this.props.navState === 'LOBBIES') {
       return <div>HARH</div>;
     } else if (this.props.navState === 'LOADING') {
@@ -25,30 +32,25 @@ class Menu extends React.Component {
             setNavState={this.props.setNavState} />
           {this.getContent()}
         </div>
-        <button onClick={() => {
-          this.props.sendMessage({
-            type: SocketConstants.FIND_GAME,
-          });
-        }}>Join Game</button>
-        <button onClick={() => {
-          this.props.sendMessage({
-            type: SocketConstants.CHAT,
-            msg: 'Hi!'
-          });
-        }}>Send Hi</button>
-        <button onClick={() => {
-          this.props.sendMessage({
-            type: SocketConstants.LOBBIES_INFO
-          });
-        }}>Refresh Lobby Info</button>
+        <button
+          onClick={() => {
+            this.props.sendMessage({
+              type: SocketConstants.FIND_GAME,
+            });
+          }}
+          className='button'>PLAY NOW</button>
       </div>
     );
   }
 }
 
 Menu.propTypes = {
+  displayName: PropTypes.string,
+  gameMode: PropTypes.string,
   navState: PropTypes.string,
   sendMessage: PropTypes.func,
+  setDisplayName: PropTypes.func,
+  setGameMode: PropTypes.func,
   setNavState: PropTypes.func
 };
 

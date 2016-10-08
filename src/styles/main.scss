@@ -107,22 +107,82 @@
   }
 }
 
-.testing-button {
-  position: absolute;
+.button {
+  color: white;
+  background-color: #5A99D5;
+  border: none;
+  border-radius: 3px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.2);
+  font-family: 'Lato', sans-serif;
+  font-size: 24px;
+  letter-spacing: 2px;
+  margin-top: 30px;
+  padding: 25px 0;
+  transition: background-color 0.3s;
+  width: 500px;
 
-  top: 20px;
-  left: 20px;
-
-  width: auto;
-  height: auto;
-
-  padding: 4px;
+  &:hover {
+    background-color: #488bcb;
+  }
 }
 
-.send-hi-message-button {
-  top: 60px !important;
+.player-settings {
+  display: flex;
+  padding: 20px;
+
+  .display-name {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 4;
+    margin-right: 20px;
+
+    .text-input {
+      border: 1px solid #aaa;
+      border-radius: 3px;
+      color: #666;
+      font-family: 'Lato', sans-serif;
+      font-size: 14px;
+      padding: 0 0 0 10px;
+      height: 40px;
+      text-transform: uppercase;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  .game-mode {
+    display: flex;
+    flex-direction: column;
+
+    .game-mode-select {
+      border: 1px solid #aaa;
+      border-radius: 3px;
+      height: 40px;
+      padding: 0 7px 0 2px;
+      display: flex;
+
+      select {
+        border: none;
+        background: transparent;
+        color: #666;
+        font-family: 'Lato', sans-serif;
+        font-size: 14px;
+
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+  }
 }
 
-.lobbies-info-message-button {
-  top: 100px !important;
+label {
+  text-align: left;
+  color: #aaa;
+  font-family: 'Lato', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
 }
