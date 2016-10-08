@@ -18,7 +18,8 @@ const config = {
   jsDependPath: 'src/client/lib/**/*.js',
   jsDestDir: 'public/js',
   jsSpecPath: 'src/**/*[sS]pec.js',
-  clientJsPath: ['src/client/**/*.js', 'src/shared/**/*.js', '!src/**/*.spec.js'],
+  clientJsPath: ['src/client/**/*.js', '!src/**/*.spec.js'],
+  sharedJsPath: 'src/shared/**/*.js',
   serverJsPath: ['src/server/**/*.js', 'src/client/game/**/*.js'],
   serverJsEntry: 'src/server/index.js',
   serverJsDestDir: './'
@@ -69,7 +70,7 @@ gulp.task('dev', function() {
   gulp.watch([config.jsPath, 'index.js', 'gulpfile.js' /* That's me! */], ['lint']);
 
   // Watch for clientside changes and run building tasks.
-  gulp.watch([config.clientJsPath], ['js']);
+  gulp.watch([config.clientJsPath, config.sharedJsPath], ['js']);
 
   // Watch for changes in the dependencies for clientside and build accordingly.
   gulp.watch([config.jsDependPath], ['jsClientDependencies']);
@@ -127,7 +128,7 @@ gulp.task('server', function() {
   nodemon({
     script: 'index.js',
     ext: 'js html',
-    watch: [config.serverJsPath]
+    watch: [config.serverJsPath, config.sharedJsPath]
   })
     .on('restart', function() {
       setTimeout(function() {
