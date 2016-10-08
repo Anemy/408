@@ -25,7 +25,7 @@ class Menu extends React.Component {
   render() {
     return (
       <div className='bg'>
-        <h1 className='title'>Bumper Blasters</h1>
+        <h1 className='title'>BUMPER BLASTERS</h1>
         <div className='card'>
           <Navbar
             navState={this.props.navState}
