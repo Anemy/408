@@ -13,6 +13,100 @@
   transform: translate(-50%, -50%);
 }
 
+.bg {
+  align-items: center;
+  background: linear-gradient(141deg, rgba(78,148,255,0.8) 0%, rgba(67,254,247,0.8) 100%);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  left: 50%;
+  position: absolute;
+  text-align: center;
+  transform: translateX(-50%);
+  width: 100%;
+}
+
+.title {
+  color: white;
+}
+
+.card {
+  background-color: white;
+  border-radius: 3px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.2);
+  display: inline-block;
+  width: 500px;
+}
+
+.navbar {
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  padding: 10px 0;
+}
+
+
+.navbar-item {
+  cursor: pointer;
+  flex-grow: 1;
+
+  &:hover {
+    .img {
+      &.player {
+        background: url('/assets/img/player-active.svg');
+      }
+      &.lobby {
+        background: url('/assets/img/lobby-active.svg');
+      }
+      &.controls {
+        background: url('/assets/img/controls-active.svg');
+      }
+    }
+
+    p {
+      color: #5A99D5;
+    }
+  }
+
+  .img {
+    height: 40px;
+    margin: 0 auto;
+    transition: background 0.3s;
+    width: 40px;
+
+    &.player {
+      background: url('/assets/img/player-default.svg');
+      &.active {
+        background: url('/assets/img/player-active.svg');
+      }
+    }
+    &.lobby {
+      background: url('/assets/img/lobby-default.svg');
+      &.active {
+        background: url('/assets/img/lobby-active.svg');
+      }
+    }
+    &.controls {
+      background: url('/assets/img/controls-default.svg');
+      &.active {
+        background: url('/assets/img/controls-active.svg');
+      }
+    }
+  }
+
+  p {
+    color: #aaa;
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    margin: 0;
+    transition: color 0.3s;
+
+    &.active {
+      color: #5A99D5;
+    }
+  }
+}
+
 .testing-button {
   position: absolute;
 
