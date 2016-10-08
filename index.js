@@ -29,7 +29,6 @@ app.use('/', routing);
 app.set('views', 'src/views/');
 app.engine('.hbs', exphbs({
   layoutsDir: 'src/views/',
-  defaultLayout: 'layout',
   extname: '.hbs'
 }));
 app.set('view engine', '.hbs');
