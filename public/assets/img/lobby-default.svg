@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 20.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 40 40" style="enable-background:new 0 0 40 40;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#AAAAAA;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st1{fill:#5A99D5;}
+	.st2{fill:none;stroke:#5A99D5;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st3{fill:#AAAAAA;}
+	.st4{fill:#FFFFFF;stroke:#AAAAAA;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st5{fill:#FFFFFF;stroke:#5A99D5;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+</style>
+<g>
+	<path class="st3" d="M20,2c9.9,0,18,8.1,18,18c0,6.4-3.4,12.4-9,15.6c-2.7,1.6-5.8,2.4-9,2.4s-6.3-0.8-9-2.4C5.4,32.4,2,26.4,2,20
+		C2,10.1,10.1,2,20,2 M20,0C9,0,0,9,0,20c0,7.4,4,13.9,10,17.3C12.9,39,16.4,40,20,40s7.1-1,10-2.7c6-3.5,10-9.9,10-17.3
+		C40,9,31,0,20,0L20,0z"/>
+</g>
+<rect x="24" y="7" class="st0" width="5" height="26"/>
+<polygon class="st0" points="24,5 24,35 11,33 11,7 "/>
+<circle class="st4" cx="19" cy="21" r="1.5"/>
+<line class="st4" x1="20.5" y1="21" x2="21" y2="21"/>
+</svg>

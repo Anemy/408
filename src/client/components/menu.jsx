@@ -1,34 +1,28 @@
 import React, { PropTypes } from 'react';
 const SocketConstants = require('../game/socket/socketConstants');
+const Navbar = require('./navbar.jsx');
 
 class Menu extends React.Component {
   getContent() {
-    if (this.props.menuState === 'PLAYER_SETTINGS') {
+    if (this.props.navState === 'PLAYER_SETTINGS') {
       return <div>BLAH</div>;
-    } else if (this.props.menuState === 'LOBBIES') {
+    } else if (this.props.navState === 'LOBBIES') {
       return <div>HARH</div>;
-    } else if (this.props.menuState === 'LOADING') {
+    } else if (this.props.navState === 'LOADING') {
       return <div>HASEKR</div>;
     } else {
       return <div>ASLD</div>;
     }
   }
+
   render() {
     return (
-      <div>
-        <h1>Bumper Blasters</h1>
+      <div className='bg'>
+        <h1 className='title'>Bumper Blasters</h1>
         <div className='card'>
-          <ul className='navbar'>
-            <li>
-              <p>Player Settings</p>
-            </li>
-            <li>
-              <p>Lobbies</p>
-            </li>
-            <li>
-              <p>How To Play</p>
-            </li>
-          </ul>
+          <Navbar
+            navState={this.props.navState}
+            setNavState={this.props.setNavState} />
           {this.getContent()}
         </div>
         <button onClick={() => {
@@ -53,8 +47,9 @@ class Menu extends React.Component {
 }
 
 Menu.propTypes = {
-  menuState: PropTypes.string,
-  sendMessage: PropTypes.func
+  navState: PropTypes.string,
+  sendMessage: PropTypes.func,
+  setNavState: PropTypes.func
 };
 
 module.exports = Menu;

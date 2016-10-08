@@ -11,7 +11,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       isPlaying: false,
-      menuState: 'PLAYER_SETTINGS',
+      navState: 'PLAYER_SETTINGS',
     };
   }
 
@@ -22,17 +22,22 @@ class App extends React.Component {
       // Store the unique identifier given to us from the server.
       gameManager.setUuid(data.uuid);
     });
-    socket.on('message', this.recieveMessage);
+    socket.on('message', this.recieveMessage.bind(this));
     gameManager.start(this.sendMessage);
   }
 
   getMenu() {
     if (!this.state.isPlaying) {
       return <Menu
-        menuState='PLAYER_SETTINGS'
+        navState={this.state.navState}
         sendMessage={this.sendMessage}
+        setNavState={this.setNavState.bind(this)}
       />;
     }
+  }
+
+  setNavState(navState) {
+    this.setState({navState});
   }
 
   recieveMessage(msg) {
@@ -42,6 +47,7 @@ class App extends React.Component {
       break;
     case SocketConstants.GAME_FOUND:
       console.log('Game found! Lobby id:', msg.lobbyId);
+      this.setState({isPlaying: true});
       gameManager.updateLobby(msg.lobbyId);
       break;
     case SocketConstants.LOBBIES_INFO:
