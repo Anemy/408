@@ -6,13 +6,9 @@
  */
 
 const SocketConstants = require('./socket/socketConstants');
+const gameManager = require('./gameManager');
 
 class SocketConnection {
-  constructor(gameManager) {
-    this.socket = null;
-
-    this.gameManager = gameManager;
-  }
 
   connect() {
     this.socket = io();
@@ -41,7 +37,8 @@ class SocketConnection {
       break;
     case SocketConstants.GAME_FOUND:
       console.log('Game found! Lobby id:', msg.lobbyId);
-      this.gameManager.updateLobby(msg.lobbyId);
+      console.log(gameManager);
+      gameManager.updateLobby(msg.lobbyId);
       break;
     case SocketConstants.LOBBIES_INFO:
       console.log('Lobby info update from server:', msg.lobbiesInfo);
@@ -52,14 +49,22 @@ class SocketConnection {
     case SocketConstants.GAME_UPDATE:
       // if (Math.random() * 100 > 95)
       //    console.log('Game update from server:', msg.msg);
-      this.gameManager.parseGameUpdateFromServer(msg.msg);
+      gameManager.parseGameUpdateFromServer(msg.msg);
       break;
     default:
       // When we don't have a case for the server message type we just throw an error.
       throw new Error('Unidentifiable message from server.');
-      break;
     }
   }
 }
 
-module.exports = SocketConnection;
+let socket;
+
+function getInstance() {
+  if (!socket) {
+    socket = new SocketConnection();
+  }
+  return socket;
+}
+
+module.exports = getInstance();

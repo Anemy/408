@@ -1,24 +1,84 @@
-const App = require('./app.jsx');
 const React = require('react');
-const { createStore, applyMiddleware } = require('redux');
-const { Provider } = require('react-redux');
-const thunkMiddleware = require('redux-thunk').default;
-const createLogger = require('redux-logger');
-const bumperBlasters = require('./reducers');
 const ReactDOM = require('react-dom');
+const Menu = require('./components/menu.jsx');
+const SocketConstants = require('./game/socket/socketConstants');
+const gameManager = require('./game/gameManager');
 
-const loggerMiddleware = createLogger();
+let socket;
 
-let store = createStore(
-  bumperBlasters,
-  applyMiddleware(
-    thunkMiddleware,
-    loggerMiddleware
-  )
-);
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isPlaying: false,
+      menuState: 'PLAYER_SETTINGS',
+    };
+  }
+
+  componentDidMount() {
+    socket = io();
+    // Called when the client first connects to the server.
+    socket.on('connected', data => {
+      // Store the unique identifier given to us from the server.
+      gameManager.setUuid(data.uuid);
+    });
+    socket.on('message', this.recieveMessage);
+    gameManager.start(this.sendMessage);
+  }
+
+  getMenu() {
+    if (!this.state.isPlaying) {
+      return <Menu
+        menuState='PLAYER_SETTINGS'
+        sendMessage={this.sendMessage}
+      />;
+    }
+  }
+
+  recieveMessage(msg) {
+    switch(msg.type) {
+    case SocketConstants.CHAT:
+      console.log('Chat message recieved:', msg.msg);
+      break;
+    case SocketConstants.GAME_FOUND:
+      console.log('Game found! Lobby id:', msg.lobbyId);
+      gameManager.updateLobby(msg.lobbyId);
+      break;
+    case SocketConstants.LOBBIES_INFO:
+      console.log('Lobby info update from server:', msg.lobbiesInfo);
+      break;
+    case SocketConstants.ERROR:
+      console.log('Error from server:', msg.msg);
+      break;
+    case SocketConstants.GAME_UPDATE:
+      // if (Math.random() * 100 > 95)
+      //    console.log('Game update from server:', msg.msg);
+      gameManager.parseGameUpdateFromServer(msg.msg);
+      break;
+    default:
+      // When we don't have a case for the server message type we just throw an error.
+      throw new Error('Unidentifiable message from server.');
+    }
+  }
+
+  sendMessage(msg) {
+    if (socket) {
+      socket.emit('message', msg);
+    } else {
+      new Error('Error: Trying to send message without an established connection to server.');
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        <canvas id='gameCanvas'></canvas>
+        {this.getMenu()}
+      </div>
+    );
+  }
+}
 
 ReactDOM.render((
-  <Provider store={store}>
-    <App />
-  </Provider>
+  <App/>
 ), document.getElementById('content'));

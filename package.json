@@ -47,10 +47,6 @@
     "jshint": "^2.9.3",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
-    "react-redux": "^4.4.5",
-    "redux": "^3.6.0",
-    "redux-logger": "^2.6.1",
-    "redux-thunk": "^2.1.0",
     "webpack": "^1.13.2",
     "webpack-stream": "^3.2.0"
   }
