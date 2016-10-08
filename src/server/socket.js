@@ -49,6 +49,6 @@ class Socket {
     delete this.clients[client.id];
     console.log('Client [' + client.id + '] disconnected. # of Clients: ' + Object.keys(this.clients).length);
   }
-};
+}
 
 module.exports = Socket;

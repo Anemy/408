@@ -1,11 +1,22 @@
-<noscript>
-  alert("Please enable javascript to play this game.");
-</noscript>
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
 
-{{!-- <p class="homepage-text">Homepage</p> --}}
+    <title>408 Game</title>
 
-<canvas id="gameCanvas"></canvas>
+    <link rel='icon' type='image/png' href='/assets/img/favicon.png'/>
 
-<button class="testing-button join-game-button">Join Game</button>
-<button class="testing-button send-hi-message-button">Send 'Hi' Msg</button>
-<button class="testing-button lobbies-info-message-button">Refresh Lobby Info</button>
+    <link rel='stylesheet' href='/css/main.css'>
+    <script src='/js/dependencies.js'></script>
+  </head>
+  <body>
+    <noscript>
+      alert("Please enable javascript to play this game.");
+    </noscript>
+    <div id="content"></div>
+    <script src='/js/build.js'></script>
+  </body>
+</html>

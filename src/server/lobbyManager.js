@@ -7,13 +7,13 @@ const _ = require('underscore');
 const Lobby = require('./Models/Lobby');
 
 class LobbyManager {
-  
+
   constructor() {
     // This manages all of the currently in progress game lobbies.
     // It's a hashmap where each game lobby's unique identifier is its location in the array.
     this.lobbies = {};
   }
-  
+
   // Called when a player wants to find a game.
   findGame(client) {
     var gameFound = false;
@@ -29,7 +29,7 @@ class LobbyManager {
         // Lobby found, stop searching.
         break;
       }
-    };
+    }
 
     // When no available lobby was found, create a new one.
     if (_.isUndefined(lobby)) {
@@ -56,18 +56,18 @@ class LobbyManager {
 
     for(var l in this.lobbies) {
       const lobby = this.lobbies[l];
-      
+
       const lobbyInfo = {
         id: lobby.id,
         population: Object.keys(lobby.clients).length
         // TODO (Rhys): Make the lobby return a list of the client usernames playing so
         // that we have the information needed for people to find games w/ friends quick.
-      }
+      };
       lobbies.push(lobbyInfo);
-    };
+    }
 
     return lobbies;
   }
-};
+}
 
 module.exports = LobbyManager;

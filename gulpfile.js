@@ -12,13 +12,17 @@ const Jasmine = require('jasmine');
 const config = {
   sassPath: 'src/styles/**/*.scss',
   cssDestDir: 'public/css',
-  jsClientEntry: 'src/client/index.js',
+  jsClientEntry: 'src/client/index.jsx',
   jsClientDependencies: 'src/client/lib/**/*.js',
   jsPath: 'src/**/*.js',
   jsDependPath: 'src/client/lib/**/*.js',
   jsDestDir: 'public/js',
   jsSpecPath: 'src/**/*[sS]pec.js',
-  clientJsPath: ['src/client/**/*.js', '!src/**/*.spec.js'],
+  clientJsPath: [
+    'src/client/**/*.js',
+    'src/client/**/*.jsx',
+    '!src/**/*.spec.js'
+  ],
   sharedJsPath: 'src/shared/**/*.js',
   serverJsPath: ['src/server/**/*.js', 'src/client/game/**/*.js'],
   serverJsEntry: 'src/server/index.js',
@@ -33,11 +37,11 @@ const webpackConfig = {
   },
   module: {
     loaders: [
-      { 
-        test: /\.js$/,
+      {
+        test: /\.jsx$/,
         loader: 'babel-loader',
         query: {
-          presets: ['es2015']
+          presets: ['es2015', 'react']
         }
       }
     ]
@@ -51,7 +55,7 @@ gulp.task('testDev', ['test'], function() {
 
 gulp.task('test', function() {
   const jasmine = new Jasmine();
-  
+
   jasmine.loadConfig({
       spec_dir: '/',
       spec_files: [
@@ -67,7 +71,7 @@ gulp.task('test', function() {
 });
 
 gulp.task('dev', function() {
-  gulp.watch([config.jsPath, 'index.js', 'gulpfile.js' /* That's me! */], ['lint']);
+  gulp.watch([config.jsPath, 'index.jsx', 'gulpfile.js' /* That's me! */], ['lint']);
 
   // Watch for clientside changes and run building tasks.
   gulp.watch([config.clientJsPath, config.sharedJsPath], ['js']);
@@ -85,10 +89,13 @@ gulp.task('dev', function() {
 
 // JSLint
 gulp.task('lint', function () {
-  gulp.src(['**/*.js',
-      '!node_modules/**' /* Ignore modules. */,
-      '!**/lib/**' /* Ignore external libraries. */,
-      '!public/**' /* Ignore built files. */])
+  gulp.src([
+    '**/*.js',
+    '**/*.jsx',
+    '!node_modules/**' /* Ignore modules. */,
+    '!**/lib/**' /* Ignore external libraries. */,
+    '!public/**' /* Ignore built files. */
+  ])
     // eslint() attaches the lint output to the "eslint" property
     // of the file object so it can be used by other modules.
     .pipe(eslint())
