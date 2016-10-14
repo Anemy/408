@@ -115,6 +115,8 @@ class Game {
       spike.update(delta);
     });
 
+    this.checkCollisions(delta);
+
     this.shootBullets();
   }
 
@@ -133,7 +135,25 @@ class Game {
     };
   }
 
+  checkCollisions(delta) {
+    for(var p in this.players) {
+      for(var b in this.bullets) {
+        // Check if the person was shot.
+        if (this.bullets[b].owner != p && // Can't shoot yourself.
+          Collisions.circleTickIntersection(this.players[p], this.bullets[b], delta)) {
+          this.players[p].health -= this.bullets[b].damage;
+        }
+      }
 
+      for(var s in this.spikes) {
+        // Check if a player collided with a spike.
+        if (Collisions.circleTickIntersection(this.players[p], this.spikes[s], delta)) {
+          // Player hit a spike.
+          this.players[p].health = 0;
+        }
+      }
+    }
+  }
 
   /**
    * Returns the current game state. All of the player data, bullet data, etc.

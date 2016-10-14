@@ -21,6 +21,8 @@ class Bullet {
     this.x = player.x;
     this.y = player.y;
 
+    this.damage = BulletConstants.damage;
+
     // From the middle of the player, render it in the direction the player is firing.
     this.x += player.radius * player.shootingRight - player.radius * player.shootingLeft;
     this.y += player.radius * player.shootingDown - player.radius * player.shootingUp;

@@ -15,7 +15,7 @@ module.exports = {
   circleIntersection: function(circleObjectOne, circleObjectTwo) {
     const totalRadius = circleObjectOne.radius + circleObjectTwo.radius;
 
-    return (Math.abs(circleObjectOne.y - circleObjectTwo.y) < totalRadius &&
+    return (Math.abs(circleObjectOne.x - circleObjectTwo.x) < totalRadius &&
         Math.abs(circleObjectOne.y - circleObjectTwo.y) < totalRadius);
   }, 
 
@@ -33,8 +33,7 @@ module.exports = {
    * @returns {Boolean} - Whether or not the two circle objects intersect in the tick.
    */
   circleTickIntersection: function(circleObjectOne, circleObjectTwo, delta) {
-
-
-    return false;
+    // TODO (Change this to actually use delta. Atm this is a niave approach and will not capture all collisions).
+    return this.circleIntersection(circleObjectOne, circleObjectTwo);
   }
 }
