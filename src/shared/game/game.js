@@ -12,7 +12,7 @@ const _ = require('underscore');
 const Player = require('../player/player');
 const PlayerConstants = require('../player/playerConstants');
 const Bullet = require('../bullet/bullet');
-const Constants = require('../../client/game/constants');
+const Constants = require('./constants');
 const Spike = require('../spike/spike');
 
 const Collisions = require('./collisions');

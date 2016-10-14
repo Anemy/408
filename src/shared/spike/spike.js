@@ -6,7 +6,7 @@
  */
 
 const SpikeConstants = require('./spikeConstants');
-const Constants = require('../../client/game/constants');
+const Constants = require('../game/constants');
 
 class Spike {
   /*
