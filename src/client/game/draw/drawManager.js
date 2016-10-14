@@ -6,7 +6,7 @@
 
 // Load in the constants (colors, sizes, etc.) for drawing.
 const DrawConstants = require('./drawConstants');
-const Constants = require('../constants');
+const Constants = require('../../../shared/game/constants');
 
 class DrawManager {
   constructor() {

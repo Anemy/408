@@ -6,7 +6,7 @@
  */
 
 const BulletConstants = require('./bulletConstants');
-const Constants = require('../../client/game/constants');
+const Constants = require('../game/constants');
 
 class Bullet {
   /*
