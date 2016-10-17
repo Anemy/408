@@ -85,6 +85,20 @@ class DrawManager {
     this.ctx.lineTo(Constants.width, Constants.height - 1);
     this.ctx.stroke();
   }
+
+  drawLeaderboard(players) {
+    let i = 0;
+    for(let p in players) {
+      this.ctx.fillStyle = 'rgb(0,0,0)';
+      this.ctx.font = Math.floor(16 * Constants.scale) + 'px Arial';
+      this.ctx.textBaseline = 'top';
+      this.ctx.textAlign = 'left';
+      this.ctx.fillText(players[p].username, 2, 2 + i * 10 * Constants.scale);
+      this.ctx.fillText(players[p].kills, 140 * Constants.scale, i * 10 * Constants.scale);
+
+      i++;
+    }
+  }
 }
 
 module.exports = DrawManager;

@@ -46,6 +46,9 @@ module.exports = {
   gameWidth: serverWidth,
   gameHeight: serverHeight,
 
+  isServer: isServer,
+  isClient: !isServer,
+
   scale: isServer ? 1 /* No scale */ : clientDimensions.x / serverWidth
 };
 

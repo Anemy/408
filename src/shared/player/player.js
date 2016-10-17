@@ -16,15 +16,21 @@ class Player {
    * @param {Integer} ySpawn - Location to spawn on y axis.
    * @param {Integer} skin - The reference to what the player looks like in playerConstants.skins.
    */
-  constructor(xSpawn, ySpawn, skin, playerId) {
+  constructor(xSpawn, ySpawn, skin, playerId, username) {
     this.x = xSpawn;
     this.y = ySpawn;
 
-    this.id = playerId
+    this.id = playerId;
+
+    this.username = username || PlayerConstants.defaultUsername;
 
     // Velocity of x/y movement. 
     this.xVelocity = 0;
     this.yVelocity = 0;
+
+    this.kills = 0;
+
+    this.spawnTimer = PlayerConstants.spawnTime;
 
     // Booleans for corresponding movement key being pressed.
     this.left = false;
@@ -59,6 +65,11 @@ class Player {
     // Translate the drawing to the player's location so we can just draw relative to it.
     ctx.translate(this.x * Constants.scale, this.y * Constants.scale);
 
+    // When the player has not yet respawned, show the player with lowered opacity.
+    if (this.spawnTimer > 0) {
+      ctx.globalAlpha = 0.3;
+    }
+
     switch(PlayerConstants.skins[this.skin].type) {
     case PlayerConstants.skinTypes.COLOR:
       ctx.fillStyle = PlayerConstants.skins[this.skin].rgb;
@@ -74,18 +85,30 @@ class Player {
       break;
     }
 
-    // Translate the drawing to the top of the player so we can draw the health bars.
-    ctx.translate(-PlayerConstants.radius * Constants.scale, -PlayerConstants.radius * Constants.scale - PlayerConstants.healthBarSizeY);
+    // Only drawn the health bar on an alive player.
+    if (this.spawnTimer <= 0) {
+      // Translate the drawing to the top of the player so we can draw the health bars.
+      ctx.translate(-PlayerConstants.radius * Constants.scale, -PlayerConstants.radius * Constants.scale - PlayerConstants.healthBarSizeY);
 
-    // Draw health bar above the player.
-    ctx.strokeStyle = PlayerConstants.borderColor;
-    ctx.rect(0, 0, PlayerConstants.radius * Constants.scale * 2, PlayerConstants.healthBarSizeY);
-    ctx.stroke();
-    ctx.fillStyle = PlayerConstants.healthHurtColor;
-    ctx.fillRect(0, 0, PlayerConstants.radius * Constants.scale * 2, PlayerConstants.healthBarSizeY); 
-    if (this.health > 0) {
-      ctx.fillStyle = PlayerConstants.healthColor;
-      ctx.fillRect(0, 0, (this.health/PlayerConstants.maxHealth)* (PlayerConstants.radius * Constants.scale * 2), PlayerConstants.healthBarSizeY);
+      // Draw health bar above the player.
+      ctx.strokeStyle = PlayerConstants.borderColor;
+      ctx.rect(0, 0, PlayerConstants.radius * Constants.scale * 2, PlayerConstants.healthBarSizeY);
+      ctx.stroke();
+      ctx.fillStyle = PlayerConstants.healthHurtColor;
+      ctx.fillRect(0, 0, PlayerConstants.radius * Constants.scale * 2, PlayerConstants.healthBarSizeY); 
+      if (this.health > 0) {
+        ctx.fillStyle = PlayerConstants.healthColor;
+        ctx.fillRect(0, 0, (this.health/PlayerConstants.maxHealth)* (PlayerConstants.radius * Constants.scale * 2), PlayerConstants.healthBarSizeY);
+      }
+    } else {
+      // When the player has not yet respawned, show the countdown timer.
+      ctx.globalAlpha = 1;
+
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom'; 
+      ctx.fillStyle = PlayerConstants.spawnCountdownColor;
+      ctx.font = Math.floor((this.spawnTimer % 1) * 50 * Constants.scale) + 'px Arial';
+      ctx.fillText(Math.floor(this.spawnTimer), 0, Math.floor((this.spawnTimer % 1) * 10 * Constants.scale));
     }
 
     ctx.restore();
@@ -97,6 +120,11 @@ class Player {
    * @param {Integer} delta - amount of time elapsed since last update
    */
   update(delta) {
+    if (this.spawnTimer > 0) {      
+      this.spawnTimer -= delta;
+      return;
+    }
+
     this.applyFriction(delta);
 
     // Update player velocity based on recorded key presses & delta.
@@ -200,6 +228,25 @@ class Player {
   // Called when a bullet is shot from the player.
   shoot() {
     this.shootTimer = PlayerConstants.shootRate;
+  }
+
+  /**
+   * @returns {Boolean} - Whether or not the player is currently alive (not respawning, etc).
+   */
+  isAlive() {
+    return this.spawnTimer <= 0;
+  }
+
+  respawn(x, y) {
+    this.x = x;
+    this.y = y;
+
+    // Reset all player controlled variables.
+    this.xVelocity = this.yVelocity = this.shootTimer = 0;
+
+    this.spawnTimer = PlayerConstants.spawnTime;
+
+    this.health = PlayerConstants.maxHealth;
   }
 
   /**

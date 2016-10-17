@@ -16,7 +16,11 @@ module.exports = {
   minAcceleration: 1,
   maxAcceleration: 600,
 
+  spawnTime: 3 /* Default time until the player spawns again. (s) */,
+
   maxHealth: 100,
+
+  defaultUsername: 'Unnamed Player',
 
   // How often the player can shoot (s).
   shootRate: 0.2,
@@ -24,6 +28,7 @@ module.exports = {
   healthBarSizeY: 3,
   healthColor: '#11EE11',
   healthHurtColor: '#EE1111',
+  spawnCountdownColor: '#222222',
 
   borderColor: '#111111',
 
