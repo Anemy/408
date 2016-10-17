@@ -12,30 +12,24 @@ class Bullet {
   /*
    * Creates the bullet, placing it at the location provided, with the given direction.
    * 
-   * @param {Object} player - The player who shot the bullet. Used for their position, velocity, and direction.
+   * @param {{Object} player - The player who shot the bullet. Used for their position, velocity, and direction.}
    */
-  constructor(player) {
+  constructor(owner, x, y, xVelocity, yVelocity) {
+    this.owner = owner;
+
     this.radius = BulletConstants.radius;
 
-    // Start bullet coordinates from the middle of the player.
-    this.x = player.x;
-    this.y = player.y;
+    this.x = x;
+    this.y = y;
 
     this.damage = BulletConstants.damage;
 
-    // From the middle of the player, render it in the direction the player is firing.
-    this.x += player.radius * player.shootingRight - player.radius * player.shootingLeft;
-    this.y += player.radius * player.shootingDown - player.radius * player.shootingUp;
-    
     // Records how long the bullet has been alive for. One it reaches lifeSpan in constants or hits a wall, it dies.
     this.lifeTime = 0;
 
     // Determine which direction to shoot the bullet in.
-    this.xVelocity = -BulletConstants.speed * player.shootingLeft;
-    this.xVelocity += BulletConstants.speed * player.shootingRight;
-
-    this.yVelocity = -BulletConstants.speed * player.shootingUp;
-    this.yVelocity += BulletConstants.speed * player.shootingDown;
+    this.xVelocity = xVelocity;
+    this.yVelocity = yVelocity;
   }
 
   /**

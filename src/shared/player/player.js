@@ -16,15 +16,19 @@ class Player {
    * @param {Integer} ySpawn - Location to spawn on y axis.
    * @param {Integer} skin - The reference to what the player looks like in playerConstants.skins.
    */
-  constructor(xSpawn, ySpawn, skin, playerId) {
+  constructor(xSpawn, ySpawn, skin, playerId, username) {
     this.x = xSpawn;
     this.y = ySpawn;
 
-    this.id = playerId
+    this.id = playerId;
+
+    this.username = username || PlayerConstants.defaultUsername;
 
     // Velocity of x/y movement. 
     this.xVelocity = 0;
     this.yVelocity = 0;
+
+    this.kills = 0;
 
     this.spawnTimer = PlayerConstants.spawnTime;
 
@@ -100,10 +104,8 @@ class Player {
       // When the player has not yet respawned, show the countdown timer.
       ctx.globalAlpha = 1;
 
-      if(ctx.textAlign !== 'center') {
-        ctx.textAlign = 'center';
-      }
-
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom'; 
       ctx.fillStyle = PlayerConstants.spawnCountdownColor;
       ctx.font = Math.floor((this.spawnTimer % 1) * 50 * Constants.scale) + 'px Arial';
       ctx.fillText(Math.floor(this.spawnTimer), 0, Math.floor((this.spawnTimer % 1) * 10 * Constants.scale));
@@ -243,6 +245,8 @@ class Player {
     this.xVelocity = this.yVelocity = this.shootTimer = 0;
 
     this.spawnTimer = PlayerConstants.spawnTime;
+
+    this.health = PlayerConstants.maxHealth;
   }
 
   /**
