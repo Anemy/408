@@ -53,7 +53,7 @@ class Game {
   }
 
   // Adds spikes at random positions in the map. 
-  // TODO: make these stationary and not random?
+  // TODO: Make these stationary and not random?
   createSpikes() {
     const spikesToCreate = 5;
     for(var i = 0; i < spikesToCreate; i++) {
@@ -95,6 +95,37 @@ class Game {
     delete this.players[playerId];
   }
 
+  // Respawns the player at a random location which doesn't collide with any spikes.
+  respawnPlayer(playerId) {
+    let xSpawn = 0;
+    let ySpawn = 0;
+
+    let colliding = true;
+    while(colliding) {
+      /*
+       * TODO: Make this just chose a location not used, not just chose a random one.
+       */
+      xSpawn = Math.random() * Constants.width;
+      ySpawn = Math.random() * Constants.height;
+
+      const newPosition = {
+        x: xSpawn,
+        y: ySpawn
+      }
+
+      for(var s in this.spikes) {
+        if (Collisions.circleIntersection(newPosition, this.spikes[s])) {
+          // New player position will hit a spike, find a new location.
+          colliding = true;
+          break;
+        }
+        colliding = false;
+      }
+    }
+
+    this.players[playerId].respawn(xSpawn, ySpawn);
+  }
+
   /*
   * Updates the game logic for one frame
   *
@@ -115,7 +146,10 @@ class Game {
       spike.update(delta);
     });
 
-    this.checkCollisions(delta);
+    // Only check collisions on the server for now.
+    if (Constants.isServer) {
+      this.checkCollisions(delta);
+    }
 
     this.shootBullets();
   }
@@ -137,6 +171,8 @@ class Game {
 
   checkCollisions(delta) {
     for(var p in this.players) {
+      if (this.players[p].isAlive())
+
       for(var b in this.bullets) {
         // Check if the person was shot.
         if (this.bullets[b].owner != p && // Can't shoot yourself.
@@ -149,7 +185,8 @@ class Game {
         // Check if a player collided with a spike.
         if (Collisions.circleTickIntersection(this.players[p], this.spikes[s], delta)) {
           // Player hit a spike.
-          this.players[p].health = 0;
+          // this.players[p].health = 0;
+          this.respawnPlayer(p);
         }
       }
     }
