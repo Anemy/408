@@ -3,7 +3,7 @@
  */
 
 const KeyManager = require('./keyManager');
-const Player = require('../../../shared/player/player');
+const Player = require('../player/player');
 
 describe('The key manager:', function() {
   const dummyPlayer = new Player(0, 0, 'id');
