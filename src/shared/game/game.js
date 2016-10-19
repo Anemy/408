@@ -200,9 +200,6 @@ class Game {
           Collisions.circleTickIntersection(this.players[p], this.bullets[b], delta)) {
           this.players[p].health -= this.bullets[b].damage;
 
-          // Destroy the bullet.
-          this.bullets.splice(b, 1);
-
           if (this.players[p].health <= 0) {
             // Give the owner of the bullet that killed the player a kill.
             if (this.players[this.bullets[b].owner]) {
@@ -212,6 +209,9 @@ class Game {
             // Respawn the player.
             this.respawnPlayer(p);
           }
+
+          // Destroy the bullet.
+          this.bullets.splice(b, 1);
         }
       }
 
