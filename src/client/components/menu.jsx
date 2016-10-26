@@ -34,8 +34,6 @@ class Menu extends React.Component {
         </div>
         <button
           onClick={() => {
-            console.log('This:',this);
-
             this.props.sendMessage({
               type: SocketConstants.FIND_GAME,
               username: this.props.displayName
