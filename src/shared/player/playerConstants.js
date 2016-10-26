@@ -38,23 +38,33 @@ module.exports = {
   skins: {
     'red': {
       type: skinTypes.COLOR,
-      rgb: 'rgb(255,0,0)'
+      rgb: 'rgb(255,0,0)',
+      textRgb: 'rgb(0,0,0)'
     },
     'blue': {
       type: skinTypes.COLOR,
-      rgb: 'rgb(0,0,255)'
+      rgb: 'rgb(0,0,255)',
+      textRgb: 'rgb(255,255,255)'
+    },
+    'purple': {
+      type: skinTypes.COLOR,
+      rgb: 'rgb(255,0,255)',
+      textRgb: 'rgb(0,0,0)'
     },
     'green': {
       type: skinTypes.COLOR,
-      rgb: 'rgb(0,255,0)'
+      rgb: 'rgb(0,255,0)',
+      textRgb: 'rgb(0,0,0)'
     },
     'yellow': {
       type: skinTypes.COLOR,
-      rgb: 'rgb(255,255,0)'
+      rgb: 'rgb(255,255,0)',
+      textRgb: 'rgb(0,0,0)'
     },
-    'yellow': {
+    'black': {
       type: skinTypes.COLOR,
-      rgb: 'rgb(0,255,255)'
+      rgb: 'rgb(0,0,0)',
+      textRgb: 'rgb(255,255,255)'
     }
   }
 };

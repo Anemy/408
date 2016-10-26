@@ -33,7 +33,7 @@ class Lobby {
     this.population++;
 
     // Add the client into the game.
-    this.game.addRandomPlayer(client.id);
+    this.game.addRandomPlayer(client.id, client.username || '');
 
     // Let them know it was a success.
     return true;

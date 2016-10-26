@@ -71,19 +71,19 @@ class Game {
     this.spikes.push(newSpike);
   }
 
-  addPlayer(x, y, skin, playerId) {
-    const newPlayer = new Player(x, y, skin, playerId);
+  addPlayer(x, y, skin, playerId, username) {
+    const newPlayer = new Player(x, y, skin, playerId, username);
     this.players[playerId] = newPlayer;
 
     return this.players[playerId];
   }
 
-  addRandomPlayer(playerId) {
+  addRandomPlayer(playerId, username) {
     const randomXSpawn = Math.floor(Math.random() * Constants.width);
     const randomYSpawn = Math.floor(Math.random() * Constants.height);
     // Randomly choose one of the skins.
     const skin = Object.keys(PlayerConstants.skins)[Math.floor(Math.random() * Object.keys(PlayerConstants.skins).length)];
-    this.addPlayer(randomXSpawn, randomYSpawn, skin, playerId);    
+    this.addPlayer(randomXSpawn, randomYSpawn, skin, playerId, username);    
   }
 
   updatePlayer(playerId, newData) {
