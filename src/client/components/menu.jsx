@@ -36,6 +36,7 @@ class Menu extends React.Component {
           onClick={() => {
             this.props.sendMessage({
               type: SocketConstants.FIND_GAME,
+              username: this.props.displayName
             });
           }}
           className='button'>PLAY NOW</button>

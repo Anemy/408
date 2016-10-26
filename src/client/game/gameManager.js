@@ -76,7 +76,7 @@ class GameManager {
     for (let p in gameData.players) {
       if (!this.game.players[p]) {
         // Create a new player if that player does not exist.
-        const newPlayer = this.game.addPlayer(gameData.players[p].x, gameData.players[p].y, gameData.players[p].skin, p);
+        const newPlayer = this.game.addPlayer(gameData.players[p].x, gameData.players[p].y, gameData.players[p].skin, p, gameData.players[p].username);
         if (this.uuid && p === this.uuid) {
           // This is the local player's player. Set the key listener up for it.
           this.keyManager.setPlayer(newPlayer);

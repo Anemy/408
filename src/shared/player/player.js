@@ -69,6 +69,7 @@ class Player {
 
     switch(PlayerConstants.skins[this.skin].type) {
     case PlayerConstants.skinTypes.COLOR:
+      // Fill the player's shape with their color.
       ctx.fillStyle = PlayerConstants.skins[this.skin].rgb;
       ctx.beginPath();
       ctx.arc(0, 0, this.radius * Constants.scale, 0, 2 * Math.PI, false);
@@ -76,9 +77,15 @@ class Player {
       // Border around player.
       ctx.lineWidth = 1;
       ctx.strokeStyle = PlayerConstants.borderColor;
-      ctx.stroke(); 
+      ctx.stroke();
 
-      // ctx.fillRect(this.x * Constants.scale, this.y * Constants.scale, this.width * Constants.scale, this.height * Constants.scale);
+      // Write the player's username.
+      ctx.fillStyle = PlayerConstants.skins[this.skin].textRgb;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle'; 
+      ctx.font = Math.floor(14 * Constants.scale) + 'px Arial';
+      ctx.fillText(this.username, 0, 0);
+
       break;
     }
 
@@ -252,7 +259,7 @@ class Player {
    */
   canShoot() {
     const playerIsAiming = this.shootingLeft || this.shootingRight || this.shootingUp || this.shootingDown;
-    return this.shootTimer <= 0 && playerIsAiming;
+    return this.spawnTimer <= 0 && this.shootTimer <= 0 && playerIsAiming;
   }
 }
 

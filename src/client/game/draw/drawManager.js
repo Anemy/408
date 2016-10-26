@@ -7,6 +7,7 @@
 // Load in the constants (colors, sizes, etc.) for drawing.
 const DrawConstants = require('./drawConstants');
 const Constants = require('../../../shared/game/constants');
+const PlayerConstants = require('../../../shared/player/playerConstants');
 
 class DrawManager {
   constructor() {
@@ -91,10 +92,10 @@ class DrawManager {
     for(let p in players) {
       this.ctx.fillStyle = 'rgb(0,0,0)';
       this.ctx.font = Math.floor(16 * Constants.scale) + 'px Arial';
-      this.ctx.textBaseline = 'top';
+      this.ctx.textBaseline = 'bottom';
       this.ctx.textAlign = 'left';
-      this.ctx.fillText(players[p].username, 2, 2 + i * 10 * Constants.scale);
-      this.ctx.fillText(players[p].kills, 140 * Constants.scale, i * 10 * Constants.scale);
+      this.ctx.fillText(players[p].username || PlayerConstants.defaultUsername, 2, 18*Constants.scale + i * 16 * Constants.scale);
+      this.ctx.fillText(players[p].kills, 140 * Constants.scale, 18*Constants.scale + i * 16 * Constants.scale);
 
       i++;
     }
