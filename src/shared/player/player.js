@@ -82,9 +82,9 @@ class Player {
       // Write the player's username.
       ctx.fillStyle = PlayerConstants.skins[this.skin].textRgb;
       ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom'; 
+      ctx.textBaseline = 'middle'; 
       ctx.font = Math.floor(14 * Constants.scale) + 'px Arial';
-      ctx.fillText(this.username, 0, (this.radius / 2) * Constants.scale);
+      ctx.fillText(this.username, 0, 0);
 
       break;
     }

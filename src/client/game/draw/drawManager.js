@@ -92,10 +92,10 @@ class DrawManager {
     for(let p in players) {
       this.ctx.fillStyle = 'rgb(0,0,0)';
       this.ctx.font = Math.floor(16 * Constants.scale) + 'px Arial';
-      this.ctx.textBaseline = 'top';
+      this.ctx.textBaseline = 'bottom';
       this.ctx.textAlign = 'left';
-      this.ctx.fillText(players[p].username || PlayerConstants.defaultUsername, 2, 2 + i * 10 * Constants.scale);
-      this.ctx.fillText(players[p].kills, 140 * Constants.scale, i * 10 * Constants.scale);
+      this.ctx.fillText(players[p].username || PlayerConstants.defaultUsername, 2, 18*Constants.scale + i * 11 * Constants.scale);
+      this.ctx.fillText(players[p].kills, 140 * Constants.scale, 18*Constants.scale + i * 10 * Constants.scale);
 
       i++;
     }

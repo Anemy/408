@@ -20,7 +20,7 @@ module.exports = {
 
   maxHealth: 100,
 
-  defaultUsername: 'Unnamed Player',
+  defaultUsername: 'Unnamed',
 
   // How often the player can shoot (s).
   shootRate: 0.2,
