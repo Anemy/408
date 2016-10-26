@@ -52,9 +52,6 @@ class Player {
     // The player can only shoot when shootTimer is 0.
     this.shootTimer = 0;
 
-    // Boolean to denote if the player is trying to shoot or not.
-    this.shooting = false;
-
     this.health = PlayerConstants.maxHealth;
   }
 

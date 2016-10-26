@@ -161,7 +161,7 @@ class Game {
     for(let p in this.players) {
       const player = this.players[p];
 
-      if(player.shooting && player.canShoot()) {
+      if(player.canShoot()) {
         player.shoot();
 
         this.addBulletByPlayer(player);
@@ -221,6 +221,17 @@ class Game {
         if (Collisions.circleTickIntersection(this.players[p], this.spikes[s], delta)) {
           // Player hit a spike.
           this.respawnPlayer(p);
+        }
+      }
+    }
+
+    // Spike - Bullet
+    for(let s in this.spikes) {
+      for(let b = this.bullets.length - 1; b >= 0; b--) {
+        // Check if the bullet hits a spike.
+        if (Collisions.circleTickIntersection(this.spikes[s], this.bullets[b], delta)) {
+          // Destroy the bullet.
+          this.bullets.splice(b, 1);
         }
       }
     }

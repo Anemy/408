@@ -41,6 +41,9 @@ class Client {
     case SocketConstants.FIND_GAME:
       // Don't look for a game if the user is already in one.
       if (!this.lobby) {
+        // If the user attached a username to their query, attach it to the user.
+        this.username = msg.username;
+
         this.findGame();
       } else {
         this.socket.emit('message', {

@@ -89,10 +89,6 @@ class KeyManager {
       player.down = true;
       break;
 
-    case Keys.SPACE:
-      player.shooting = true;
-      break;
-
     case Keys.UP:
       player.shootingUp = true;
       player.shootingDown = false;
@@ -132,10 +128,6 @@ class KeyManager {
       break;
     case Keys.S:
       player.down = false;
-      break;
-
-    case Keys.SPACE:
-      player.shooting = false;
       break;
 
     case Keys.UP:
