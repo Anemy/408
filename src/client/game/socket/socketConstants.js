@@ -10,6 +10,7 @@ module.exports = {
   ERROR: 5,
   GAME_UPDATE: 6,
   CLIENT_INPUT_UPDATE: 7,
+  JOIN_LOBBY: 8,
 
   maxChatMessageLength: 140, // Characters
   maxKeyBufferLength: 100

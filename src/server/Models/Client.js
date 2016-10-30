@@ -52,6 +52,25 @@ class Client {
         })
       }
       break;
+    case SocketConstants.JOIN_LOBBY:
+      // Don't join a game if the user is already in one.
+      if (!this.lobby && msg.lobbyId) {
+        // If the user attached a username to their query, attach it to the user.
+        this.username = msg.username;
+
+        if(!this.socketManager.joinLobby(msg.lobbyId, this)) {
+          this.socket.emit('message', {
+            type: SocketConstants.ERROR,
+            msg: 'Invalid join game. Is the lobby full?'
+          });
+        }
+      } else {
+        this.socket.emit('message', {
+          type: SocketConstants.ERROR,
+          msg: 'Invalid join game. Are you already in a game?'
+        });
+      }
+      break;
     case SocketConstants.LOBBIES_INFO:
       this.getLobbiesInfo();
       break;
@@ -64,8 +83,7 @@ class Client {
           this.lobby) {
         this.lobby.parseUserKeyInput(this.id, msg.msg);
       } else {
-        // TODO: Remove this log.
-        console.log('Error parsing client key input. Undefined or length too long.');
+        // console.log('Error parsing client key input. Undefined or length too long.');
       }
       break;
     }

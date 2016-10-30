@@ -38,6 +38,7 @@ class App extends React.Component {
         setDisplayName={displayName => this.setState({displayName})}
         setGameMode={gameMode => this.setState({gameMode})}
         setNavState={navState => this.setState({navState})}
+        serverData={this.state.serverData}
       />;
     }
   }
@@ -53,7 +54,8 @@ class App extends React.Component {
       gameManager.updateLobby(msg.lobbyId);
       break;
     case SocketConstants.LOBBIES_INFO:
-      console.log('Lobby info update from server:', msg.lobbiesInfo);
+      // console.log('Lobby info update from server:', msg.lobbiesInfo);
+      this.setState({serverData: msg.lobbiesInfo});
       break;
     case SocketConstants.ERROR:
       console.log('Error from server:', msg.msg);

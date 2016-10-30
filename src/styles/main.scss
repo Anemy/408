@@ -83,7 +83,7 @@
     }
 
     p {
-      color: #5A99D5;
+      color: $accent;
     }
   }
 
@@ -114,7 +114,7 @@
   }
 
   p {
-    color: #aaa;
+    color: $light;
     font-family: 'Lato', sans-serif;
     font-size: 14px;
     letter-spacing: 0.5px;
@@ -122,14 +122,14 @@
     transition: color 0.3s;
 
     &.active {
-      color: #5A99D5;
+      color: $accent;
     }
   }
 }
 
 .button {
   color: white;
-  background-color: #5A99D5;
+  background-color: $accent;
   border: none;
   border-radius: 3px;
   box-shadow: 0 2px 4px rgba(0,0,0,.2);
@@ -160,7 +160,7 @@
     margin-right: 20px;
 
     .text-input {
-      border: 1px solid #aaa;
+      border: 1px solid $light;
       border-radius: 3px;
       color: #666;
       font-family: 'Lato', sans-serif;
@@ -180,7 +180,7 @@
     flex-direction: column;
 
     .game-mode-select {
-      border: 1px solid #aaa;
+      border: 1px solid $light;
       border-radius: 3px;
       height: 40px;
       padding: 0 7px 0 2px;
@@ -203,9 +203,74 @@
 
 label {
   text-align: left;
-  color: #aaa;
+  color: $light;
   font-family: 'Lato', sans-serif;
   font-size: 12px;
   letter-spacing: 0.5px;
   margin-bottom: 10px;
+}
+
+.server-list {
+  color: $light;
+
+  .server {
+    padding: 12px;
+
+    border: 2px solid $light;
+    border-radius: 6px;
+
+    .server-name {
+      display: inline-block;
+    }
+
+    .server-population {
+      margin-left: 8px;
+      margin-right: 2px;
+      display: inline-block;
+
+      color: $medium;
+    }
+
+    .join-server-button {
+      display: inline-block;
+    }
+
+    &:hover {
+      border-color: $accent;
+    }
+  }
+
+  .refresh-lobbies {
+    margin: 10px;
+  }
+
+  button {
+    border: none;
+    margin-left: 10px;
+    outline: none;
+    padding: 6px;
+    height: 34px;
+    border-radius: 3px;
+    border: 2px solid $light;
+    background: none;
+    color: $light;
+
+    animation-duration: 0.5s;
+
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+
+    &:hover {
+      cursor: pointer;
+      color: $accent;
+      border-color: $accent;
+    }
+
+    &:active {
+      border-color: $medium;
+      color: $medium;
+    }
+  }
 }

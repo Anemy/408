@@ -23,7 +23,6 @@ class LobbyManager {
     for(var i in this.lobbies) {
       const l = this.lobbies[i];
 
-      // console.log('Lobby found:', l);
       if (l.population < l.capacity) {
         lobby = l;
         // Lobby found, stop searching.
@@ -40,6 +39,15 @@ class LobbyManager {
     console.log('Adding client to lobby:', lobby.id,'lobby pop:', lobby.population);
 
     return lobby;
+  }
+
+  joinLobby(lobbyId, client) {
+    if (!_.isUndefined(lobbies[lobbyId]) && lobbies[lobbyId].population < lobbies[lobbyId].capacity) {
+      lobbies[lobbyId].addClient(client);
+    } else {
+      return false;
+    }
+    return true;
   }
 
   createLobby() {
