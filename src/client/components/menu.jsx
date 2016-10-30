@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 const SocketConstants = require('../game/socket/socketConstants');
 const Navbar = require('./navbar.jsx');
 const PlayerSettings = require('./playerSettings.jsx');
+const ServerList = require('./serverList.jsx');
 
 class Menu extends React.Component {
   getContent() {
@@ -14,7 +15,11 @@ class Menu extends React.Component {
           setGameMode={this.props.setGameMode} />
       );
     } else if (this.props.navState === 'LOBBIES') {
-      return <div>HARH</div>;
+      return (
+        <ServerList
+          sendMessage={this.props.sendMessage}
+          serverData={this.props.serverData} />
+      );
     } else if (this.props.navState === 'LOADING') {
       return <div>HASEKR</div>;
     } else {
@@ -52,7 +57,8 @@ Menu.propTypes = {
   sendMessage: PropTypes.func,
   setDisplayName: PropTypes.func,
   setGameMode: PropTypes.func,
-  setNavState: PropTypes.func
+  setNavState: PropTypes.func,
+  serverData: PropTypes.array
 };
 
 module.exports = Menu;

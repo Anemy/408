@@ -5,6 +5,7 @@ const uuid = require('uuid');
 const SocketConstants = require('../../client/game/socket/socketConstants');
 const Game = require('../../shared/game/game');
 const KeyManager = require('../../shared/keyListener/keyManager');
+const Constants = require('../../shared/game/constants');
 
 class Lobby {
   constructor() {
@@ -14,7 +15,7 @@ class Lobby {
 
     // Keep an up to date population so we don't have to rely off of Object.keys because this is a map;
     this.population = 0;
-    this.capacity = 4;
+    this.capacity = Constants.maxLobbyCapacity;
 
     // Create the game instance for the server.
     this.game = new Game(this.updateClients.bind(this));

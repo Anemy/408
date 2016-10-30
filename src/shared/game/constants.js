@@ -49,6 +49,8 @@ module.exports = {
   isServer: isServer,
   isClient: !isServer,
 
+  maxLobbyCapacity: 4,
+
   scale: isServer ? 1 /* No scale */ : clientDimensions.x / serverWidth
 };
 
