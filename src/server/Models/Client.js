@@ -14,7 +14,6 @@ class Client {
     this.socket.uuid = this.id;
     this.socket.emit('connected', {uuid: socket.uuid});
     this.socket.on('disconnect', this.onDisconnect.bind(this));
-    console.log('A client has connnected.');
     this.socket.on('message', this.onMessage.bind(this));
   }
 
