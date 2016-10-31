@@ -27,7 +27,7 @@ class Game {
    * Starts the game loop running.
    */
   start() {
-    this.running = true; 
+    this.running = true;
     this.players = {};
     this.bullets = [];
     this.lastFrame = Date.now();
@@ -53,7 +53,7 @@ class Game {
     this.createSpikes();
   }
 
-  // Adds spikes at random positions in the map. 
+  // Adds spikes at random positions in the map.
   // TODO: Make these stationary and not random?
   createSpikes() {
     const spikesToCreate = 5;
@@ -83,7 +83,7 @@ class Game {
     const randomYSpawn = Math.floor(Math.random() * Constants.height);
     // Randomly choose one of the skins.
     const skin = Object.keys(PlayerConstants.skins)[Math.floor(Math.random() * Object.keys(PlayerConstants.skins).length)];
-    this.addPlayer(randomXSpawn, randomYSpawn, skin, playerId, username);    
+    this.addPlayer(randomXSpawn, randomYSpawn, skin, playerId, username);
   }
 
   updatePlayer(playerId, newData) {
@@ -130,7 +130,7 @@ class Game {
   /*
   * Updates the game logic for one frame
   *
-  * @param {Integer} delta - amount of time elapsed since last frame 
+  * @param {Integer} delta - amount of time elapsed since last frame
   */
   update(delta) {
     // Update all of the players.
@@ -171,7 +171,7 @@ class Game {
 
   /*
    * Creates the bullet, placing it at the location provided, with the given direction.
-   * 
+   *
    * @param {Object} player - The player who shot the bullet. Used for their position, velocity, and direction.
    */
   addBulletByPlayer(player) {
@@ -201,10 +201,7 @@ class Game {
           this.players[p].health -= this.bullets[b].damage;
 
           if (this.players[p].health <= 0) {
-            // Give the owner of the bullet that killed the player a kill.
-            if (this.players[this.bullets[b].owner]) {
-              this.players[this.bullets[b].owner].kills++;
-            }
+            this.players[p].kills++;
 
             // Respawn the player.
             this.respawnPlayer(p);
@@ -228,7 +225,7 @@ class Game {
         // Check if the bullet hits a spike.
         if (Collisions.circleTickIntersection(this.spikes[s], this.bullets[b], delta)) {
           // Destroy the bullet.
-          this.bullets.splice(b, 1);
+          this.players[this.bullets[b].owner].kills++;
         }
       }
     }
