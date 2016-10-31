@@ -1,10 +1,12 @@
 'use strict';
 
+const _ = require('underscore');
 const Game = require('../../shared/game/game');
 const KeyManager = require('../../shared/keyListener/keyManager');
 const DrawManager = require('./draw/drawManager');
 const SocketConstants = require('./socket/socketConstants');
 const Bullet = require('../../shared/bullet/bullet');
+const PowerupConstants = require('../../shared/powerup/powerupConstants');
 
 class GameManager {
   constructor() {
@@ -42,6 +44,12 @@ class GameManager {
     _.each(this.game.spikes, (spike) => {
       spike.draw(ctx);
     });
+
+    _.each(PowerupConstants.types, (type) => {
+      _.each(this.game.powerups[type], (powerup) => {
+        powerup.draw(ctx);
+      })
+    })
 
     // Draw all of the players.
     for (let p in this.game.players) {
@@ -123,6 +131,13 @@ class GameManager {
         this.game.bullets.push(newBullet);
       }
     }
+
+    _.each(PowerupConstants.types, (type) => {
+      this.game.powerups[type] = [];
+      _.each(gameData.powerups[type], (powerup) => {
+        this.game.addPowerup(powerup.x, powerup.y, powerup.type, powerup.respawnTime)
+      })
+    });
   }
 }
 

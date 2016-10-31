@@ -15,6 +15,8 @@ const Bullet = require('../bullet/bullet');
 const BulletConstants = require('../bullet/bulletConstants')
 const Constants = require('./constants');
 const Spike = require('../spike/spike');
+const Powerup = require('../powerup/powerup');
+const PowerupConstants = require('../powerup/powerupConstants');
 
 const Collisions = require('./collisions');
 
@@ -33,6 +35,11 @@ class Game {
     this.lastFrame = Date.now();
 
     this.spikes = [];
+    this.powerups = {
+      damageReduction: [],
+      speedBoost: [],
+      healthRecovery: []
+    };
 
     // Start the game loop.
     // Holds the Javascript setInterval() id of the gameloop.
@@ -51,6 +58,7 @@ class Game {
 
   createMap() {
     this.createSpikes();
+    this.createPowerups();
   }
 
   // Adds spikes at random positions in the map. 
@@ -69,6 +77,22 @@ class Game {
     const newSpike = new Spike(x, y);
 
     this.spikes.push(newSpike);
+  }
+
+  createPowerups() {
+    const powerupsToCreate = 2;
+    _.each(PowerupConstants.types, (type) => {
+      for (let i = 0; i < powerupsToCreate; i++) {
+        const randomXSpawn = Math.floor(Math.random() * Constants.width);
+        const randomYSpawn = Math.floor(Math.random() * Constants.height);
+        this.addPowerup(randomXSpawn, randomYSpawn, type, PowerupConstants.spawnInterval);
+      }
+    });
+  }
+
+  addPowerup(x, y, type) {
+    const newPowerup = new Powerup(x, y, type);
+    this.powerups[type].push(newPowerup);
   }
 
   addPlayer(x, y, skin, playerId, username) {
@@ -223,6 +247,15 @@ class Game {
           this.respawnPlayer(p);
         }
       }
+
+      _.each(PowerupConstants.types, (type) => {
+        _.each(this.powerups[type], (powerup) => {
+          if (Collisions.circleTickIntersection(this.players[p], powerup, delta)) {
+            console.log('Hit powerup: ' + powerup.type + '!');
+          }
+        });
+      });
+
     }
 
     // Spike - Bullet
@@ -246,7 +279,8 @@ class Game {
     const gameData = {
       players: this.players,
       bullets: this.bullets,
-      spikes: this.spikes
+      spikes: this.spikes,
+      powerups: this.powerups
     };
     return gameData;
   }
