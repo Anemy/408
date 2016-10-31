@@ -7,3 +7,5 @@ dist
 Sublime.sublime-workspace
 public/js/**/*
 public/css/**/*
+npm-debug.*
+
