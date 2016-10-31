@@ -24,7 +24,7 @@ class Player {
 
     this.username = username || PlayerConstants.defaultUsername;
 
-    // Velocity of x/y movement. 
+    // Velocity of x/y movement.
     this.xVelocity = 0;
     this.yVelocity = 0;
 
@@ -52,7 +52,7 @@ class Player {
     // The player can only shoot when shootTimer is 0.
     this.shootTimer = 0;
 
-    this.health = PlayerConstants.maxHealth;
+    this.health = PlayerConstants.maxHealth/2;
   }
 
   draw(ctx) {
@@ -82,7 +82,7 @@ class Player {
       // Write the player's username.
       ctx.fillStyle = PlayerConstants.skins[this.skin].textRgb;
       ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle'; 
+      ctx.textBaseline = 'middle';
       ctx.font = Math.floor(14 * Constants.scale) + 'px Arial';
       ctx.fillText(this.username, 0, 0);
 
@@ -99,7 +99,7 @@ class Player {
       ctx.rect(0, 0, PlayerConstants.radius * Constants.scale * 2, PlayerConstants.healthBarSizeY);
       ctx.stroke();
       ctx.fillStyle = PlayerConstants.healthHurtColor;
-      ctx.fillRect(0, 0, PlayerConstants.radius * Constants.scale * 2, PlayerConstants.healthBarSizeY); 
+      ctx.fillRect(0, 0, PlayerConstants.radius * Constants.scale * 2, PlayerConstants.healthBarSizeY);
       if (this.health > 0) {
         ctx.fillStyle = PlayerConstants.healthColor;
         ctx.fillRect(0, 0, (this.health/PlayerConstants.maxHealth)* (PlayerConstants.radius * Constants.scale * 2), PlayerConstants.healthBarSizeY);
@@ -109,7 +109,7 @@ class Player {
       ctx.globalAlpha = 1;
 
       ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom'; 
+      ctx.textBaseline = 'bottom';
       ctx.fillStyle = PlayerConstants.spawnCountdownColor;
       ctx.font = Math.floor((this.spawnTimer % 1) * 50 * Constants.scale) + 'px Arial';
       ctx.fillText(Math.floor(this.spawnTimer), 0, Math.floor((this.spawnTimer % 1) * 10 * Constants.scale));
@@ -124,7 +124,7 @@ class Player {
    * @param {Integer} delta - amount of time elapsed since last update
    */
   update(delta) {
-    if (this.spawnTimer > 0) {      
+    if (this.spawnTimer > 0) {
       this.spawnTimer -= delta;
       return;
     }
@@ -164,8 +164,6 @@ class Player {
 
     this.x += this.xVelocity * delta;
     this.y += this.yVelocity * delta;
-
-    this.collideWithBorders();
 
     // Update the player's shoot timer if they have recently shot to allow them to shoot again.
     if (this.shootTimer > 0) {

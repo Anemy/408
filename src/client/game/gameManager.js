@@ -48,6 +48,8 @@ class GameManager {
       this.game.players[p].draw(ctx);
     }
 
+    this.drawManager.drawLobbyId();
+
     this.drawManager.drawLeaderboard(this.game.players);
   }
 
@@ -96,7 +98,6 @@ class GameManager {
 
     // Add in spikes if they don't exist locally.
     if (this.game.spikes.length === 0) {
-      this.game.spikes = [];
       _.each(gameData.spikes, (spike) => {
         this.game.addSpike(spike.x, spike.y);
       });
