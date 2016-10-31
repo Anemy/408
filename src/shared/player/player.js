@@ -30,7 +30,7 @@ class Player {
 
     this.kills = 0;
 
-    this.spawnTimer = PlayerConstants.spawnTime;
+    this.spawnTimer = 2;
 
     // Booleans for corresponding movement key being pressed.
     this.left = false;
