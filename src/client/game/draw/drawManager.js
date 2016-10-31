@@ -103,7 +103,7 @@ class DrawManager {
       this.ctx.textBaseline = 'bottom';
       this.ctx.textAlign = 'left';
       const yOffset = 8;
-      this.ctx.fillText(players[p].username || PlayerConstants.defaultUsername, 2, yOffset*Constants.scale + i * 16 * Constants.scale);
+      this.ctx.fillText(players[p].username ? players[p].username.substring(0,12) : PlayerConstants.defaultUsername, 2, yOffset*Constants.scale + i * 16 * Constants.scale);
       this.ctx.fillText(players[p].kills, 140 * Constants.scale, yOffset*Constants.scale + i * 16 * Constants.scale);
 
       i++;
