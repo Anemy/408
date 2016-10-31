@@ -228,6 +228,7 @@ class Game {
         // Check if the bullet hits a spike.
         if (Collisions.circleTickIntersection(this.spikes[s], this.bullets[b], delta)) {
           // Destroy the bullet.
+          this.players[this.bullets[b].owner].kills++;
           this.bullets.splice(b, 1);
         }
       }
