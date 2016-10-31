@@ -48,6 +48,8 @@ class GameManager {
       this.game.players[p].draw(ctx);
     }
 
+    this.drawManager.drawLobbyId();
+
     this.drawManager.drawLeaderboard(this.game.players);
   }
 
