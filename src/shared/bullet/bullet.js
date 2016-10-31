@@ -41,7 +41,9 @@ class Bullet {
     this.x = this.xVelocity * delta;
     this.y = this.yVelocity * delta;
 
-    if (this.lifeTime > BulletConstants.lifeSpan) {
+    if (this.lifeTime > BulletConstants.lifeSpan ||
+        this.x < 0 || this.x > Constants.gameWidth ||
+        this.y < 0 || this.y > Constants.gameHeight) {
       // Destroy the bullet.
       return false;
     }
