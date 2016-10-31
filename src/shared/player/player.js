@@ -132,7 +132,7 @@ class Player {
     this.applyFriction(delta);
 
     // Update player velocity based on recorded key presses & delta.
-    if (this.left) {
+    if (this.right) {
       this.xVelocity -= PlayerConstants.acceleration * delta;
 
       if (this.xVelocity < -PlayerConstants.maxAcceleration) {
@@ -147,7 +147,7 @@ class Player {
         this.yVelocity = -PlayerConstants.maxAcceleration;
       }
     }
-    if (this.right && this.xVelocity < PlayerConstants.maxAcceleration) {
+    if (this.left && this.xVelocity < PlayerConstants.maxAcceleration) {
       this.xVelocity += PlayerConstants.acceleration * delta;
 
       if (this.xVelocity > PlayerConstants.maxAcceleration) {
