@@ -87,6 +87,14 @@ class DrawManager {
     this.ctx.stroke();
   }
 
+  drawLobbyId(lobbyId) {
+    this.ctx.fillStyle = 'rgb(160,160,160)';
+    this.ctx.font = Math.floor(16 * Constants.scale) + 'px Arial';
+    this.ctx.textBaseline = 'bottom';
+    this.ctx.textAlign = 'right';
+    this.ctx.fillText(lobbyId, Constants.width - 20, 20 * Constants.scale);
+  }
+
   drawLeaderboard(players) {
     let i = 0;
     for(let p in players) {
@@ -94,8 +102,9 @@ class DrawManager {
       this.ctx.font = Math.floor(16 * Constants.scale) + 'px Arial';
       this.ctx.textBaseline = 'bottom';
       this.ctx.textAlign = 'left';
-      this.ctx.fillText(players[p].username ? players[p].username.substring(0,12) : PlayerConstants.defaultUsername, 2, 18*Constants.scale + i * 16 * Constants.scale);
-      this.ctx.fillText(players[p].kills, 140 * Constants.scale, 18*Constants.scale + i * 16 * Constants.scale);
+      const yOffset = 8;
+      this.ctx.fillText(players[p].username ? players[p].username.substring(0,12) : PlayerConstants.defaultUsername, 2, yOffset*Constants.scale + i * 16 * Constants.scale);
+      this.ctx.fillText(players[p].kills, 140 * Constants.scale, yOffset*Constants.scale + i * 16 * Constants.scale);
 
       i++;
     }

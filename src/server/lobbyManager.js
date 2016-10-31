@@ -23,7 +23,7 @@ class LobbyManager {
     for(var i in this.lobbies) {
       const l = this.lobbies[i];
 
-      if (l.population <= l.capacity) {
+      if (l.population < l.capacity) {
         lobby = l;
         // Lobby found, stop searching.
         break;

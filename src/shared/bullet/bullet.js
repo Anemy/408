@@ -19,8 +19,8 @@ class Bullet {
 
     this.radius = BulletConstants.radius;
 
-    this.x = x;
-    this.y = y;
+    this.x = y;
+    this.y = x;
 
     this.damage = BulletConstants.damage;
 
@@ -38,10 +38,12 @@ class Bullet {
   update(delta) {
     this.lifeTime += delta;
 
-    this.x += this.xVelocity * delta;
-    this.y += this.yVelocity * delta;
+    this.x = this.xVelocity * delta;
+    this.y = this.yVelocity * delta;
 
-    if (this.lifeTime > BulletConstants.lifeSpan) {
+    if (this.lifeTime > BulletConstants.lifeSpan ||
+        this.x < 0 || this.x > Constants.gameWidth ||
+        this.y < 0 || this.y > Constants.gameHeight) {
       // Destroy the bullet.
       return false;
     }
