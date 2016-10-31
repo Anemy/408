@@ -102,9 +102,9 @@ class DrawManager {
       this.ctx.font = Math.floor(16 * Constants.scale) + 'px Arial';
       this.ctx.textBaseline = 'bottom';
       this.ctx.textAlign = 'left';
-      const yOffset = -10;
-      this.ctx.fillText(players[p].username || PlayerConstants.defaultUsername, 2, offset*Constants.scale + i * 16 * Constants.scale);
-      this.ctx.fillText(players[p].kills, 140 * Constants.scale, 18*Constants.scale + i * 16 * Constants.scale);
+      const yOffset = 8;
+      this.ctx.fillText(players[p].username || PlayerConstants.defaultUsername, 2, yOffset*Constants.scale + i * 16 * Constants.scale);
+      this.ctx.fillText(players[p].kills, 140 * Constants.scale, yOffset*Constants.scale + i * 16 * Constants.scale);
 
       i++;
     }
