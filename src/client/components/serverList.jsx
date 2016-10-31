@@ -16,7 +16,7 @@ class ServerList extends React.Component {
       return (
         <lobby key={lobby.id} className='server'>
           <p className='server-name'>
-            {lobby.id}
+            {lobby.idsssss || 'undefined server variable id'}
           </p>
           <p className='server-population'>
             {lobby.population}/{Constants.maxLobbyCapacity}
