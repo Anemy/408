@@ -209,9 +209,6 @@ class Game {
             // Respawn the player.
             this.respawnPlayer(p);
           }
-
-          // Destroy the bullet.
-          this.bullets.splice(b, 1);
         }
       }
 
