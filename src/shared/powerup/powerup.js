@@ -15,13 +15,14 @@ class Powerup {
     this.type = type;
     this.respawnTime = respawnTime;
     this.radius = PowerupConstants.radius;
+    this.lifespan = PowerupConstants.lifespan;
   }
 
   draw(ctx) {
     ctx.save();
 
     ctx.translate(this.x * Constants.scale, this.y * Constants.scale);
-    ctx.fillStyle = PowerupConstants.backgroundColor;
+    ctx.fillStyle = PowerupConstants.style[this.type].backgroundColor;
     ctx.beginPath();
     ctx.arc(0, 0, this.radius * Constants.scale, 0, 2 * Math.PI, false);
     ctx.fill();

@@ -222,7 +222,12 @@ class Game {
         // Check if the person was shot.
         if (this.bullets[b].owner != p && // Can't shoot yourself.
           Collisions.circleTickIntersection(this.players[p], this.bullets[b], delta)) {
-          this.players[p].health -= this.bullets[b].damage;
+          
+          if (this.players[p].powerups.damageReduction) {
+            this.players[p].health -= this.bullets[b].damage / 4;
+          } else {
+            this.players[p].health -= this.bullets[b].damage;
+          }
 
           if (this.players[p].health <= 0) {
             // Give the owner of the bullet that killed the player a kill.
@@ -251,7 +256,7 @@ class Game {
       _.each(PowerupConstants.types, (type) => {
         _.each(this.powerups[type], (powerup) => {
           if (Collisions.circleTickIntersection(this.players[p], powerup, delta)) {
-            console.log('Hit powerup: ' + powerup.type + '!');
+            this.players[p].addPowerup(new Powerup(powerup.x, powerup.y, powerup.type, powerup.respawnTime));
           }
         });
       });
