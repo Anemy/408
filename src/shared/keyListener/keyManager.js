@@ -121,7 +121,7 @@ class KeyManager {
       player.left = false;
       break;
     case Keys.W:
-      player.up = false;
+      player.ups = false;
       break;
     case Keys.D:
       player.right = false;

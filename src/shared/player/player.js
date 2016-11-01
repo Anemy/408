@@ -52,7 +52,7 @@ class Player {
     // The player can only shoot when shootTimer is 0.
     this.shootTimer = 0;
 
-    this.health = PlayerConstants.maxHealth;
+    this.health = PlayerConstants.maxHealth/2;
   }
 
   draw(ctx) {
