@@ -7,6 +7,7 @@
 
 const PlayerConstants = require('./playerConstants');
 const Constants = require('../game/constants');
+const PowerupConstants = require('../powerup/powerupConstants');
 
 class Player {
   /*
@@ -47,6 +48,11 @@ class Player {
     this.radius = PlayerConstants.radius;
 
     this.skin = skin;
+    this.powerups = {
+      'damageReduction': null,
+      'speedBoost': null,
+      'healthRecovery': null
+    }
 
     // How often a player can shoot. Once a player shoots this is reset to a constant shootRate and then decreased.
     // The player can only shoot when shootTimer is 0.
@@ -73,11 +79,26 @@ class Player {
       ctx.fillStyle = PlayerConstants.skins[this.skin].rgb;
       ctx.beginPath();
       ctx.arc(0, 0, this.radius * Constants.scale, 0, 2 * Math.PI, false);
+      ctx.closePath();
       ctx.fill();
       // Border around player.
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = PlayerConstants.borderColor;
+
+      if (this.powerups.speedBoost) {
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = PowerupConstants.style.speedBoost.backgroundColor;
+      } else if (this.powerups.damageReduction) {
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = PowerupConstants.style.damageReduction.backgroundColor;
+      } else if (this.powerups.healthRecovery) {
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = PowerupConstants.style.healthRecovery.backgroundColor;
+      } else {
+        ctx.strokeStyle = PlayerConstants.borderColor;
+        ctx.lineWidth = 1;
+      }
+
       ctx.stroke();
+      ctx.lineWidth = 1;
 
       // Write the player's username.
       ctx.fillStyle = PlayerConstants.skins[this.skin].textRgb;
@@ -129,6 +150,19 @@ class Player {
       return;
     }
 
+    if (this.powerups.damageReduction) {
+      this.powerups.damageReduction.lifespan -= delta;
+      if (this.powerups.damageReduction.lifespan <= 0) this.powerups.damageReduction = null;
+    }
+    if (this.powerups.speedBoost) {
+      this.powerups.speedBoost.lifespan -= delta;
+      if (this.powerups.speedBoost.lifespan <= 0) this.powerups.speedBoost = null;
+    }
+    if (this.powerups.healthRecovery) {
+      this.powerups.healthRecovery.lifespan -= delta;
+      if (this.powerups.healthRecovery.lifespan <= 0) this.powerups.healthRecovery = null;
+    }
+
     this.applyFriction(delta);
 
     // Update player velocity based on recorded key presses & delta.
@@ -162,10 +196,22 @@ class Player {
       }
     }
 
-    this.x += this.xVelocity * delta;
-    this.y += this.yVelocity * delta;
+    let speedMultiplier = 1.0;
+    if (this.powerups.speedBoost && this.powerups.speedBoost.lifespan > 0) {
+      speedMultiplier = 1.5
+    }
+
+    this.x += this.xVelocity * delta * speedMultiplier;
+    this.y += this.yVelocity * delta * speedMultiplier;
 
     this.collideWithBorders();
+
+    if (this.powerups.healthRecovery) {
+      this.health += 0.5;
+      if (this.health > PlayerConstants.maxHealth) {
+        this.health = PlayerConstants.maxHealth;
+      }
+    }
 
     // Update the player's shoot timer if they have recently shot to allow them to shoot again.
     if (this.shootTimer > 0) {
@@ -251,6 +297,14 @@ class Player {
     this.spawnTimer = PlayerConstants.spawnTime;
 
     this.health = PlayerConstants.maxHealth;
+
+    this.powerups.damageReduction = null;
+    this.powerups.speedBoost = null;
+    this.powerups.healthRecovery = null;
+  }
+
+  addPowerup(powerup) {
+    this.powerups[powerup.type] = powerup;
   }
 
   /**
