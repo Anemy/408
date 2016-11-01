@@ -212,14 +212,6 @@ class Game {
         }
       }
 
-      // Player - Spike
-      for(let s in this.spikes) {
-        // Check if a player collided with a spike.
-        if (Collisions.circleTickIntersection(this.players[p], this.spikes[s], delta)) {
-          // Player hit a spike.
-          this.respawnPlayer(p);
-        }
-      }
     }
 
     // Spike - Bullet
