@@ -210,6 +210,16 @@ label {
   margin-bottom: 10px;
 }
 
+.instructions {
+  text-align: left;
+  line-height: 1.4em;
+  font-size: 11pt;
+
+  ul {
+    margin: 0;
+  }
+}
+
 .server-list {
   color: $light;
 
