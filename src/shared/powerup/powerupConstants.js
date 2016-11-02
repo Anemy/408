@@ -6,18 +6,18 @@
 
  module.exports = {
   radius: 9,
-  spawnInterval: 10,
-  lifespan: 5,
+  spawnInterval: 15,
+  lifespan: 10,
   types: ['damageReduction', 'speedBoost', 'healthRecovery'],
   style: {
     'damageReduction': {
-      backgroundColor: '#2ecc71'
+      backgroundColor: 'rgb(20,240,70)'
     },
     'speedBoost': {
-      backgroundColor: '#f1c40f'
+      backgroundColor: 'rgb(250,200,8)'
     },
     'healthRecovery': {
-      backgroundColor: '#e74c3c'
+      backgroundColor: 'rgb(245,40,28)'
     }
   }
  };

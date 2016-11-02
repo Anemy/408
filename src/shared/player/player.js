@@ -75,30 +75,39 @@ class Player {
 
     switch(PlayerConstants.skins[this.skin].type) {
     case PlayerConstants.skinTypes.COLOR:
-      // Fill the player's shape with their color.
-      ctx.fillStyle = PlayerConstants.skins[this.skin].rgb;
+      // Defines the width of the border around player to start (outer ring).
+      let powerupLayers = 0;
+      _.each(PowerupConstants.types, (type) => {
+        if (this.powerups[type]) {
+          powerupLayers++;
+        }
+      });
+
+      _.each(PowerupConstants.types, (type) => {
+        if (this.powerups[type]) {
+          ctx.beginPath();
+          ctx.arc(0, 0, this.radius * Constants.scale + ((powerupLayers * 2 /* Distance between rings. */) + 2) * Constants.scale, 0, 2 * Math.PI, false);
+          ctx.closePath();
+          // console.log('Type', type, 'has bg', PowerupConstants.style[type].backgroundColor);
+          ctx.fillStyle = PowerupConstants.style[type].backgroundColor;
+          powerupLayers--;
+          ctx.fill();
+        }
+      });
+
+      // Base black border.
       ctx.beginPath();
       ctx.arc(0, 0, this.radius * Constants.scale, 0, 2 * Math.PI, false);
       ctx.closePath();
+      ctx.fillStyle = PlayerConstants.borderColor;
       ctx.fill();
-      // Border around player.
 
-      if (this.powerups.speedBoost) {
-        ctx.lineWidth = 5;
-        ctx.strokeStyle = PowerupConstants.style.speedBoost.backgroundColor;
-      } else if (this.powerups.damageReduction) {
-        ctx.lineWidth = 5;
-        ctx.strokeStyle = PowerupConstants.style.damageReduction.backgroundColor;
-      } else if (this.powerups.healthRecovery) {
-        ctx.lineWidth = 5;
-        ctx.strokeStyle = PowerupConstants.style.healthRecovery.backgroundColor;
-      } else {
-        ctx.strokeStyle = PlayerConstants.borderColor;
-        ctx.lineWidth = 1;
-      }
-
-      ctx.stroke();
-      ctx.lineWidth = 1;
+      // Fill the player's shape with their color.
+      ctx.fillStyle = PlayerConstants.skins[this.skin].rgb;
+      ctx.beginPath();
+      ctx.arc(0, 0, (this.radius - 1) * Constants.scale, 0, 2 * Math.PI, false);
+      ctx.closePath();
+      ctx.fill();
 
       // Write the player's username.
       ctx.fillStyle = PlayerConstants.skins[this.skin].textRgb;
