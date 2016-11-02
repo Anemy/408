@@ -14,20 +14,6 @@ class PlayerSettings extends React.Component {
             type='text'
             value={this.props.displayName} />
         </div>
-        <div className='game-mode'>
-          <label>GAME MODE</label>
-          <div className='game-mode-select'>
-            <select
-              onChange={e => {
-                this.props.setGameMode(e.target.value);
-              }}
-              value={this.props.gameMode}
-            >
-              <option value='ffa'>FREE FOR ALL</option>
-              <option value='teams'>TEAMS</option>
-            </select>
-          </div>
-        </div>
       </div>
     );
   }
