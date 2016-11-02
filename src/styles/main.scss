@@ -157,7 +157,6 @@
     display: flex;
     flex-direction: column;
     flex-grow: 4;
-    margin-right: 20px;
 
     .text-input {
       border: 1px solid $light;
@@ -208,6 +207,16 @@ label {
   font-size: 12px;
   letter-spacing: 0.5px;
   margin-bottom: 10px;
+}
+
+.instructions {
+  text-align: left;
+  line-height: 1.4em;
+  font-size: 11pt;
+
+  ul {
+    margin: 0;
+  }
 }
 
 .server-list {
