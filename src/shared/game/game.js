@@ -29,7 +29,7 @@ class Game {
    * Starts the game loop running.
    */
   start() {
-    this.running = true; 
+    this.running = true;
     this.players = {};
     this.bullets = [];
     this.lastFrame = Date.now();
@@ -61,7 +61,7 @@ class Game {
     this.createPowerups();
   }
 
-  // Adds spikes at random positions in the map. 
+  // Adds spikes at random positions in the map.
   // TODO: Make these stationary and not random?
   createSpikes() {
     const spikesToCreate = 5;
@@ -96,7 +96,7 @@ class Game {
   }
 
   addPlayer(x, y, skin, playerId, username) {
-    const newPlayer = new Player(x, y, skin, playerId, username);
+    const newPlayer = new Player(x, y, skin, playerId, username, Object.keys(this.players).length);
     this.players[playerId] = newPlayer;
 
     return this.players[playerId];
@@ -107,7 +107,7 @@ class Game {
     const randomYSpawn = Math.floor(Math.random() * Constants.height);
     // Randomly choose one of the skins.
     const skin = Object.keys(PlayerConstants.skins)[Math.floor(Math.random() * Object.keys(PlayerConstants.skins).length)];
-    this.addPlayer(randomXSpawn, randomYSpawn, skin, playerId, username);    
+    this.addPlayer(randomXSpawn, randomYSpawn, skin, playerId, username);
   }
 
   updatePlayer(playerId, newData) {
@@ -154,7 +154,7 @@ class Game {
   /*
   * Updates the game logic for one frame
   *
-  * @param {Integer} delta - amount of time elapsed since last frame 
+  * @param {Integer} delta - amount of time elapsed since last frame
   */
   update(delta) {
     // Update all of the players.
@@ -201,7 +201,7 @@ class Game {
 
   /*
    * Creates the bullet, placing it at the location provided, with the given direction.
-   * 
+   *
    * @param {Object} player - The player who shot the bullet. Used for their position, velocity, and direction.
    */
   addBulletByPlayer(player) {
@@ -228,7 +228,7 @@ class Game {
         // Check if the person was shot.
         if (this.bullets[b].owner != p && // Can't shoot yourself.
           Collisions.circleTickIntersection(this.players[p], this.bullets[b], delta)) {
-          
+
           if (this.players[p].powerups.damageReduction) {
             this.players[p].health -= this.bullets[b].damage / 4;
           } else {

@@ -36,12 +36,12 @@ class Socket {
     Removes specified client from clients list. Searches list for matching id.
   */
   clientDisconnected(client) {
-    if(client.lobby) {
+    if (client.lobby) {
       // If the client is in a lobby, remove them.
       client.lobby.removeClient(client.id);
 
-      // When the lobby has no pop... 💀 Kill it unless it's the only lobby active. 💀
-      if (client.lobby.population === 0 && Object.keys(this.lobbyManager.lobbies).length > 1){
+      // When the lobby has no pop... 💀 Kill it
+      if (client.lobby.population === 0) {
         delete this.lobbyManager.lobbies[client.lobby.id];
       }
     }
