@@ -51,12 +51,14 @@ class Spike {
 
     ctx.lineTo((this.radius + SpikeConstants.spikeSize) * Constants.scale, 0); // Right
     ctx.lineTo(SpikeConstants.spikeSize * Constants.scale, -SpikeConstants.spikeSize * Constants.scale);
+    ctx.closePath();
     ctx.fill();
 
     // Inner Circle
     ctx.fillStyle = SpikeConstants.circleRGB;
     ctx.beginPath();
     ctx.arc(0, 0, this.radius * Constants.scale, 0, 2 * Math.PI, false);
+    ctx.closePath();
     ctx.fill();
 
     // Reset the translation.

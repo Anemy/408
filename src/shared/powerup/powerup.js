@@ -27,6 +27,7 @@ class Powerup {
       ctx.fillStyle = PowerupConstants.style[this.type].backgroundColor;
       ctx.beginPath();
       ctx.arc(0, 0, this.radius * Constants.scale, 0, 2 * Math.PI, false);
+      ctx.closePath();
       ctx.fill();
 
       ctx.restore();

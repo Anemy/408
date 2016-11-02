@@ -55,6 +55,7 @@ class DrawManager {
       this.ctx.beginPath();
       this.ctx.moveTo(gridSize * i, 0);
       this.ctx.lineTo(gridSize * i, Constants.height);
+      this.ctx.closePath();
       this.ctx.stroke();
 
       // Horizontal lines.
@@ -63,12 +64,14 @@ class DrawManager {
         this.ctx.beginPath();
         this.ctx.moveTo(0, gridSize * i);
         this.ctx.lineTo(Constants.width, gridSize * i);
+        this.ctx.closePath();
         this.ctx.stroke();
       } else if(gridSize * (i - 1) <= Constants.height) {
         // This draws the end border line.
         this.ctx.beginPath();
         this.ctx.moveTo(0, Constants.height);
         this.ctx.lineTo(Constants.width, Constants.height);
+        this.ctx.closePath();
         this.ctx.stroke();
       }
     }
@@ -84,6 +87,7 @@ class DrawManager {
     this.ctx.lineTo(1, Constants.height);
     this.ctx.moveTo(0, Constants.height - 1); // bottom
     this.ctx.lineTo(Constants.width, Constants.height - 1);
+    this.ctx.closePath();
     this.ctx.stroke();
   }
 
