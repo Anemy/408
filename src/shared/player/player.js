@@ -22,7 +22,7 @@ class Player {
     this.y = ySpawn;
 
     this.id = playerId;
-    if (/\S/.test(username)) {
+    if (username && username.trim() !== '' && username.length < 12) {
       this.username = username;
     } else {
       this.username = `${PlayerConstants.defaultUsername} ${defaultNum || 0}`;
