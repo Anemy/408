@@ -19,7 +19,7 @@ class LobbyManager {
     // Look for a non-full lobby.
     // When no available lobby was found, create a new one.
     const lobby = _.find(this.lobbies, l => {
-      return l.population < l.capacity;
+      return true;// l.population < l.capacity;
     }) || this.createLobby();
 
     lobby.addClient(client);
