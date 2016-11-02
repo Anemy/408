@@ -209,9 +209,9 @@ class Player {
     }
 
     let speedMultiplier = 1.0;
-    if (this.powerups.speedBoost && this.powerups.speedBoost.lifespan > 0) {
-      speedMultiplier = 1.5;
-    }
+    // if (this.powerups.speedBoost && this.powerups.speedBoost.lifespan > 0) {
+    //   speedMultiplier = 1.5;
+    // }
 
     this.x += this.xVelocity * delta * speedMultiplier;
     this.y += this.yVelocity * delta * speedMultiplier;
