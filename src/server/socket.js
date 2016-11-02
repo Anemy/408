@@ -41,9 +41,9 @@ class Socket {
       client.lobby.removeClient(client.id);
 
       // When the lobby has no pop... 💀 Kill it
-      if (client.lobby.population === 0) {
-        delete this.lobbyManager.lobbies[client.lobby.id];
-      }
+      // if (client.lobby.population === 0) {
+      //   delete this.lobbyManager.lobbies[client.lobby.id];
+      // }
     }
 
     delete this.clients[client.id];

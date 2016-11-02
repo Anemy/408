@@ -106,7 +106,7 @@ class Game {
     const randomXSpawn = Math.floor(Math.random() * Constants.width);
     const randomYSpawn = Math.floor(Math.random() * Constants.height);
     // Randomly choose one of the skins.
-    const skin = Object.keys(PlayerConstants.skins)[Math.floor(Math.random() * Object.keys(PlayerConstants.skins).length)];
+    const skin = Object.keys(PlayerConstants.skins)[0];// Object.keys(PlayerConstants.skins)[Math.floor(Math.random() * Object.keys(PlayerConstants.skins).length)];
     this.addPlayer(randomXSpawn, randomYSpawn, skin, playerId, username);
   }
 

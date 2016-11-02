@@ -25,10 +25,10 @@ class Lobby {
   }
 
   addClient(client) {
-    if (this.population >= this.capacity) {
-      // Don't let clients join when the lobby is full.
-      return false;
-    }
+    // if (this.population >= this.capacity) {
+    //   // Don't let clients join when the lobby is full.
+    //   return false;
+    // }
 
     this.clients[client.id] = client;
     this.population++;

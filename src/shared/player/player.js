@@ -219,9 +219,10 @@ class Player {
     // this.collideWithBorders();
 
     if (this.powerups.healthRecovery) {
-      this.health += 0.5;
-      if (this.health > PlayerConstants.maxHealth) {
-        this.health = PlayerConstants.maxHealth;
+      if (this.health > 0) {
+        this.health -= 0.5;
+      } else {
+        this.health = 0;
       }
     }
 
