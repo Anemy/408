@@ -16,24 +16,11 @@ class LobbyManager {
 
   // Called when a player wants to find a game.
   findGame(client) {
-    var gameFound = false;
-    var lobby;
-
     // Look for a non-full lobby.
-    for(var i in this.lobbies) {
-      const l = this.lobbies[i];
-
-      if (l.population < l.capacity) {
-        lobby = l;
-        // Lobby found, stop searching.
-        break;
-      }
-    }
-
     // When no available lobby was found, create a new one.
-    if (_.isUndefined(lobby)) {
-      lobby = this.createLobby();
-    }
+    const lobby = _.find(this.lobbies, l => {
+      return l.population < l.capacity;
+    }) || this.createLobby();
 
     lobby.addClient(client);
     console.log('Adding client to lobby:', lobby.id,'lobby pop:', lobby.population);
@@ -42,8 +29,8 @@ class LobbyManager {
   }
 
   joinLobby(lobbyId, client) {
-    if (!_.isUndefined(lobbies[lobbyId]) && lobbies[lobbyId].population < lobbies[lobbyId].capacity) {
-      lobbies[lobbyId].addClient(client);
+    if (!_.isUndefined(this.lobbies[lobbyId]) && this.lobbies[lobbyId].population < this.lobbies[lobbyId].capacity) {
+      this.lobbies[lobbyId].addClient(client);
     } else {
       return false;
     }

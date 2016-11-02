@@ -15,6 +15,8 @@ const Bullet = require('../bullet/bullet');
 const BulletConstants = require('../bullet/bulletConstants')
 const Constants = require('./constants');
 const Spike = require('../spike/spike');
+const Powerup = require('../powerup/powerup');
+const PowerupConstants = require('../powerup/powerupConstants');
 
 const Collisions = require('./collisions');
 
@@ -33,6 +35,11 @@ class Game {
     this.lastFrame = Date.now();
 
     this.spikes = [];
+    this.powerups = {
+      damageReduction: [],
+      speedBoost: [],
+      healthRecovery: []
+    };
 
     // Start the game loop.
     // Holds the Javascript setInterval() id of the gameloop.
@@ -51,6 +58,7 @@ class Game {
 
   createMap() {
     this.createSpikes();
+    this.createPowerups();
   }
 
   // Adds spikes at random positions in the map.
@@ -71,8 +79,24 @@ class Game {
     this.spikes.push(newSpike);
   }
 
+  createPowerups() {
+    const powerupsToCreate = 2;
+    _.each(PowerupConstants.types, (type) => {
+      for (let i = 0; i < powerupsToCreate; i++) {
+        const randomXSpawn = Math.floor(Math.random() * Constants.width);
+        const randomYSpawn = Math.floor(Math.random() * Constants.height);
+        this.addPowerup(randomXSpawn, randomYSpawn, type, 0 /* Set the power up alive to start */);
+      }
+    });
+  }
+
+  addPowerup(x, y, type, respawnTime) {
+    const newPowerup = new Powerup(x, y, type, respawnTime);
+    this.powerups[type].push(newPowerup);
+  }
+
   addPlayer(x, y, skin, playerId, username) {
-    const newPlayer = new Player(x, y, skin, playerId, username);
+    const newPlayer = new Player(x, y, skin, playerId, username, Object.keys(this.players).length);
     this.players[playerId] = newPlayer;
 
     return this.players[playerId];
@@ -147,6 +171,12 @@ class Game {
       spike.update(delta);
     });
 
+    _.each(PowerupConstants.types, (type) => {
+      _.each(this.powerups[type], (powerup) => {
+        powerup.update(delta);
+      });
+    });
+
     // Only check collisions on the server for now.
     if (Constants.isServer) {
       this.checkCollisions(delta);
@@ -198,7 +228,12 @@ class Game {
         // Check if the person was shot.
         if (this.bullets[b].owner != p && // Can't shoot yourself.
           Collisions.circleTickIntersection(this.players[p], this.bullets[b], delta)) {
-          this.players[p].health -= this.bullets[b].damage;
+
+          if (this.players[p].powerups.damageReduction) {
+            this.players[p].health -= this.bullets[b].damage / 4;
+          } else {
+            this.players[p].health -= this.bullets[b].damage;
+          }
 
           if (this.players[p].health <= 0) {
             this.players[p].kills++;
@@ -209,18 +244,35 @@ class Game {
         }
       }
 
+      // // Player - Spike
+      // for(let s in this.spikes) {
+      //   // Check if a player collided with a spike.
+      //   if (Collisions.circleTickIntersection(this.players[p], this.spikes[s], delta)) {
+      //     // Player hit a spike.
+      //     this.respawnPlayer(p);
+      //   }
+      // }
+
+      _.each(PowerupConstants.types, (type) => {
+        _.each(this.powerups[type], (powerup) => {
+          if (powerup.respawnTime <= 0 && Collisions.circleTickIntersection(this.players[p], powerup, delta)) {
+            this.players[p].addPowerup(new Powerup(powerup.x, powerup.y, powerup.type, powerup.respawnTime));
+            powerup.collect();
+          }
+        });
+      });
     }
 
-    // Spike - Bullet
-    for(let s in this.spikes) {
-      for(let b = this.bullets.length - 1; b >= 0; b--) {
-        // Check if the bullet hits a spike.
-        if (Collisions.circleTickIntersection(this.spikes[s], this.bullets[b], delta)) {
-          // Destroy the bullet.
-          this.players[this.bullets[b].owner].kills++;
-        }
-      }
-    }
+    // // Spike - Bullet
+    // for(let s in this.spikes) {
+    //   for(let b = this.bullets.length - 1; b >= 0; b--) {
+    //     // Check if the bullet hits a spike.
+    //     if (Collisions.circleTickIntersection(this.spikes[s], this.bullets[b], delta)) {
+    //       // Destroy the bullet.
+    //       this.players[this.bullets[b].owner].kills++;
+    //     }
+    //   }
+    // }
   }
 
   /**
@@ -232,7 +284,8 @@ class Game {
     const gameData = {
       players: this.players,
       bullets: this.bullets,
-      spikes: this.spikes
+      spikes: this.spikes,
+      powerups: this.powerups
     };
     return gameData;
   }

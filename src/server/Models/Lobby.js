@@ -51,9 +51,9 @@ class Lobby {
 
   sendChat(msg) {
     // Send the chat message to all of the clients in the lobby.
-    for(var c in this.clients) {
-      this.clients[c].socket.emit('message', msg);
-    }
+    _.forEach(this.clients, client => {
+      client.emit('message', msg);
+    });
   }
 
   parseUserKeyInput(clientId, clientInputKeyBuffer) {
@@ -68,19 +68,19 @@ class Lobby {
    * @param {Object} gameData - The current state of the game to send to the players in the lobby.
    */
   updateClients(gameData) {
-    var msg = {
+    const msg = {
       // Define the kind of message to be sent to the client.
       type: SocketConstants.GAME_UPDATE,
       msg: gameData
-    }
+    };
 
     // if (Math.random() * 1000 > 990)
     //   console.log('Send up date to all of the clients:', msg);
 
     // Send the game update to all of the clients in the lobby.
-    for(var c in this.clients) {
-      this.clients[c].socket.emit('message', msg);
-    }
+    _.forEach(this.clients, client => {
+      client.socket.emit('message', msg);
+    });
   }
 }
 

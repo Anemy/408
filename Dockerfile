@@ -8,6 +8,7 @@ COPY package.json /usr/src/app/
 RUN npm install -g gulp-cli
 RUN npm install -g webpack
 RUN npm install -g eslint
+RUN npm install -g jasmine
 RUN npm install
 
 # Bundle app source

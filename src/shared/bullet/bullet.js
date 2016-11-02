@@ -53,6 +53,7 @@ class Bullet {
     ctx.fillStyle = BulletConstants.rgb;
     ctx.beginPath();
     ctx.arc(this.x * Constants.scale, this.y * Constants.scale, this.radius * Constants.scale, 0, 2 * Math.PI, false);
+    ctx.closePath();
     ctx.fill();
   }
 }
