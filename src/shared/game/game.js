@@ -106,8 +106,8 @@ class Game {
       /*
        * TODO: Make this just chose a location not used, not just chose a random one.
        */
-      xSpawn = Math.random() * Constants.width;
-      ySpawn = Math.random() * Constants.height;
+      xSpawn = Math.random() * Constants.width / 5;
+      ySpawn = Math.random() * Constants.height / 5;
 
       const newPosition = {
         x: xSpawn,
@@ -180,7 +180,7 @@ class Game {
     const y = player.y + player.radius * player.shootingDown - player.radius * player.shootingUp
 
     // Determine which direction to shoot the bullet in.
-    const xVelocity = -BulletConstants.speed * player.shootingLeft + BulletConstants.speed * player.shootingRight;
+    const xVelocity = Math.abs(-BulletConstants.speed * player.shootingLeft + BulletConstants.speed * player.shootingRight);
     const yVelocity = -BulletConstants.speed * player.shootingUp + BulletConstants.speed * player.shootingDown;
 
     const newBullet = new Bullet(player.id, x, y, xVelocity, yVelocity);
