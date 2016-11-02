@@ -85,13 +85,13 @@ class Game {
       for (let i = 0; i < powerupsToCreate; i++) {
         const randomXSpawn = Math.floor(Math.random() * Constants.width);
         const randomYSpawn = Math.floor(Math.random() * Constants.height);
-        this.addPowerup(randomXSpawn, randomYSpawn, type, PowerupConstants.spawnInterval);
+        this.addPowerup(randomXSpawn, randomYSpawn, type, 0 /* Set the power up alive to start */);
       }
     });
   }
 
-  addPowerup(x, y, type) {
-    const newPowerup = new Powerup(x, y, type);
+  addPowerup(x, y, type, respawnTime) {
+    const newPowerup = new Powerup(x, y, type, respawnTime);
     this.powerups[type].push(newPowerup);
   }
 
@@ -169,6 +169,12 @@ class Game {
 
     _.each(this.spikes, (spike) => {
       spike.update(delta);
+    });
+
+    _.each(PowerupConstants.types, (type) => {
+      _.each(this.powerups[type], (powerup) => {
+        powerup.update(delta);
+      });
     });
 
     // Only check collisions on the server for now.
@@ -255,8 +261,9 @@ class Game {
 
       _.each(PowerupConstants.types, (type) => {
         _.each(this.powerups[type], (powerup) => {
-          if (Collisions.circleTickIntersection(this.players[p], powerup, delta)) {
+          if (powerup.respawnTime <= 0 && Collisions.circleTickIntersection(this.players[p], powerup, delta)) {
             this.players[p].addPowerup(new Powerup(powerup.x, powerup.y, powerup.type, powerup.respawnTime));
+            powerup.collect();
           }
         });
       });

@@ -6,8 +6,8 @@
 
  module.exports = {
   radius: 9,
-  spawnInterval: 10,
-  lifespan: 5,
+  spawnInterval: 15,
+  lifespan: 10,
   types: ['damageReduction', 'speedBoost', 'healthRecovery'],
   style: {
     'damageReduction': {
